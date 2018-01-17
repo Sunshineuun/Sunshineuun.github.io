@@ -5,8 +5,64 @@
     <entry>
       <title><![CDATA[GitHub+Hexo搭建个人博客]]></title>
       <url>/2018/01/17/GitHub-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-      <content type="html"><![CDATA[<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">本文描述用GitHub+Hexo搭建个人博客。</span><br></pre></td></tr></table></figure>
-<h3 id="拥有一个GitHub账号"><a href="#拥有一个GitHub账号" class="headerlink" title="拥有一个GitHub账号"></a>拥有一个GitHub账号</h3><h6 id="1-前往以下地址进行申请；"><a href="#1-前往以下地址进行申请；" class="headerlink" title="1.前往以下地址进行申请；"></a>1.<a href="https://github.com" target="_blank" rel="noopener">前往</a>以下地址进行申请；</h6><h6 id="2-建立仓库；"><a href="#2-建立仓库；" class="headerlink" title="2.建立仓库；"></a>2.建立仓库；</h6><p><img src="/images/pasted-0.png" alt="upload successful"></p>
+      <content type="html"><![CDATA[<hr>
+<h5 id="1-拥有一个GitHub账号"><a href="#1-拥有一个GitHub账号" class="headerlink" title="1.拥有一个GitHub账号"></a>1.拥有一个GitHub账号</h5><p><a href="https://github.com" target="_blank" rel="noopener">前往</a>以下地址进行申请</p>
+<hr>
+<h5 id="2-创建博客仓库"><a href="#2-创建博客仓库" class="headerlink" title="2.创建博客仓库"></a>2.创建博客仓库</h5><h6 id="2-1-New-respository"><a href="#2-1-New-respository" class="headerlink" title="2.1 New respository"></a>2.1 New respository</h6><p><img src="/images/pasted-0.png" alt="pasted-0.png"></p>
+<h6 id="2-2-填写信息"><a href="#2-2-填写信息" class="headerlink" title="2.2 填写信息"></a>2.2 填写信息</h6><ul>
+<li>标注【1】处填写github_username.github.io。</li>
+<li>github_username用自己的用户名称代替。</li>
+<li>点击【Create repository】创建仓库。至此github的仓库创建好了。<br><img src="/images/pasted-1.png" alt="pasted-1.png"></li>
+</ul>
+<hr>
+<h5 id="3-安装Hexo"><a href="#3-安装Hexo" class="headerlink" title="3.安装Hexo"></a>3.安装Hexo</h5><h6 id="3-1安装Node-js"><a href="#3-1安装Node-js" class="headerlink" title="3.1安装Node.js"></a>3.1安装Node.js</h6><ul>
+<li><a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js官方下载地址</a>，并且配置环境变量。</li>
+<li><a href="https://baidu.com" target="_blank" rel="noopener">Windows环境变量配置</a>,目前没有编写博客，后续补充。</li>
+<li><a href="https://baidu.com" target="_blank" rel="noopener">Liunx环境变量配置</a>,目前没有编写博客，后续补充。<h6 id="3-2设置npm淘宝镜像站点"><a href="#3-2设置npm淘宝镜像站点" class="headerlink" title="3.2设置npm淘宝镜像站点"></a>3.2设置npm淘宝镜像站点</h6></li>
+<li>npm默认源的下载速度可能很慢，建议使用淘宝镜像替换。</li>
+<li>执行下面命令，将npm的源设置成淘宝镜像站点<br><code>npm config set registry &quot;https://registry.npm.taobao.org&quot;</code></li>
+<li>配置Node.js的环境变量</li>
+</ul>
+<h6 id="3-2安装Hexo"><a href="#3-2安装Hexo" class="headerlink" title="3.2安装Hexo"></a>3.2安装Hexo</h6><ul>
+<li>执行一下命令安装Hexo，Hexo是安装在shell打开的当前路径下的<br><code>npm install hexo-cli g</code></li>
+<li>初始化博客，初始化的博客是在shell打开的当前路径下创建目录<br><code>hexo init blog</code></li>
+<li>进入blog的主目录中<br><code>cd blog</code></li>
+<li>安装Hexo扩展插件<br><code>npm install</code></li>
+<li>安装其它插件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-server --save</span><br><span class="line"># 可视化博客编辑插件</span><br><span class="line">npm install hexo-admin --save</span><br><span class="line">npm install hexo-generator-archive --save</span><br><span class="line">npm install hexo-generator-feed --save</span><br><span class="line">npm install hexo-generator-search --save</span><br><span class="line">npm install hexo-generator-tag --save</span><br><span class="line"># git发布插件</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">npm install hexo-generator-sitemap --save</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>至此安装完毕！！！</p>
+<hr>
+<h5 id="4-Hexo基本使用"><a href="#4-Hexo基本使用" class="headerlink" title="4.Hexo基本使用"></a>4.Hexo基本使用</h5><h6 id="4-1启用Hexo服务"><a href="#4-1启用Hexo服务" class="headerlink" title="4.1启用Hexo服务"></a>4.1启用Hexo服务</h6><ul>
+<li>静态页面生成<br><code>hexo generate</code></li>
+<li>启动本地服务<br><code>hexo server</code></li>
+<li>打开浏览器，地址栏中输入：[<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> ],应该可以看见刚刚创建的博客了</li>
+</ul>
+<h6 id="4-2问题答疑"><a href="#4-2问题答疑" class="headerlink" title="4.2问题答疑"></a>4.2问题答疑</h6><ul>
+<li>如果出现无法访问的情况，可能是4000这个端口被占用了。解决方式，关闭服务，修改端口，再次启动服务器。相关代码如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 修改端口</span><br><span class="line">hexo s -p 5000</span><br><span class="line"># 关闭服务</span><br><span class="line">Ctrl+C</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h5 id="5-将Hexo博客部署到GitHub上"><a href="#5-将Hexo博客部署到GitHub上" class="headerlink" title="5.将Hexo博客部署到GitHub上"></a>5.将Hexo博客部署到GitHub上</h5><h6 id="5-1配置"><a href="#5-1配置" class="headerlink" title="5.1配置"></a>5.1配置</h6><ul>
+<li><p>修改配置文件blog/_config.yml，修改deploy项的内容，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: https://hexo.io/docs/deployment.html</span><br><span class="line">deploy:</span><br><span class="line">  # 类型</span><br><span class="line">  type: git</span><br><span class="line">  # 仓库的地址</span><br><span class="line">  repo: https://github.com/Sunshineuun/Sunshineuun.github.io.git</span><br><span class="line">  # 分支</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注意：yml的语法要求各个标签【:】分号必须有空格。</p>
+</li>
+<li>注意：repo是对应仓库的地址，在<code>hexo deploy</code>的时候会提示输入密码。</li>
+</ul>
+<h6 id="5-2部署"><a href="#5-2部署" class="headerlink" title="5.2部署"></a>5.2部署</h6><ul>
+<li><p>执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 清空静态页面</span><br><span class="line">hexo clean</span><br><span class="line"># 生成静态页面</span><br><span class="line">hexo generate</span><br><span class="line"># 部署 </span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开网页，输入<a href="http://github_username.github.io" target="_blank" rel="noopener">http://github_username.github.io</a> ，打开github上托管的博客。如我的博客地址是：<a href="http://Sunshineuun.github.io。" target="_blank" rel="noopener">http://Sunshineuun.github.io。</a></p>
+</li>
+</ul>
+<hr>
+<h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ul>
+<li><a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo官网</a></li>
+<li><a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">NexT主题官方文档</a></li>
+</ul>
 ]]></content>
       
         <categories>
@@ -27,15 +83,15 @@
     </entry>
     
     <entry>
-      <title><![CDATA[HelloWorld]]></title>
+      <title><![CDATA[Hexo可视化编辑]]></title>
       <url>/2018/01/17/HelloWorld/</url>
-      <content type="html"><![CDATA[<p>你好！今天是2018年1月17日。<br>使用GitHub+Hexo搭建个人博客。</p>
+      <content type="html"><![CDATA[<h5 id="后端管理插件hexo-admin"><a href="#后端管理插件hexo-admin" class="headerlink" title="后端管理插件hexo-admin"></a>后端管理插件hexo-admin</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">插件可以直接在网页端创建、编辑markdown文章内容，并将内容发布到_posts里，提供标签，分类配置。</span><br></pre></td></tr></table></figure>
+<h6 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 安装插件</span><br><span class="line">npm install --save hexo-admin</span><br><span class="line"># 启动服务</span><br><span class="line">hexo server -d</span><br><span class="line"># 登陆地址</span><br><span class="line">open http://localhost:4000/admin/</span><br></pre></td></tr></table></figure>
+<p>登陆查看即可</p>
 ]]></content>
       
         
         <tags>
-            
-            <tag> hellowworld </tag>
             
             <tag> GitHub </tag>
             
