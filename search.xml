@@ -6,7 +6,7 @@
       <title><![CDATA[GitHub+Hexo搭建个人博客]]></title>
       <url>/2018/01/17/GitHub-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
       <content type="html"><![CDATA[<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">本文描述用GitHub+Hexo搭建个人博客。</span><br></pre></td></tr></table></figure>
-<h3 id="拥有一个GitHub账号"><a href="#拥有一个GitHub账号" class="headerlink" title="拥有一个GitHub账号"></a>拥有一个GitHub账号</h3><h6 id="1-前往以下地址进行申请；"><a href="#1-前往以下地址进行申请；" class="headerlink" title="1.前往以下地址进行申请；"></a>1.<a href="https://github.com" target="_blank" rel="noopener">前往</a>以下地址进行申请；</h6><h6 id="2-建立仓库；"><a href="#2-建立仓库；" class="headerlink" title="2.建立仓库；"></a>2.建立仓库；</h6><p><img src="\\images\pasted-0.png" alt="upload successful"></p>
+<h3 id="拥有一个GitHub账号"><a href="#拥有一个GitHub账号" class="headerlink" title="拥有一个GitHub账号"></a>拥有一个GitHub账号</h3><h6 id="1-前往以下地址进行申请；"><a href="#1-前往以下地址进行申请；" class="headerlink" title="1.前往以下地址进行申请；"></a>1.<a href="https://github.com" target="_blank" rel="noopener">前往</a>以下地址进行申请；</h6><h6 id="2-建立仓库；"><a href="#2-建立仓库；" class="headerlink" title="2.建立仓库；"></a>2.建立仓库；</h6><p><img src="/images/pasted-0.png" alt="upload successful"></p>
 ]]></content>
       
         <categories>
@@ -35,11 +35,11 @@
         
         <tags>
             
+            <tag> hellowworld </tag>
+            
             <tag> GitHub </tag>
             
             <tag> Hexo </tag>
-            
-            <tag> hellowworld </tag>
             
         </tags>
         
