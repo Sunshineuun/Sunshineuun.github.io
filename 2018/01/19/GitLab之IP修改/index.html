@@ -10,6 +10,16 @@
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
 <meta name="theme-color" content="#222">
 
   <script>
@@ -76,7 +86,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="GitLab,IP," />
 
 
 
@@ -90,6 +100,7 @@
 
 
 <meta name="description" content="问题背景虚拟机的IP地址变动了，用新的IP地址直接访问虚拟的gitlab没问题，开发者的项目上修改对应的远程地址也就可以关联上了。但是出现一个问题，如下图所示：项目的下载地址还是原有的IP地址，不是现有IP地址。基于这样的问题给出以下修改。 问题解决PS:笔者用的是ubuntu的系统  进入gitlab的配置目录 1cd /opt/gitlab/embedded/service/gitlab-ra">
+<meta name="keywords" content="GitLab,IP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GitLab之IP修改">
 <meta property="og:url" content="https://sunshineuun.github.io/2018/01/19/GitLab之IP修改/index.html">
@@ -100,7 +111,7 @@
 <meta property="og:image" content="https://sunshineuun.github.io/images/pasted-15.png">
 <meta property="og:image" content="https://sunshineuun.github.io/images/pasted-16.png">
 <meta property="og:image" content="https://sunshineuun.github.io/images/pasted-17.png">
-<meta property="og:updated_time" content="2018-01-19T02:47:41.352Z">
+<meta property="og:updated_time" content="2018-01-19T05:01:05.927Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GitLab之IP修改">
 <meta name="twitter:description" content="问题背景虚拟机的IP地址变动了，用新的IP地址直接访问虚拟的gitlab没问题，开发者的项目上修改对应的远程地址也就可以关联上了。但是出现一个问题，如下图所示：项目的下载地址还是原有的IP地址，不是现有IP地址。基于这样的问题给出以下修改。 问题解决PS:笔者用的是ubuntu的系统  进入gitlab的配置目录 1cd /opt/gitlab/embedded/service/gitlab-ra">
@@ -340,7 +351,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-19T10:35:29+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-19T10:35:00+08:00">
                 2018-01-19
               </time>
             
@@ -350,6 +361,39 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IT/" itemprop="url" rel="index">
+                    <span itemprop="name">IT</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IT/版本控制/" itemprop="url" rel="index">
+                    <span itemprop="name">版本控制</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -487,6 +531,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/GitLab/" rel="tag"><i class="fa fa-tag"></i> GitLab</a>
+          
+            <a href="/tags/IP/" rel="tag"><i class="fa fa-tag"></i> IP</a>
+          
+        </div>
+      
 
       
       
@@ -505,6 +557,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/19/rkdown基本语法/" rel="prev" title="Markdown基本语法">
+                Markdown基本语法 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -593,7 +649,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -604,7 +660,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -615,7 +671,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -716,7 +772,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共2.0k字</span>
+  <span class="post-count">全站共3.2k字</span>
 </div>
 
         
