@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sunshineuun.github.io/"/>
-  <updated>2018-01-18T03:34:00.000Z</updated>
+  <updated>2018-01-19T02:47:41.352Z</updated>
   <id>https://sunshineuun.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>GitLab之IP修改</title>
+    <link href="https://sunshineuun.github.io/2018/01/19/GitLab%E4%B9%8BIP%E4%BF%AE%E6%94%B9/"/>
+    <id>https://sunshineuun.github.io/2018/01/19/GitLab之IP修改/</id>
+    <published>2018-01-19T02:35:29.000Z</published>
+    <updated>2018-01-19T02:47:41.352Z</updated>
+    
+    <content type="html"><![CDATA[<h5 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h5><p>虚拟机的IP地址变动了，用新的IP地址直接访问虚拟的gitlab没问题，开发者的项目上修改对应的远程地址也就可以关联上了。但是出现一个问题，如下图所示：<br>项目的下载地址还是原有的IP地址，不是现有IP地址。基于这样的问题给出以下修改。<br><img src="/images/pasted-14.png" alt="upload successful"></p><h5 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h5><p>PS:笔者用的是ubuntu的系统</p><ul><li><p>进入gitlab的配置目录</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/gitlab/embedded/service/gitlab-rails/config</span><br></pre></td></tr></table></figure></li><li><p>用<code>ls</code>命令查看目录下的文件，如下图：。目录中会包含一个<code>gitlab.yml</code>的文件。<br>  <img src="/images/pasted-15.png" alt="upload successful"></p></li><li><p>打开并修改相关配置，用<code>vi gitlab.yml</code>命令进行打开。将图中host修改成新指定的IP即可。例如我这里就将IP修改为<code>192.168.16.182</code><br>  <img src="/images/pasted-16.png" alt="upload successful"></p></li><li><p><code>gitlab-ctl restart</code>重启服务即可，效果图如下：<br>  <img src="/images/pasted-17.png" alt="upload successful"></p></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h5 id=&quot;问题背景&quot;&gt;&lt;a href=&quot;#问题背景&quot; class=&quot;headerlink&quot; title=&quot;问题背景&quot;&gt;&lt;/a&gt;问题背景&lt;/h5&gt;&lt;p&gt;虚拟机的IP地址变动了，用新的IP地址直接访问虚拟的gitlab没问题，开发者的项目上修改对应的远程地址也就可以关联上了。但
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Hexo主题之NexT</title>
