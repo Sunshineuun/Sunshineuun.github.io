@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[TILT3D-Firefox]]></title>
+    <url>%2F2018%2F01%2F24%2FILT3D-Firefox%2F</url>
+    <content type="text"><![CDATA[TILT 3D 效果如下 简述将网页已3D的模型展示出来。 安装 因为目前貌似有版本影响的问题，笔者用的版本为49.0.2。 菜单栏 &gt;&gt; 工具 &gt;&gt; Web开发者 &gt;&gt; 获取更多工具 查询Tilt组件，结果如下图；点击进去安装，重启FireFox即可。 菜单栏 &gt;&gt; 工具 &gt;&gt; Web开发者下找到Tilt工具，笔者是用Ctrl+Shift+M调用的。具体视情况而定。 参考文献插件地址-US插件地址-ZH]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[Angular-脚手架]]></title>
     <url>%2F2018%2F01%2F23%2Fngular-%E8%84%9A%E6%89%8B%E6%9E%B6%2F</url>
     <content type="text"><![CDATA[脚手架命令 范围 命令 作用 new right-aligned 初始化新项目 Component ng g component my-new-component 新建一个组件 Directive ng g directive my-new-directive 新建一个指令 Pipe ng g pipe my-new-pipe 新建一个管道 Service ng g service my-new-service 新建一个服务 Class ng g class my-new-class 新建一个类 Interface ng g interface my-new-interface 新建一个接口 Enum ng g enum my-new-enum 新建一个枚举 Module ng g module my-module 新建一个模块 常用命令 启动服务ng serve 打包ng build 目录树详解]]></content>

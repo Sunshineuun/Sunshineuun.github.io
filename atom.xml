@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sunshineuun.github.io/"/>
-  <updated>2018-01-23T07:55:13.014Z</updated>
+  <updated>2018-01-24T04:35:25.948Z</updated>
   <id>https://sunshineuun.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>TILT3D-Firefox</title>
+    <link href="https://sunshineuun.github.io/2018/01/24/ILT3D-Firefox/"/>
+    <id>https://sunshineuun.github.io/2018/01/24/ILT3D-Firefox/</id>
+    <published>2018-01-24T04:18:08.000Z</published>
+    <updated>2018-01-24T04:35:25.948Z</updated>
+    
+    <content type="html"><![CDATA[<h5 id="TILT-3D-效果如下"><a href="#TILT-3D-效果如下" class="headerlink" title="TILT 3D 效果如下"></a>TILT 3D 效果如下</h5><p><img src="/images/pasted-30.png" alt="upload successful"></p><h5 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h5><p>将网页已3D的模型展示出来。</p><h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><ul><li>因为目前貌似有版本影响的问题，笔者用的版本为<code>49.0.2</code>。</li><li>菜单栏 &gt;&gt; 工具 &gt;&gt; Web开发者 &gt;&gt; 获取更多工具</li><li><p>查询Tilt组件，结果如下图；点击进去安装，重启FireFox即可。<br><img src="/images/pasted-31.png" alt="upload successful"></p></li><li><p>菜单栏 &gt;&gt; 工具 &gt;&gt; Web开发者下找到Tilt工具，笔者是用<code>Ctrl+Shift+M</code>调用的。具体视情况而定。<br><img src="/images/pasted-32.png" alt="upload successful"></p></li></ul><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><p><a href="https://addons.mozilla.org/en-US/firefox/addon/tilt/" target="_blank" rel="noopener">插件地址-US</a><br><a href="https://addons.mozilla.org/zh-CN/firefox/addon/tilt/" target="_blank" rel="noopener">插件地址-ZH</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h5 id=&quot;TILT-3D-效果如下&quot;&gt;&lt;a href=&quot;#TILT-3D-效果如下&quot; class=&quot;headerlink&quot; title=&quot;TILT 3D 效果如下&quot;&gt;&lt;/a&gt;TILT 3D 效果如下&lt;/h5&gt;&lt;p&gt;&lt;img src=&quot;/images/pasted-30.pn
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Angular-脚手架</title>
