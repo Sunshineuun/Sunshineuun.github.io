@@ -1,19 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Maven配置阿里云镜像库]]></title>
+    <url>%2F2018%2F01%2F24%2FMaven%E4%BD%BF%E7%94%A8Aliyun%E9%95%9C%E5%83%8F%E5%BA%93%2F</url>
+    <content type="text"><![CDATA[在profile &gt; repositories节点下增加阿里的镜像库 代码如下1234&lt;repository&gt; &lt;id&gt;aliyunmaven&lt;/id&gt; &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;&lt;/repository&gt;]]></content>
+      <categories>
+        <category>Maven</category>
+      </categories>
+      <tags>
+        <tag>Maven</tag>
+        <tag>Aliyun</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Spring boot项目创建]]></title>
+    <url>%2F2018%2F01%2F24%2Fring-boot%E9%A1%B9%E7%9B%AE%E5%88%9B%E5%BB%BA%2F</url>
+    <content type="text"><![CDATA[使用IDEA创建项目 New Project，选择Spring Initializr，Next，Next 选择相关集成的JAR包 Core 工具名称 说明 参考地址 DevTools 热部署 详情前往 Security 权限控制 - Lombok 代码模板，省略了get/set的方法，IDEA中有Lombok的插件 - Configration Processor - - Session 分布式Session共享 - Cache 缓存，具体位置 详情前往 Validation 后端的数据校验 - Retry spring熔断机制 - JTA 分布式事务处理，Atomikos,Bitronix,Narayana - Aspects AOP处理 - Web 工具名称 说明 参考地址 Web - - Rest Repositories - - Rest Repositories HAL Browser - - HATEOAS - - Web Services - - Jersey JAX-RS - - Websocket - - REST Docs - - Vaadin - - Apache CXF - - Ratpack - - Mobile - - Keycloak - - Template Engines 工具名称 说明 参考地址 Yhymeleaf - - Freemarker - - Mustache - - Groovy Templates - - SQL 工具名称 说明 参考地址 JPA - - MySql - - H2 - - JDBC - - Mybatis - - PostgreSQL - - SQL Server - - HSQLDB - - Apache Derby - - Liquibase - - Flyway - - JOOQ - - NoSQL 工具名称 说明 参考地址 Redis - - MongoDB - - Reactive Redis - - Reactive MongoDB - - Embedded MongoDB - - Elasticsearch - - Solr - - Cassandra - - Couchbase - - Neo4j - - Gemfire - - Cloud Core-分布式核心 工具名称 说明 参考地址 Cloud Connectors - - Cloud Bootstrap - - Cloud Security - - Cloud OAuth2 - - Cloud Task - - Cloud Config-分布式配置中心 工具名称 说明 参考地址 Cloud Client - - Cloud Server - - Vault Configuration - - Zookeeper Configuration - - Consul Configuration - - Cloud Discovery-分布式服务注册 工具名称 说明 参考地址 Zookeeper Discovery - - Cloud Routing-动态数据路由 工具名称 说明 参考地址 Zuul - - Ribbon - - Feign - - Cloud Circuit Breaker-熔断器 工具名称 说明 参考地址 Hystrix - - Turbine - - Cloud Tracing-分布式追踪器 工具名称 说明 参考地址 Zipkin UI - - Zipkin Stream - - Zipkin Client - - Sleuth Stream - - Cloud Messaging-分布式消息总线 工具名称 说明 参考地址 Cloud Bus Kafka - - Cloud Bus AMQP - - Stream Binder Rabbit - - Stream Binder Kafka - - 以下省略一部分，都是些看不懂的东西。参考文献IntelliJ IDEA Spring Boot Help]]></content>
+      <categories>
+        <category>后端</category>
+        <category>Spring 框架</category>
+      </categories>
+      <tags>
+        <tag>Spring boot</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[TILT3D-Firefox]]></title>
     <url>%2F2018%2F01%2F24%2FILT3D-Firefox%2F</url>
     <content type="text"><![CDATA[TILT 3D 效果如下 简述将网页已3D的模型展示出来。 安装 因为目前貌似有版本影响的问题，笔者用的版本为49.0.2。 菜单栏 &gt;&gt; 工具 &gt;&gt; Web开发者 &gt;&gt; 获取更多工具 查询Tilt组件，结果如下图；点击进去安装，重启FireFox即可。 菜单栏 &gt;&gt; 工具 &gt;&gt; Web开发者下找到Tilt工具，笔者是用Ctrl+Shift+M调用的。具体视情况而定。 参考文献插件地址-US插件地址-ZH]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Tilt 3D</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Angular-脚手架]]></title>
     <url>%2F2018%2F01%2F23%2Fngular-%E8%84%9A%E6%89%8B%E6%9E%B6%2F</url>
     <content type="text"><![CDATA[脚手架命令 范围 命令 作用 new right-aligned 初始化新项目 Component ng g component my-new-component 新建一个组件 Directive ng g directive my-new-directive 新建一个指令 Pipe ng g pipe my-new-pipe 新建一个管道 Service ng g service my-new-service 新建一个服务 Class ng g class my-new-class 新建一个类 Interface ng g interface my-new-interface 新建一个接口 Enum ng g enum my-new-enum 新建一个枚举 Module ng g module my-module 新建一个模块 常用命令 启动服务ng serve 打包ng build 目录树详解]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Angular</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Angular-双向数据绑定]]></title>
     <url>%2F2018%2F01%2F23%2Fngular-%E5%8F%8C%E5%90%91%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9A%2F</url>
     <content type="text"><![CDATA[双向数据绑定主要代码如下12# [(ngModel)]=&quot;password&quot;，使用[(ngModel)]进行绑定password属性&lt;input type=&quot;password&quot; [(ngModel)]=&quot;password&quot; value=&quot;&#123;&#123;password&#125;&#125;&quot;/&gt; [(ngModel)]是一个Angular语法，用与把password绑定到输入框中。 它的数据流是双向的：从属性到输入框，并且从输入框回到属性。不幸的是，做了这项改动之后，我们的程序崩溃了。 打开浏览器的控制台，我们会看到Angular抱怨说：“ngModel … isn’t a known property of input.”（ngModel不是input元素的已知属性）虽然NgModel是一个有效的Angular指令，但它默认情况下却是不可用的。 它属于一个可选模块FormsModule。 我们必须选择使用那个模块。 导入FormMoule模块打开app.module.ts文件，并且从@angular/forms库中导入符号FormsModule。 然后把FormsModule添加到@NgModule元数据的imports数组中，它是当前应用正在使用的外部模块列表。修改后的AppModule是这样的：123456789101112131415161718192021import &#123;BrowserModule&#125; from &apos;@angular/platform-browser&apos;;import &#123;NgModule&#125; from &apos;@angular/core&apos;;import &#123;FormsModule&#125; from &apos;@angular/forms&apos;;import &#123;AppComponent&#125; from &apos;./app.component&apos;;import &#123;UserComponent&#125; from &apos;./user/user.component&apos;;@NgModule(&#123; declarations: [ AppComponent, UserComponent ], imports: [ BrowserModule, FormsModule ], providers: [], bootstrap: [AppComponent]&#125;)export class AppModule &#123;&#125; 参考文献 FormsModule ngModel 模板语法 表单 Angular官网]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
       <tags>
         <tag>Angular</tag>
       </tags>
