@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sunshineuun.github.io/"/>
-  <updated>2018-01-24T13:39:19.219Z</updated>
+  <updated>2018-01-26T06:08:29.594Z</updated>
   <id>https://sunshineuun.github.io/</id>
   
   <author>
@@ -15,6 +15,78 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Ubuntu常用操作命令</title>
+    <link href="https://sunshineuun.github.io/2018/01/26/untu%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4/"/>
+    <id>https://sunshineuun.github.io/2018/01/26/untu常用操作命令/</id>
+    <published>2018-01-26T05:09:17.000Z</published>
+    <updated>2018-01-26T06:08:29.594Z</updated>
+    
+    <content type="html"><![CDATA[<h5 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h5><h6 id="文件进入"><a href="#文件进入" class="headerlink" title="文件进入"></a>文件进入</h6><ol><li><code>cd 路径</code>;</li><li><code>cd ..</code>; 返回上一个文件夹</li><li><code>sudo</code>; 获取root权限，需要输入root权限的密码。</li></ol><h6 id="文件创建"><a href="#文件创建" class="headerlink" title="文件创建"></a>文件创建</h6><ol><li><code>mkdir 名称</code>; 新建一个文件夹</li><li><code>touch 名称</code>; 新建一个空文件。</li></ol><h6 id="文件删除"><a href="#文件删除" class="headerlink" title="文件删除"></a>文件删除</h6><ol><li><code>rmdir 目录名</code>; 删除一个空的文件夹(目录)</li><li><code>rm -rf 目录名</code>; 删除一个非空的文件夹(目录)</li><li><code>rm 文件名,文件名</code>; 删除多个文件</li></ol><h6 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h6><ol><li><code>cp 文件名 目标路径</code>; 拷贝文件到目标路径下</li><li><code>cp -i</code>; 拷贝，同名文件存在时，输出[yes/no]的询问</li><li><code>cp -f</code>; 强制复制文件,如果同名不询问</li></ol><h6 id="文件剪切"><a href="#文件剪切" class="headerlink" title="文件剪切"></a>文件剪切</h6><ol><li><code>mv jdk1.8.0_20/ /usr/lib/jvm///</code>；可剪切文件目录</li></ol><h6 id="常用解压，安装，文件更新"><a href="#常用解压，安装，文件更新" class="headerlink" title="常用解压，安装，文件更新"></a>常用解压，安装，文件更新</h6><ol><li><code>tar -zxvf  *.tar.gz</code> 解压tar.gz格式的文件</li><li><code>source *.install</code> 安装install格式的安装包</li><li><code>sh 路径/x.sh</code> 安装sh格式的文件</li><li><code>apt-get upgrade</code> 更新已安装的包</li><li><code>apt-get update</code> 更新源</li></ol><h5 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h5><ol><li><code>netstat -nltp</code> 查看启动的进程</li><li><code>kill -9 pid</code>，参数-9强制杀进程，参数pid对应的进程pid。</li><li>内存查询命令<code>free</code>命令<ul><li>功能说明: 显示内存状态。</li><li>语法: <code>free [-bkmotV][-s ]</code>。</li><li>补充说明: free指令会显示内存的使用情况，包括实体内存，虚拟的交换文档内存，共享内存区段，连同系统核心使用的缓冲区等。</li><li>参数：<br>　　        1. -b 　   以Byte为单位显示内存使用情况。<br>　　        2. -k 　  以KB为单位显示内存使用情况。<br>　　        3. -m 　 以MB为单位显示内存使用情况。<br>　　        4. -o 　  不显示缓冲区调节列。<br>　　        5. -s 　  持续观察内存使用状况。<br>　　        6. -t 　   显示内存总和列。<br>　　        7. -V 　 显示版本信息。</li></ul></li></ol><h5 id="开关机操作"><a href="#开关机操作" class="headerlink" title="开关机操作"></a>开关机操作</h5><ol><li><code>reboot</code> 重启</li><li><code>shutdown -r now</code>; 立即重启，需root权限</li><li><code>shutdown -r 10</code>,;10分钟后自动重启，时间自由调整，单位分，需root权限</li><li><code>halt</code>立即关机</li><li><code>poweroff</code>立刻关机</li><li><code>shutdown -h now</code>立刻关机</li><li><code>shutdown -h 10</code>;10分钟后自动关机，时间自由调整，单位分，需root权限</li><li><p><code>shutdown -c</code>;取消关机重启</p><h5 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h5><h6 id="Ubuntu实时查看tomcat运行log"><a href="#Ubuntu实时查看tomcat运行log" class="headerlink" title="Ubuntu实时查看tomcat运行log"></a>Ubuntu实时查看tomcat运行log</h6><ul><li>找到tomcat安装目录：cd tomcat/logs</li><li>tail -f catalina.out</li><li>ctrl+c 退出</li></ul></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h5 id=&quot;文件操作&quot;&gt;&lt;a href=&quot;#文件操作&quot; class=&quot;headerlink&quot; title=&quot;文件操作&quot;&gt;&lt;/a&gt;文件操作&lt;/h5&gt;&lt;h6 id=&quot;文件进入&quot;&gt;&lt;a href=&quot;#文件进入&quot; class=&quot;headerlink&quot; title=&quot;文件进入&quot;&gt;&lt;/a
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Jenkins Install</title>
+    <link href="https://sunshineuun.github.io/2018/01/26/Jenkins-Install/"/>
+    <id>https://sunshineuun.github.io/2018/01/26/Jenkins-Install/</id>
+    <published>2018-01-26T04:51:00.000Z</published>
+    <updated>2018-01-26T05:02:43.868Z</updated>
+    
+    <content type="html"><![CDATA[<h5 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h5><p>Jenkins自动化部署打包系统，百度百科<a href="https://baike.baidu.com/item/Jenkins/10917210?fr=aladdin" target="_blank" rel="noopener">传送门</a><br>笔者安装在Ubuntu环境上。</p><h5 id="Jenkins-Install"><a href="#Jenkins-Install" class="headerlink" title="Jenkins Install"></a>Jenkins Install</h5><p><a href="http://www.linuxidc.com/Linux/2016-12/138290.htm" target="_blank" rel="noopener">传送门</a></p><h5 id="Jenkins-UnInstall"><a href="#Jenkins-UnInstall" class="headerlink" title="Jenkins UnInstall"></a>Jenkins UnInstall</h5><p><a href="https://www.cnblogs.com/wangcp-2014/p/6978245.html" target="_blank" rel="noopener">传送门</a></p><h5 id="Git-Install"><a href="#Git-Install" class="headerlink" title="Git Install"></a>Git Install</h5><p>执行以下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install git</span><br></pre></td></tr></table></figure></p><h5 id="Maven-Install"><a href="#Maven-Install" class="headerlink" title="Maven Install"></a>Maven Install</h5><ul><li>下载Maven的安装包</li><li>安装命令如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 解压</span><br><span class="line">tar zxvf apache-maven-3.3.9.bin.tar.gz</span><br><span class="line"></span><br><span class="line"># 增加环境变量</span><br><span class="line">vi /etc/profile</span><br><span class="line"># 在打开文件尾部增加以下内容</span><br><span class="line">M2_HOME=/usr/local/apache-maven-3.3.9 # 此路径是你maven解压缩文件的路径。</span><br><span class="line">PATH=$M2_HOME/bin:$PATH</span><br></pre></td></tr></table></figure></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h5 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h5&gt;&lt;p&gt;Jenkins自动化部署打包系统，百度百科&lt;a href=&quot;https://baike.baidu.com/item/Jenkins/109
+      
+    
+    </summary>
+    
+    
+      <category term="JenKins" scheme="https://sunshineuun.github.io/tags/JenKins/"/>
+    
+      <category term="自动化构建" scheme="https://sunshineuun.github.io/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Maven打包问题</title>
+    <link href="https://sunshineuun.github.io/2018/01/26/Maven%E6%89%93%E5%8C%85%E9%97%AE%E9%A2%98/"/>
+    <id>https://sunshineuun.github.io/2018/01/26/Maven打包问题/</id>
+    <published>2018-01-26T03:32:48.000Z</published>
+    <updated>2018-01-26T03:35:38.816Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li>Maven所有的打包都是依赖Maven仓库的，并不依赖项目。</li><li>每个Maven都需要依赖到具体的项目。</li><li>关于Maven<code>parent</code>的节点需要学习。</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ol&gt;
+&lt;li&gt;Maven所有的打包都是依赖Maven仓库的，并不依赖项目。&lt;/li&gt;
+&lt;li&gt;每个Maven都需要依赖到具体的项目。&lt;/li&gt;
+&lt;li&gt;关于Maven&lt;code&gt;parent&lt;/code&gt;的节点需要学习。&lt;/li&gt;
+&lt;/ol&gt;
+
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Spring Boot使用Druid数据源</title>
