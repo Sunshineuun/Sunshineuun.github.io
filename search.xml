@@ -1,174 +1,1309 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title><![CDATA[Ubuntu常用操作命令]]></title>
-    <url>%2F2018%2F01%2F26%2Funtu%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4%2F</url>
-    <content type="text"><![CDATA[文件操作文件进入 cd 路径; cd ..; 返回上一个文件夹 sudo; 获取root权限，需要输入root权限的密码。 文件创建 mkdir 名称; 新建一个文件夹 touch 名称; 新建一个空文件。 文件删除 rmdir 目录名; 删除一个空的文件夹(目录) rm -rf 目录名; 删除一个非空的文件夹(目录) rm 文件名,文件名; 删除多个文件 文件复制 cp 文件名 目标路径; 拷贝文件到目标路径下 cp -i; 拷贝，同名文件存在时，输出[yes/no]的询问 cp -f; 强制复制文件,如果同名不询问 文件剪切 mv jdk1.8.0_20/ /usr/lib/jvm///；可剪切文件目录 常用解压，安装，文件更新 tar -zxvf *.tar.gz 解压tar.gz格式的文件 source *.install 安装install格式的安装包 sh 路径/x.sh 安装sh格式的文件 apt-get upgrade 更新已安装的包 apt-get update 更新源 服务 netstat -nltp 查看启动的进程 kill -9 pid，参数-9强制杀进程，参数pid对应的进程pid。 内存查询命令free命令 功能说明: 显示内存状态。 语法: free [-bkmotV][-s ]。 补充说明: free指令会显示内存的使用情况，包括实体内存，虚拟的交换文档内存，共享内存区段，连同系统核心使用的缓冲区等。 参数： 1. -b 以Byte为单位显示内存使用情况。 2. -k 以KB为单位显示内存使用情况。 3. -m 以MB为单位显示内存使用情况。 4. -o 不显示缓冲区调节列。 5. -s 持续观察内存使用状况。 6. -t 显示内存总和列。 7. -V 显示版本信息。 开关机操作 reboot 重启 shutdown -r now; 立即重启，需root权限 shutdown -r 10,;10分钟后自动重启，时间自由调整，单位分，需root权限 halt立即关机 poweroff立刻关机 shutdown -h now立刻关机 shutdown -h 10;10分钟后自动关机，时间自由调整，单位分，需root权限 shutdown -c;取消关机重启 其他Ubuntu实时查看tomcat运行log 找到tomcat安装目录：cd tomcat/logs tail -f catalina.out ctrl+c 退出]]></content>
-  </entry>
-  <entry>
-    <title><![CDATA[Jenkins Install]]></title>
-    <url>%2F2018%2F01%2F26%2FJenkins-Install%2F</url>
-    <content type="text"><![CDATA[简介Jenkins自动化部署打包系统，百度百科传送门笔者安装在Ubuntu环境上。 Jenkins Install传送门 Jenkins UnInstall传送门 Git Install执行以下命令1apt-get install git Maven Install 下载Maven的安装包 安装命令如下12345678# 解压tar zxvf apache-maven-3.3.9.bin.tar.gz# 增加环境变量vi /etc/profile# 在打开文件尾部增加以下内容M2_HOME=/usr/local/apache-maven-3.3.9 # 此路径是你maven解压缩文件的路径。PATH=$M2_HOME/bin:$PATH]]></content>
-      <tags>
-        <tag>JenKins</tag>
-        <tag>自动化构建</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Maven打包问题]]></title>
-    <url>%2F2018%2F01%2F26%2FMaven%E6%89%93%E5%8C%85%E9%97%AE%E9%A2%98%2F</url>
-    <content type="text"><![CDATA[Maven所有的打包都是依赖Maven仓库的，并不依赖项目。 每个Maven都需要依赖到具体的项目。 关于Mavenparent的节点需要学习。]]></content>
-  </entry>
-  <entry>
-    <title><![CDATA[Spring Boot使用Druid数据源]]></title>
-    <url>%2F2018%2F01%2F24%2Fpring-Boot%E4%BD%BF%E7%94%A8Druid%E6%95%B0%E6%8D%AE%E6%BA%90%2F</url>
-    <content type="text"><![CDATA[添加pom文件依赖数据库驱动的jar，视你用的是什么数据库添加对应pom依赖。我这里用oracle数据库所以就添加oracle的依赖。123456789101112&lt;!-- alibaba的druid数据库连接池 --&gt; &lt;dependency&gt; &lt;groupId&gt;com.alibaba&lt;/groupId&gt; &lt;artifactId&gt;druid&lt;/artifactId&gt; &lt;version&gt;1.1.6&lt;/version&gt;&lt;/dependency&gt;&lt;!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 --&gt;&lt;dependency&gt; &lt;groupId&gt;com.oracle&lt;/groupId&gt; &lt;artifactId&gt;ojdbc14&lt;/artifactId&gt; &lt;version&gt;10.2.0.4.0&lt;/version&gt;&lt;/dependency&gt; 配置yml文件中druid数据库连接池12345678910111213141516171819202122232425262728293031323334353637spring: datasource: name: test username: root password: root url: jdbc:oracle:thin:@192.168.16.113:1521:sunshine driver-class-name: oracle.jdbc.driver.OracleDriver # 数据库驱动配置 type: com.alibaba.druid.pool.DruidDataSource # aliyun数据连接池配置 druid: username: root password: root # 初始化连接数 initial-size: 1 # 最小连接数 min-idle: 3 # 最大连接数 max-active: 20 # 配置获取连接等待超时的时间 max-wait: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 time-between-eviction-runs-millis: 60000 # 配置一个连接在池中最小生存的时间，单位是毫秒 min-evictable-idle-time-millis: 30000 validation-query: select&apos;x&apos; test-while-idle: true test-on-borrow: false test-on-return: false # 打开PSCache，并且指定每个连接上PSCache的大小 pool-prepared-statements: true max-pool-prepared-statement-per-connection-size: 20 # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，&apos;wall&apos;用于防火墙 filters: stat,wall,slf4j # 通过connectProperties属性来打开mergeSql功能；慢SQL记录 connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000 # 合并多个DruidDataSource的监控数据 useGlobalDataSourceStat: true 配置Druid的监控统计功能 @Confing注解 配置类，代码见DruidConfiguration.java 基于注解首先在启动类上加上注解：@ServletComponentScan使Spring能够扫描到我们自己编写的servlet和filter。1234567891011121314151617181920212223242526272829//druid数据源状态监控.@WebServlet(urlPatterns = &quot;/druid/*&quot;, initParams = &#123; // IP白名单 (没有配置或者为空，则允许所有访问) @WebInitParam(name = &quot;allow&quot;, value = &quot;192.168.1.72,127.0.0.1&quot;), // IP黑名单 (存在共同时，deny优先于allow) @WebInitParam(name = &quot;deny&quot;, value = &quot;192.168.1.73&quot;), // 用户名 @WebInitParam(name = &quot;loginUsername&quot;, value = &quot;admin&quot;), // 密码 @WebInitParam(name = &quot;loginPassword&quot;, value = &quot;admin&quot;), // 禁用HTML页面上的“Reset All”功能 @WebInitParam(name = &quot;resetEnable&quot;, value = &quot;false&quot;) &#125;)public class DruidStatViewServlet extends StatViewServlet &#123;&#125;// druid过滤器. @WebFilter(filterName = &quot;druidWebStatFilter&quot;, urlPatterns = &quot;/*&quot;, initParams = &#123; // 忽略资源 @WebInitParam(name = &quot;exclusions&quot;, value=&quot;*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*&quot;) &#125;)public class DruidStatFilter extends WebStatFilter &#123;&#125; 效果如下： 参考文献Spring Boot 使用 Druid 数据库连接池Druid的官方地址JDBC连接池、监控组件 Druid 问题(*) property for user to setup查看数据源的时候出现(*) property for user to setup错误信息。原因未初始化数据源。详情传送门但是笔者的解决方案，多点几下数据源按钮，就能显示出数据了，感觉这个界面还是有问题的，目前将就着用，不受影响。]]></content>
-      <tags>
-        <tag>Spring Boot</tag>
-        <tag>Druid</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Maven配置阿里云镜像库]]></title>
-    <url>%2F2018%2F01%2F24%2FMaven%E4%BD%BF%E7%94%A8Aliyun%E9%95%9C%E5%83%8F%E5%BA%93%2F</url>
-    <content type="text"><![CDATA[在profile &gt; repositories节点下增加阿里的镜像库 代码如下1234&lt;repository&gt; &lt;id&gt;aliyunmaven&lt;/id&gt; &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;&lt;/repository&gt;]]></content>
-      <categories>
-        <category>Maven</category>
-      </categories>
-      <tags>
-        <tag>Maven</tag>
-        <tag>Aliyun</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Spring boot项目创建]]></title>
-    <url>%2F2018%2F01%2F24%2Fring-boot%E9%A1%B9%E7%9B%AE%E5%88%9B%E5%BB%BA%2F</url>
-    <content type="text"><![CDATA[使用IDEA创建项目 New Project，选择Spring Initializr，Next，Next 选择相关集成的JAR包 Core 工具名称 说明 参考地址 DevTools 热部署 详情前往 Security 权限控制 - Lombok 代码模板，省略了get/set的方法，IDEA中有Lombok的插件 - Configration Processor - - Session 分布式Session共享 - Cache 缓存，具体位置 详情前往 Validation 后端的数据校验 - Retry spring熔断机制 - JTA 分布式事务处理，Atomikos,Bitronix,Narayana - Aspects AOP处理 - Web 工具名称 说明 参考地址 Web - - Rest Repositories - - Rest Repositories HAL Browser - - HATEOAS - - Web Services - - Jersey JAX-RS - - Websocket - - REST Docs - - Vaadin - - Apache CXF - - Ratpack - - Mobile - - Keycloak - - Template Engines 工具名称 说明 参考地址 Yhymeleaf - - Freemarker - - Mustache - - Groovy Templates - - SQL 工具名称 说明 参考地址 JPA - - MySql - - H2 - - JDBC - - Mybatis - - PostgreSQL - - SQL Server - - HSQLDB - - Apache Derby - - Liquibase - - Flyway - - JOOQ - - NoSQL 工具名称 说明 参考地址 Redis - - MongoDB - - Reactive Redis - - Reactive MongoDB - - Embedded MongoDB - - Elasticsearch - - Solr - - Cassandra - - Couchbase - - Neo4j - - Gemfire - - Cloud Core-分布式核心 工具名称 说明 参考地址 Cloud Connectors - - Cloud Bootstrap - - Cloud Security - - Cloud OAuth2 - - Cloud Task - - Cloud Config-分布式配置中心 工具名称 说明 参考地址 Cloud Client - - Cloud Server - - Vault Configuration - - Zookeeper Configuration - - Consul Configuration - - Cloud Discovery-分布式服务注册 工具名称 说明 参考地址 Zookeeper Discovery - - Cloud Routing-动态数据路由 工具名称 说明 参考地址 Zuul - - Ribbon - - Feign - - Cloud Circuit Breaker-熔断器 工具名称 说明 参考地址 Hystrix - - Turbine - - Cloud Tracing-分布式追踪器 工具名称 说明 参考地址 Zipkin UI - - Zipkin Stream - - Zipkin Client - - Sleuth Stream - - Cloud Messaging-分布式消息总线 工具名称 说明 参考地址 Cloud Bus Kafka - - Cloud Bus AMQP - - Stream Binder Rabbit - - Stream Binder Kafka - - 以下省略一部分，都是些看不懂的东西。参考文献IntelliJ IDEA Spring Boot Help]]></content>
-      <categories>
-        <category>后端</category>
-        <category>Spring 框架</category>
-      </categories>
-      <tags>
-        <tag>Spring boot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[TILT3D-Firefox]]></title>
-    <url>%2F2018%2F01%2F24%2FILT3D-Firefox%2F</url>
-    <content type="text"><![CDATA[TILT 3D 效果如下 简述将网页已3D的模型展示出来。 安装 因为目前貌似有版本影响的问题，笔者用的版本为49.0.2。 菜单栏 &gt;&gt; 工具 &gt;&gt; Web开发者 &gt;&gt; 获取更多工具 查询Tilt组件，结果如下图；点击进去安装，重启FireFox即可。 菜单栏 &gt;&gt; 工具 &gt;&gt; Web开发者下找到Tilt工具，笔者是用Ctrl+Shift+M调用的。具体视情况而定。 参考文献插件地址-US插件地址-ZH]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>Tilt 3D</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Angular-脚手架]]></title>
-    <url>%2F2018%2F01%2F23%2Fngular-%E8%84%9A%E6%89%8B%E6%9E%B6%2F</url>
-    <content type="text"><![CDATA[脚手架命令 范围 命令 作用 new right-aligned 初始化新项目 Component ng g component my-new-component 新建一个组件 Directive ng g directive my-new-directive 新建一个指令 Pipe ng g pipe my-new-pipe 新建一个管道 Service ng g service my-new-service 新建一个服务 Class ng g class my-new-class 新建一个类 Interface ng g interface my-new-interface 新建一个接口 Enum ng g enum my-new-enum 新建一个枚举 Module ng g module my-module 新建一个模块 常用命令 启动服务ng serve 打包ng build 目录树详解]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>Angular</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Angular-双向数据绑定]]></title>
-    <url>%2F2018%2F01%2F23%2Fngular-%E5%8F%8C%E5%90%91%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9A%2F</url>
-    <content type="text"><![CDATA[双向数据绑定主要代码如下12# [(ngModel)]=&quot;password&quot;，使用[(ngModel)]进行绑定password属性&lt;input type=&quot;password&quot; [(ngModel)]=&quot;password&quot; value=&quot;&#123;&#123;password&#125;&#125;&quot;/&gt; [(ngModel)]是一个Angular语法，用与把password绑定到输入框中。 它的数据流是双向的：从属性到输入框，并且从输入框回到属性。不幸的是，做了这项改动之后，我们的程序崩溃了。 打开浏览器的控制台，我们会看到Angular抱怨说：“ngModel … isn’t a known property of input.”（ngModel不是input元素的已知属性）虽然NgModel是一个有效的Angular指令，但它默认情况下却是不可用的。 它属于一个可选模块FormsModule。 我们必须选择使用那个模块。 导入FormMoule模块打开app.module.ts文件，并且从@angular/forms库中导入符号FormsModule。 然后把FormsModule添加到@NgModule元数据的imports数组中，它是当前应用正在使用的外部模块列表。修改后的AppModule是这样的：123456789101112131415161718192021import &#123;BrowserModule&#125; from &apos;@angular/platform-browser&apos;;import &#123;NgModule&#125; from &apos;@angular/core&apos;;import &#123;FormsModule&#125; from &apos;@angular/forms&apos;;import &#123;AppComponent&#125; from &apos;./app.component&apos;;import &#123;UserComponent&#125; from &apos;./user/user.component&apos;;@NgModule(&#123; declarations: [ AppComponent, UserComponent ], imports: [ BrowserModule, FormsModule ], providers: [], bootstrap: [AppComponent]&#125;)export class AppModule &#123;&#125; 参考文献 FormsModule ngModel 模板语法 表单 Angular官网]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>Angular</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Angular CLI 安装和使用]]></title>
-    <url>%2F2018%2F01%2F19%2FAngular-CLI-%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8%2F</url>
-    <content type="text"><![CDATA[背景介绍 关于Angular版本，Angular官方已经统一命名Angular 1.x统称为Angular JS；Angular 2.x及以上统称Angular； CLI是Command Line Interface的简写，是一种命令行接口，实现自动化开发流程，比如：ionic cli、vue cli等；它可以创建项目、添加文件以及执行一大堆开发任务，比如测试、打包和发布。 安装Angular CLI 确认是否安装node和npm 123node -v # 6.9.4npm -v # 3.10.10// node 版本高于6.9.3 npm版本高于3.0.0 设置淘宝镜像，安装node-sass 123设置环境变量set SASS_BINARY_SITE=https://npm.taobao.org/mirrors/node-sass/npm install node-sass 安装Angular CLI 1npm install @angular/cli 验证，执行ng v命令。出现下图情况则为安装成功。 基于IDEA创建第一个AngularJS想用 创建项目,Anaular CLI选项，就是刚刚安装的。 创建的过程会下载创建一些资源如下图： 使用ng server启动服务，访问端口localhost:4200]]></content>
-      <tags>
-        <tag>Angular CLI</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[MyBatis二级缓存应用第三方（Redis）]]></title>
-    <url>%2F2018%2F01%2F19%2FBatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E5%BA%94%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%EF%BC%88Redis%EF%BC%89%2F</url>
-    <content type="text"><![CDATA[介绍使用mybatis时可以使用二级缓存提高查询速度，进而改善用户体验。 使用redis做mybatis的二级缓存可内存可控&lt;如将单独的服务器部署出来用于二级缓存&gt;，管理方便。 使用思路 配置redis-applicationContext.xml 设置redis服务连接各参数 在配置文件中使用标签，设置开启二级 在需要使用二级h缓存的mapper.xml中使用将cache映射到指定的MybatisRedis类中 映射类MybatisRedisCache实现MyBatis包中的Cache类，并重写其中各方法； 在重写各方法体中，使用redisFactory和redis服务建立连接，将缓存的数据加载到指定的redis内存中(putObject方法)或将redis 服务中的数据从缓存中读取出来(getObject方法)； 在redis服务中写入和加载数据时需要借用spring-data-redis.jar中JdkSerializationRedisSerializer.class中的序列化(serialize) 和反序列化方法(deserialize),此为包中封装的redis默认的序列化方法； 映射类中的各方法重写完成后即可实现mybatis数据二级缓存到redis服务中 代码实践 配置redis-applicationContext.xml mybatis-config.xml配置开启二级缓存 在mapper.xml中映射缓存类MybatisRedisCache 实现MybatisRedisCache接口 使用中间类RedisCacheTransfer解决MybatisRedisCache.jedisConnectionFactory的静态注入。]]></content>
-      <tags>
-        <tag>Mybatis</tag>
-        <tag>Redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Next主题之live2d，看板娘，博客宠物]]></title>
-    <url>%2F2018%2F01%2F19%2Fxt%E4%B8%BB%E9%A2%98%E4%B9%8Blive2d%EF%BC%8C%E7%9C%8B%E6%9D%BF%E5%A8%98%EF%BC%8C%E5%8D%9A%E5%AE%A2%E5%AE%A0%E7%89%A9%2F</url>
-    <content type="text"><![CDATA[为博客加入看板娘，宠物效果图如下： 具体实现方法 live2d插件安装1npm install -save hexo-helper-live2d 注意：需要在项目的根目录下执行哦 然后打开Hexo/blog/themes/next/layout的_layout.swig,将下面代码放到&lt;/body&gt;之前： 1&#123;&#123; live2d() &#125;&#125; 然后在在 hexo 的 _config.yml 中添加参数： 123live2d: model: wanko bottom: -30 如果想让宠物在移动端不显示的话再主题配置文件中加入以下代码: 1234live2d: model: wanko bottom: -30 mobileShow: false 这样就配置成功了！ live2d的详细配置解释 live2d的项目地址在这里 Settings12345678910111213141516# Live2D## https://github.com/EYHN/hexo-helper-live2dlive2d: model: z16 # 展示模型的代码. 默认: z16 width: 150 # 这个模型的宽度. 默认: 150 height: 300 # 这个模型的高度. default: 300 scaling: 1 # 分辨率缩放. default: 2 opacityDefault: 0.7 # 透明度. default: 0.7 opacityHover: 1 # The opacity when hover. default: 1 mobileShow: true #是否在移动设备上显示. default: true mobileScaling: 0.5 # The scaling on mobile. default: 0.5 position: right # 模型所在网页的左边还是右边. default: right horizontalOffset: 0 # 横向偏移量. default: 0 verticalOffset: -20 # 纵向偏移量. default: -20 id: live2dcanvas # live2d元素的ID. default: live2dcanvas deviceJsSource: local # 当前设备脚本的源代码. default: local 参考文献 live2d模型预览 live2d项目地址]]></content>
-  </entry>
-  <entry>
-    <title><![CDATA[Markdown基本语法]]></title>
-    <url>%2F2018%2F01%2F19%2Frkdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%2F</url>
-    <content type="text"><![CDATA[标题只需要在文本前面加上 # 即可，同理、你还可以增加二级标题、三级标题、四级标题、五级标题和六级标题，总共六级，只需要增加 # 即可，标题字号相应降低。123456# 一级标题## 二级标题### 三级标题#### 四级标题##### 五级标题###### 六级标题 注：# 和「一级标题」之间建议保留一个字符的空格，这是最标准的 Markdown 写法。 列表列表格式也很常用，在 Markdown 中，你只需要在文字前面加上 -/* 就可以了，例如： 无序列表 123- 文本1- 文本2- 文本3 有序列表 1231. 文本12. 文本23. 文本3 链接使用 [显示文本](链接地址) 这样的语法即可，例如：1[百度传送门](www.baidu.com) 图片插入![](图片链接地址)，图片链接地址可以是相对路径，绝对路径，也可以是网上的资源。 引用引用他人的文字，这个时候引用这个格式就很有必要了，在 Markdown 中，你只需要在你希望引用的文字前面加上 &gt; 就好了，例如：1&gt; 引用演示 粗体和斜体Markdown 的粗体和斜体也非常简单，用两个 * 包含一段文本就是粗体的语法，用一个 * 包含一段文本就是斜体的语法。例如：演示语句：我是斜体，我是粗体代码如下：1*我是斜体*，**我是粗体** 代码引用字段的代码用进行包裹，段落的代码用进行包裹。 表格12345| Tables | Are | Cool || ------------- |:-------------:| -----:|| col 3 is | right-aligned | $1600 || col 2 is | centered | $12 || zebra stripes | are neat | $1 | 效果如下： Tables Are Cool col 3 is right-aligned $1600 col 2 is centered $12 zebra stripes are neat $1]]></content>
-      <categories>
-        <category>语法</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>Markdown</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[GitLab之IP修改]]></title>
-    <url>%2F2018%2F01%2F19%2FGitLab%E4%B9%8BIP%E4%BF%AE%E6%94%B9%2F</url>
-    <content type="text"><![CDATA[问题背景虚拟机的IP地址变动了，用新的IP地址直接访问虚拟的gitlab没问题，开发者的项目上修改对应的远程地址也就可以关联上了。但是出现一个问题，如下图所示：项目的下载地址还是原有的IP地址，不是现有IP地址。基于这样的问题给出以下修改。 问题解决PS:笔者用的是ubuntu的系统 进入gitlab的配置目录 1cd /opt/gitlab/embedded/service/gitlab-rails/config 用ls命令查看目录下的文件，如下图：。目录中会包含一个gitlab.yml的文件。 打开并修改相关配置，用vi gitlab.yml命令进行打开。将图中host修改成新指定的IP即可。例如我这里就将IP修改为192.168.16.182 gitlab-ctl restart重启服务即可，效果图如下：]]></content>
-      <categories>
-        <category>IT</category>
-        <category>版本控制</category>
-      </categories>
-      <tags>
-        <tag>GitLab</tag>
-        <tag>IP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Hexo主题之NexT]]></title>
-    <url>%2F2018%2F01%2F18%2Fxo%E6%9B%BF%E6%8D%A2%E4%B8%BB%E9%A2%98%E4%B8%BANexT%2F</url>
-    <content type="text"><![CDATA[安装 下载NexT主题，下载地址请前往这里。如下图！或者点击这里直接进行下载。 将下载下来的文件解压，放到根目录下的themes文件夹下。如下图中的next下存储的就是NexT主题。 启用主题修改./_config.yml中的theme配置theme: next 添加评论功能 前往Github创建OAuth App。传送门直接新建，前提需要已经登录了。 打开如下图： Authorization callback URL这一项填写需要谨慎，一般是自己的域名，回调用的，其他随意填写。 会生成如下内容：Client ID和Client Secret 编辑主题配置文件(_config.yml)，启用评论功能： 1234567gitment: enable: true lazy: true #用一个按钮延迟加载评论。 github_user: #Github ID github_repo: #评论存储仓库 client_id: #在上一步获取的到的 client_secret: #在上一步获取的到的 效果如下： 添加打赏功能一下代码都是被注释掉，去掉注释，并且配置对应的图片的路径，图片是支付宝，微信的收款码。123reward_comment: I&apos;m not rich, but still hold the dream.wechatpay: /images/wechatpay.jpgalipay: /images/alipay.jpg 添加查询功能Local Search 安装hexo-generator-searchdb，在站点的根目录下执行以下命令： 1npm install hexo-generator-searchdb --save 编辑站点配置文件(_config.yml)，新增以下内容到任意位置： 12345search: path: search.xml field: post format: html limit: 10000 编辑主题配置文件(_config.yml)，启用本地搜索功能： 123# Local searchlocal_search: enable: true 添加字数统计效果如图： 安装插件，代码如下： 1npm install hexo-wordcount --save 在主题配置文件(_config.yml)中找到post_wordcount对相关参数做以下配置。 1234post_wordcount: item_text: true wordcount: true min2read: true 添加文章访问量统计之LeanCloud 前往注册，传送门 创建一个应用 进入应用，在左侧导航栏存储中创建一个Class，注意Class的名字必须是Counter，如下图。 在左侧导航栏设置中应用Key能找到App ID和App Key这两个是要填入Hexo的配置中。 修改Hexo主题配置文件，在文件中找到类似以下代码： 123456# Show number of visitors to each article.# You can visit https://leancloud.cn get AppID and AppKey.leancloud_visitors: enable: true app_id: 对应App ID app_key: 对应App Key 至此配置成功 文章加密 打开themes-&gt;next-&gt;layout-&gt;_partials-&gt;head.swig文件,在以下位置插入这样一段代码： 12345678910&lt;script&gt; (function()&#123; if(&apos;&#123;&#123; page.password &#125;&#125;&apos;)&#123; if (prompt(&apos;请输入文章密码&apos;) !== &apos;&#123;&#123; page.password &#125;&#125;&apos;)&#123; alert(&apos;密码错误！&apos;); history.back(); &#125; &#125; &#125;)();&lt;/script&gt; 插入位置参考下图： 然后向指定文章插入password: password 博文静态资源压缩 插件安装，执行以下命令 12npm install gulp -gnpm install gulp-minify-css gulp-uglify gulp-htmlmin gulp-htmlclean gulp --save 在项目的根目录中创建gulpfile.js文件，将这里的代码拷贝到创建的gulpfile.js文件中。 生成博文是执行 hexo g &amp;&amp; gulp 问题解决Next主题标签，分类，关于界面打开出现404的情况。1.1创建标签导航 在Hexo项目的根目录下打开CMD命令执行以下命令hexo new page &quot;tags&quot; 执行结束后，会在./source文件夹下出现一个tags文件夹里面默认有一个index.md的文件，这就是我们创建的导航栏的分类页面 对index.md进行修改代码如下，重复部分忽略：1234title: 标签date: 2018-01-18 11:20:02type: &quot;tags&quot;comments: false 1.2创建分类导航 在Hexo项目的根目录下打开CMD命令执行以下命令hexo new page &quot;categories&quot; 执行结束后，会在./source文件夹下出现一个categories文件夹里面默认有一个index.md的文件，这就是我们创建的导航栏的分类页面 对index.md进行修改代码如下，重复部分忽略：1234title: 分类date: 2018-01-18 11:20:02type: &quot;categories&quot;comments: false 1.3创建关于导航 在Hexo项目的根目录下打开CMD命令执行以下命令hexo new page &quot;about&quot; 执行结束后，会在./source文件夹下出现一个about文件夹里面默认有一个index.md的文件，这就是我们创建的导航栏的分类页面 对index.md进行修改代码如下，重复部分忽略：1234title: 关于date: 2018-01-18 11:20:02type: &quot;about&quot;comments: false 参考文献 NexT官方 NexT第三方服务集成 个性化配置参考]]></content>
-      <categories>
-        <category>Blog</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>NexT</tag>
-        <tag>NexT优化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[GitHub+Hexo搭建个人博客]]></title>
-    <url>%2F2018%2F01%2F17%2FGitHub-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%2F</url>
-    <content type="text"><![CDATA[1.拥有一个GitHub账号前往以下地址进行申请 2.创建博客仓库2.1 New respository 2.2 填写信息 标注【1】处填写github_username.github.io。 github_username用自己的用户名称代替。 点击【Create repository】创建仓库。至此github的仓库创建好了。 3.安装Hexo3.1安装Node.js Node.js官方下载地址，并且配置环境变量。 Windows环境变量配置,目前没有编写博客，后续补充。 Liunx环境变量配置,目前没有编写博客，后续补充。3.2设置npm淘宝镜像站点 npm默认源的下载速度可能很慢，建议使用淘宝镜像替换。 执行下面命令，将npm的源设置成淘宝镜像站点npm config set registry &quot;https://registry.npm.taobao.org&quot; 配置Node.js的环境变量 3.2安装Hexo 执行一下命令安装Hexo，Hexo是安装在shell打开的当前路径下的npm install hexo-cli g 初始化博客，初始化的博客是在shell打开的当前路径下创建目录hexo init blog 进入blog的主目录中cd blog 安装Hexo扩展插件npm install 安装其它插件12345678910npm install hexo-server --save# 可视化博客编辑插件npm install hexo-admin --savenpm install hexo-generator-archive --savenpm install hexo-generator-feed --savenpm install hexo-generator-search --savenpm install hexo-generator-tag --save# git发布插件npm install hexo-deployer-git --savenpm install hexo-generator-sitemap --save 至此安装完毕！！！ 4.Hexo基本使用4.1启用Hexo服务 静态页面生成hexo generate 启动本地服务hexo server 打开浏览器，地址栏中输入：[http://localhost:4000 ],应该可以看见刚刚创建的博客了 4.2问题答疑 如果出现无法访问的情况，可能是4000这个端口被占用了。解决方式，关闭服务，修改端口，再次启动服务器。相关代码如下1234# 修改端口hexo s -p 5000# 关闭服务Ctrl+C 5.将Hexo博客部署到GitHub上5.1配置 修改配置文件blog/_config.yml，修改deploy项的内容，如下所示： 123456789# Deployment## Docs: https://hexo.io/docs/deployment.htmldeploy: # 类型 type: git # 仓库的地址 repo: https://github.com/Sunshineuun/Sunshineuun.github.io.git # 分支 branch: master 注意：yml的语法要求各个标签【:】分号必须有空格。 注意：repo是对应仓库的地址，在hexo deploy的时候会提示输入密码。 5.2部署 执行以下命令： 123456# 清空静态页面hexo clean# 生成静态页面hexo generate# 部署 hexo deploy 打开网页，输入http://github_username.github.io ，打开github上托管的博客。如我的博客地址是：http://Sunshineuun.github.io。 参考文献 Hexo官网 NexT官网]]></content>
-      <categories>
-        <category>Blog</category>
-      </categories>
-      <tags>
-        <tag>GitHub</tag>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Hexo可视化编辑]]></title>
-    <url>%2F2018%2F01%2F17%2FHelloWorld%2F</url>
-    <content type="text"><![CDATA[后端管理插件hexo-admin1插件可以直接在网页端创建、编辑markdown文章内容，并将内容发布到_posts里，提供标签，分类配置。 1.安装123456# 安装插件npm install --save hexo-admin# 启动服务hexo server -d# 登陆地址open http://localhost:4000/admin/ 登陆查看即可]]></content>
-      <tags>
-        <tag>GitHub</tag>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Hello World]]></title>
-    <url>%2F2018%2F01%2F17%2Fhello-world%2F</url>
-    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
-  </entry>
+<search> 
+  
+    
+    <entry>
+      <title><![CDATA[Oracle数值类型主键自增长]]></title>
+      <url>/2018/01/29/Oracle%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B%E4%B8%BB%E9%94%AE%E8%87%AA%E5%A2%9E%E9%95%BF/</url>
+      <content type="html"><![CDATA[<h5 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h5> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> CREATE TABLE K_USER (</span><br><span class="line">  ID       NUMBER PRIMARY KEY,</span><br><span class="line">  USER_NAME VARCHAR(45) NOT NULL,</span><br><span class="line">  pd VARCHAR(45) NOT NULL,</span><br><span class="line">  ENABLED  NUMBER DEFAULT 1 NOT NULL</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h5 id="创建自增序列"><a href="#创建自增序列" class="headerlink" title="创建自增序列"></a>创建自增序列</h5> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE SEQUENCE K_USER_ID_AUTOINC -- 序列的名称</span><br><span class="line"> MINVALUE 1 -- 最小值</span><br><span class="line"> MAXVALUE 99999999 -- 最大值</span><br><span class="line"> START WITH 1 -- 从多少开始</span><br><span class="line"> INCREMENT BY 1 -- 每次序列加多少</span><br><span class="line"> NOCACHE;</span><br></pre></td></tr></table></figure>
+<h5 id="创建序列"><a href="#创建序列" class="headerlink" title="创建序列"></a>创建序列</h5> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE OR REPLACE TRIGGER K_USER_ID_TRIGGER -- 监听的名称</span><br><span class="line"> BEFORE INSERT ON K_USER FOR EACH ROW WHEN (new.ID IS NULL)</span><br><span class="line"> -- 在插入循环ID为空的列</span><br><span class="line">   BEGIN</span><br><span class="line">     SELECT K_USER_ID_AUTOINC.nextval INTO :new.id FROM dual;</span><br><span class="line">   END;</span><br></pre></td></tr></table></figure>]]></content>
+      
+        
+        <tags>
+            
+            <tag> Oracle </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Ubuntu常用操作命令]]></title>
+      <url>/2018/01/26/untu%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4/</url>
+      <content type="html"><![CDATA[<h5 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h5><h6 id="文件进入"><a href="#文件进入" class="headerlink" title="文件进入"></a>文件进入</h6><ol>
+<li><code>cd 路径</code>;</li>
+<li><code>cd ..</code>; 返回上一个文件夹</li>
+<li><code>sudo</code>; 获取root权限，需要输入root权限的密码。</li>
+</ol>
+<h6 id="文件创建"><a href="#文件创建" class="headerlink" title="文件创建"></a>文件创建</h6><ol>
+<li><code>mkdir 名称</code>; 新建一个文件夹</li>
+<li><code>touch 名称</code>; 新建一个空文件。</li>
+</ol>
+<h6 id="文件删除"><a href="#文件删除" class="headerlink" title="文件删除"></a>文件删除</h6><ol>
+<li><code>rmdir 目录名</code>; 删除一个空的文件夹(目录)</li>
+<li><code>rm -rf 目录名</code>; 删除一个非空的文件夹(目录)</li>
+<li><code>rm 文件名,文件名</code>; 删除多个文件</li>
+</ol>
+<h6 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h6><ol>
+<li><code>cp 文件名 目标路径</code>; 拷贝文件到目标路径下</li>
+<li><code>cp -i</code>; 拷贝，同名文件存在时，输出[yes/no]的询问</li>
+<li><code>cp -f</code>; 强制复制文件,如果同名不询问</li>
+</ol>
+<h6 id="文件剪切"><a href="#文件剪切" class="headerlink" title="文件剪切"></a>文件剪切</h6><ol>
+<li><code>mv jdk1.8.0_20/ /usr/lib/jvm///</code>；可剪切文件目录</li>
+</ol>
+<h6 id="常用解压，安装，文件更新"><a href="#常用解压，安装，文件更新" class="headerlink" title="常用解压，安装，文件更新"></a>常用解压，安装，文件更新</h6><ol>
+<li><code>tar -zxvf  *.tar.gz</code> 解压tar.gz格式的文件</li>
+<li><code>source *.install</code> 安装install格式的安装包</li>
+<li><code>sh 路径/x.sh</code> 安装sh格式的文件</li>
+<li><code>apt-get upgrade</code> 更新已安装的包</li>
+<li><code>apt-get update</code> 更新源</li>
+</ol>
+<h5 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h5><ol>
+<li><code>netstat -nltp</code> 查看启动的进程</li>
+<li><code>kill -9 pid</code>，参数-9强制杀进程，参数pid对应的进程pid。</li>
+<li>内存查询命令<code>free</code>命令<ul>
+<li>功能说明: 显示内存状态。</li>
+<li>语法: <code>free [-bkmotV][-s ]</code>。</li>
+<li>补充说明: free指令会显示内存的使用情况，包括实体内存，虚拟的交换文档内存，共享内存区段，连同系统核心使用的缓冲区等。</li>
+<li>参数：<br>　　        1. -b 　   以Byte为单位显示内存使用情况。<br>　　        2. -k 　  以KB为单位显示内存使用情况。<br>　　        3. -m 　 以MB为单位显示内存使用情况。<br>　　        4. -o 　  不显示缓冲区调节列。<br>　　        5. -s 　  持续观察内存使用状况。<br>　　        6. -t 　   显示内存总和列。<br>　　        7. -V 　 显示版本信息。</li>
+</ul>
+</li>
+</ol>
+<h5 id="开关机操作"><a href="#开关机操作" class="headerlink" title="开关机操作"></a>开关机操作</h5><ol>
+<li><code>reboot</code> 重启</li>
+<li><code>shutdown -r now</code>; 立即重启，需root权限</li>
+<li><code>shutdown -r 10</code>,;10分钟后自动重启，时间自由调整，单位分，需root权限</li>
+<li><code>halt</code>立即关机</li>
+<li><code>poweroff</code>立刻关机</li>
+<li><code>shutdown -h now</code>立刻关机</li>
+<li><code>shutdown -h 10</code>;10分钟后自动关机，时间自由调整，单位分，需root权限</li>
+<li><p><code>shutdown -c</code>;取消关机重启</p>
+<h5 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h5><h6 id="Ubuntu实时查看tomcat运行log"><a href="#Ubuntu实时查看tomcat运行log" class="headerlink" title="Ubuntu实时查看tomcat运行log"></a>Ubuntu实时查看tomcat运行log</h6><ul>
+<li>找到tomcat安装目录：cd tomcat/logs</li>
+<li>tail -f catalina.out</li>
+<li>ctrl+c 退出</li>
+</ul>
+</li>
+</ol>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Jenkins Install]]></title>
+      <url>/2018/01/26/Jenkins-Install/</url>
+      <content type="html"><![CDATA[<h5 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h5><p>Jenkins自动化部署打包系统，百度百科<a href="https://baike.baidu.com/item/Jenkins/10917210?fr=aladdin" target="_blank" rel="noopener">传送门</a><br>笔者安装在Ubuntu环境上。</p>
+<h5 id="Jenkins-Install"><a href="#Jenkins-Install" class="headerlink" title="Jenkins Install"></a>Jenkins Install</h5><p><a href="http://www.linuxidc.com/Linux/2016-12/138290.htm" target="_blank" rel="noopener">传送门</a></p>
+<h5 id="Jenkins-UnInstall"><a href="#Jenkins-UnInstall" class="headerlink" title="Jenkins UnInstall"></a>Jenkins UnInstall</h5><p><a href="https://www.cnblogs.com/wangcp-2014/p/6978245.html" target="_blank" rel="noopener">传送门</a></p>
+<h5 id="Git-Install"><a href="#Git-Install" class="headerlink" title="Git Install"></a>Git Install</h5><p>执行以下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install git</span><br></pre></td></tr></table></figure></p>
+<h5 id="Maven-Install"><a href="#Maven-Install" class="headerlink" title="Maven Install"></a>Maven Install</h5><ul>
+<li>下载Maven的安装包</li>
+<li>安装命令如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 解压</span><br><span class="line">tar zxvf apache-maven-3.3.9.bin.tar.gz</span><br><span class="line"></span><br><span class="line"># 增加环境变量</span><br><span class="line">vi /etc/profile</span><br><span class="line"># 在打开文件尾部增加以下内容</span><br><span class="line">M2_HOME=/usr/local/apache-maven-3.3.9 # 此路径是你maven解压缩文件的路径。</span><br><span class="line">PATH=$M2_HOME/bin:$PATH</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> JenKins </tag>
+            
+            <tag> 自动化构建 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Maven打包问题]]></title>
+      <url>/2018/01/26/Maven%E6%89%93%E5%8C%85%E9%97%AE%E9%A2%98/</url>
+      <content type="html"><![CDATA[<ol>
+<li>Maven所有的打包都是依赖Maven仓库的，并不依赖项目。</li>
+<li>每个Maven都需要依赖到具体的项目。</li>
+<li>关于Maven<code>parent</code>的节点需要学习。</li>
+</ol>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Spring Boot使用Druid数据源]]></title>
+      <url>/2018/01/24/pring-Boot%E4%BD%BF%E7%94%A8Druid%E6%95%B0%E6%8D%AE%E6%BA%90/</url>
+      <content type="html"><![CDATA[<h6 id="添加pom文件依赖"><a href="#添加pom文件依赖" class="headerlink" title="添加pom文件依赖"></a>添加pom文件依赖</h6><p>数据库驱动的jar，视你用的是什么数据库添加对应pom依赖。我这里用oracle数据库所以就添加oracle的依赖。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- alibaba的druid数据库连接池 --&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line"> 	&lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;druid&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.1.6&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;com.oracle&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;ojdbc14&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;10.2.0.4.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<h5 id="配置yml文件中druid数据库连接池"><a href="#配置yml文件中druid数据库连接池" class="headerlink" title="配置yml文件中druid数据库连接池"></a>配置yml文件中druid数据库连接池</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">    datasource:</span><br><span class="line">        name: test</span><br><span class="line">        username: root</span><br><span class="line">        password: root</span><br><span class="line">        url: jdbc:oracle:thin:@192.168.16.113:1521:sunshine</span><br><span class="line">        driver-class-name: oracle.jdbc.driver.OracleDriver # 数据库驱动配置</span><br><span class="line">        type: com.alibaba.druid.pool.DruidDataSource</span><br><span class="line">        # aliyun数据连接池配置</span><br><span class="line">        druid:</span><br><span class="line">          username: root</span><br><span class="line">          password: root</span><br><span class="line">          # 初始化连接数</span><br><span class="line">          initial-size: 1</span><br><span class="line">          # 最小连接数</span><br><span class="line">          min-idle: 3</span><br><span class="line">          # 最大连接数</span><br><span class="line">          max-active: 20</span><br><span class="line">          # 配置获取连接等待超时的时间</span><br><span class="line">          max-wait: 60000</span><br><span class="line">          # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒</span><br><span class="line">          time-between-eviction-runs-millis: 60000</span><br><span class="line">          # 配置一个连接在池中最小生存的时间，单位是毫秒</span><br><span class="line">          min-evictable-idle-time-millis: 30000</span><br><span class="line">          validation-query: select&apos;x&apos;</span><br><span class="line">          test-while-idle: true</span><br><span class="line">          test-on-borrow: false</span><br><span class="line">          test-on-return: false</span><br><span class="line">          # 打开PSCache，并且指定每个连接上PSCache的大小</span><br><span class="line">          pool-prepared-statements: true</span><br><span class="line">          max-pool-prepared-statement-per-connection-size: 20</span><br><span class="line">          # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，&apos;wall&apos;用于防火墙</span><br><span class="line">          filters: stat,wall,slf4j</span><br><span class="line">          # 通过connectProperties属性来打开mergeSql功能；慢SQL记录</span><br><span class="line">          connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000</span><br><span class="line">          # 合并多个DruidDataSource的监控数据</span><br><span class="line">          useGlobalDataSourceStat: true</span><br></pre></td></tr></table></figure>
+<h5 id="配置Druid的监控统计功能"><a href="#配置Druid的监控统计功能" class="headerlink" title="配置Druid的监控统计功能"></a>配置Druid的监控统计功能</h5><ul>
+<li>@Confing注解 配置类，代码见<a href="/files/DruidConfiguration.java">DruidConfiguration.java</a></li>
+<li>基于注解<br>首先在启动类上加上注解：@ServletComponentScan使Spring能够扫描到我们自己编写的servlet和filter。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">//druid数据源状态监控.</span><br><span class="line">@WebServlet(urlPatterns = &quot;/druid/*&quot;,</span><br><span class="line">    initParams = &#123;</span><br><span class="line">        // IP白名单 (没有配置或者为空，则允许所有访问)</span><br><span class="line">        @WebInitParam(name = &quot;allow&quot;, value = &quot;192.168.1.72,127.0.0.1&quot;),</span><br><span class="line">        // IP黑名单 (存在共同时，deny优先于allow)</span><br><span class="line">        @WebInitParam(name = &quot;deny&quot;, value = &quot;192.168.1.73&quot;),</span><br><span class="line">        // 用户名</span><br><span class="line">        @WebInitParam(name = &quot;loginUsername&quot;, value = &quot;admin&quot;),</span><br><span class="line">        // 密码</span><br><span class="line">        @WebInitParam(name = &quot;loginPassword&quot;, value = &quot;admin&quot;),</span><br><span class="line">        // 禁用HTML页面上的“Reset All”功能</span><br><span class="line">        @WebInitParam(name = &quot;resetEnable&quot;, value = &quot;false&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line">public class DruidStatViewServlet extends StatViewServlet &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// druid过滤器. </span><br><span class="line">@WebFilter(filterName = &quot;druidWebStatFilter&quot;, urlPatterns = &quot;/*&quot;,</span><br><span class="line">    initParams = &#123;</span><br><span class="line">        // 忽略资源</span><br><span class="line">        @WebInitParam(name = &quot;exclusions&quot;, </span><br><span class="line">       value=&quot;*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line">public class DruidStatFilter extends WebStatFilter &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="效果如下："><a href="#效果如下：" class="headerlink" title="效果如下："></a>效果如下：</h5><p><img src="/images/pasted-36.png" alt="/images/pasted-36.png"></p>
+<h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><p><a href="https://segmentfault.com/a/1190000009132815" target="_blank" rel="noopener">Spring Boot 使用 Druid 数据库连接池</a><br><a href="https://github.com/alibaba/druid" target="_blank" rel="noopener">Druid的官方地址</a><br><a href="https://www.oschina.net/p/druid" target="_blank" rel="noopener">JDBC连接池、监控组件 Druid</a></p>
+<h5 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h5><h6 id="property-for-user-to-setup"><a href="#property-for-user-to-setup" class="headerlink" title="(*) property for user to setup"></a>(*) property for user to setup</h6><p>查看数据源的时候出现<code>(*) property for user to setup</code>错误信息。<br>原因未初始化数据源。<a href="https://github.com/alibaba/druid/issues/1802" target="_blank" rel="noopener">详情传送门</a><br><img src="/images/pasted-37.png" alt="upload successful"><br>但是笔者的解决方案，多点几下<strong>数据源</strong>按钮，就能显示出数据了，感觉这个界面还是有问题的，目前将就着用，不受影响。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Spring Boot </tag>
+            
+            <tag> Druid </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Maven配置阿里云镜像库]]></title>
+      <url>/2018/01/24/Maven%E4%BD%BF%E7%94%A8Aliyun%E9%95%9C%E5%83%8F%E5%BA%93/</url>
+      <content type="html"><![CDATA[<p>在<code>profile &gt; repositories</code>节点下增加阿里的镜像库<br><img src="/images/pasted-35.png" alt="upload successful"></p>
+<p>代码如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;repository&gt;</span><br><span class="line"> 	&lt;id&gt;aliyunmaven&lt;/id&gt;</span><br><span class="line">	&lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;</span><br><span class="line">&lt;/repository&gt;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Maven </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Maven </tag>
+            
+            <tag> Aliyun </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Spring boot项目创建]]></title>
+      <url>/2018/01/24/ring-boot%E9%A1%B9%E7%9B%AE%E5%88%9B%E5%BB%BA/</url>
+      <content type="html"><![CDATA[<h5 id="使用IDEA创建项目"><a href="#使用IDEA创建项目" class="headerlink" title="使用IDEA创建项目"></a>使用IDEA创建项目</h5><ul>
+<li><p>New Project，选择<code>Spring Initializr</code>，Next，Next<br><img src="/images/pasted-33.png" alt="upload successful"></p>
+</li>
+<li><p>选择相关集成的JAR包<br><img src="/images/pasted-34.png" alt="upload successful"></p>
+</li>
+</ul>
+<h6 id="Core"><a href="#Core" class="headerlink" title="Core"></a>Core</h6><table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">参考地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DevTools</td>
+<td style="text-align:center">热部署</td>
+<td style="text-align:center"><a href="http://blog.csdn.net/cl_andywin/article/details/53781737?ABstrategy=codes_snippets_optimize_v3" target="_blank" rel="noopener">详情前往</a></td>
+</tr>
+<tr>
+<td>Security</td>
+<td style="text-align:center">权限控制</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Lombok</td>
+<td style="text-align:center">代码模板，省略了get/set的方法，IDEA中有Lombok的插件</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Configration Processor</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Session</td>
+<td style="text-align:center">分布式Session共享</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Cache</td>
+<td style="text-align:center">缓存，具体位置</td>
+<td style="text-align:center"><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html" target="_blank" rel="noopener">详情前往</a></td>
+</tr>
+<tr>
+<td>Validation</td>
+<td style="text-align:center">后端的数据校验</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Retry</td>
+<td style="text-align:center">spring熔断机制</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>JTA</td>
+<td style="text-align:center">分布式事务处理，Atomikos,Bitronix,Narayana</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Aspects</td>
+<td style="text-align:center">AOP处理</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h5><table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">参考地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Web</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Rest Repositories</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Rest Repositories HAL Browser</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>HATEOAS</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Web Services</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Jersey JAX-RS</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Websocket</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>REST Docs</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Vaadin</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Apache CXF</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Ratpack</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Mobile</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Keycloak</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="Template-Engines"><a href="#Template-Engines" class="headerlink" title="Template Engines"></a>Template Engines</h5><table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">参考地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Yhymeleaf</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Freemarker</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Groovy Templates</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h5><table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">参考地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JPA</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>MySql</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>H2</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>JDBC</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Mybatis</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>PostgreSQL</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>SQL Server</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>HSQLDB</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Apache Derby</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Liquibase</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Flyway</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>JOOQ</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="NoSQL"><a href="#NoSQL" class="headerlink" title="NoSQL"></a>NoSQL</h5><table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">参考地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Redis</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>MongoDB</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Reactive Redis</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Reactive MongoDB</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Embedded MongoDB</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Elasticsearch</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Solr</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Cassandra</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Couchbase</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Neo4j</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Gemfire</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="Cloud-Core-分布式核心"><a href="#Cloud-Core-分布式核心" class="headerlink" title="Cloud Core-分布式核心"></a>Cloud Core-分布式核心</h5><table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">参考地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloud Connectors</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Cloud Bootstrap</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Cloud Security</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Cloud OAuth2</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Cloud Task</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="Cloud-Config-分布式配置中心"><a href="#Cloud-Config-分布式配置中心" class="headerlink" title="Cloud Config-分布式配置中心"></a>Cloud Config-分布式配置中心</h5><table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">参考地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloud Client</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Cloud Server</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Vault Configuration</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Zookeeper Configuration</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Consul Configuration</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="Cloud-Discovery-分布式服务注册"><a href="#Cloud-Discovery-分布式服务注册" class="headerlink" title="Cloud Discovery-分布式服务注册"></a>Cloud Discovery-分布式服务注册</h5><table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">参考地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zookeeper Discovery</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="Cloud-Routing-动态数据路由"><a href="#Cloud-Routing-动态数据路由" class="headerlink" title="Cloud Routing-动态数据路由"></a>Cloud Routing-动态数据路由</h5><table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">参考地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zuul</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Ribbon</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Feign</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="Cloud-Circuit-Breaker-熔断器"><a href="#Cloud-Circuit-Breaker-熔断器" class="headerlink" title="Cloud Circuit Breaker-熔断器"></a>Cloud Circuit Breaker-熔断器</h5><table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">参考地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hystrix</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Turbine</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="Cloud-Tracing-分布式追踪器"><a href="#Cloud-Tracing-分布式追踪器" class="headerlink" title="Cloud Tracing-分布式追踪器"></a>Cloud Tracing-分布式追踪器</h5><table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">参考地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zipkin UI</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Zipkin Stream</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Zipkin Client</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Sleuth Stream</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="Cloud-Messaging-分布式消息总线"><a href="#Cloud-Messaging-分布式消息总线" class="headerlink" title="Cloud Messaging-分布式消息总线"></a>Cloud Messaging-分布式消息总线</h5><table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">参考地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloud Bus Kafka</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Cloud Bus AMQP</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Stream Binder Rabbit</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td>Stream Binder Kafka</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="以下省略一部分，都是些看不懂的东西。"><a href="#以下省略一部分，都是些看不懂的东西。" class="headerlink" title="以下省略一部分，都是些看不懂的东西。"></a>以下省略一部分，都是些看不懂的东西。</h5><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><p><a href="https://www.jetbrains.com/help/idea/2016.3/creating-spring-boot-projects.html" target="_blank" rel="noopener">IntelliJ IDEA Spring Boot Help</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 后端 </category>
+            
+            <category> Spring 框架 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Spring boot </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[TILT3D-Firefox]]></title>
+      <url>/2018/01/24/ILT3D-Firefox/</url>
+      <content type="html"><![CDATA[<h5 id="TILT-3D-效果如下"><a href="#TILT-3D-效果如下" class="headerlink" title="TILT 3D 效果如下"></a>TILT 3D 效果如下</h5><p><img src="/images/pasted-30.png" alt="upload successful"></p>
+<h5 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h5><p>将网页已3D的模型展示出来。</p>
+<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><ul>
+<li>因为目前貌似有版本影响的问题，笔者用的版本为<code>49.0.2</code>。</li>
+<li>菜单栏 &gt;&gt; 工具 &gt;&gt; Web开发者 &gt;&gt; 获取更多工具</li>
+<li><p>查询Tilt组件，结果如下图；点击进去安装，重启FireFox即可。<br><img src="/images/pasted-31.png" alt="upload successful"></p>
+</li>
+<li><p>菜单栏 &gt;&gt; 工具 &gt;&gt; Web开发者下找到Tilt工具，笔者是用<code>Ctrl+Shift+M</code>调用的。具体视情况而定。<br><img src="/images/pasted-32.png" alt="upload successful"></p>
+</li>
+</ul>
+<h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><p><a href="https://addons.mozilla.org/en-US/firefox/addon/tilt/" target="_blank" rel="noopener">插件地址-US</a><br><a href="https://addons.mozilla.org/zh-CN/firefox/addon/tilt/" target="_blank" rel="noopener">插件地址-ZH</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 前端 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Tilt 3D </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Angular-脚手架]]></title>
+      <url>/2018/01/23/ngular-%E8%84%9A%E6%89%8B%E6%9E%B6/</url>
+      <content type="html"><![CDATA[<h5 id="脚手架命令"><a href="#脚手架命令" class="headerlink" title="脚手架命令"></a>脚手架命令</h5><table>
+<thead>
+<tr>
+<th>范围</th>
+<th style="text-align:center">命令</th>
+<th style="text-align:right">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>new</td>
+<td style="text-align:center">right-aligned</td>
+<td style="text-align:right">初始化新项目</td>
+</tr>
+<tr>
+<td>Component</td>
+<td style="text-align:center">ng g component my-new-component</td>
+<td style="text-align:right">新建一个组件</td>
+</tr>
+<tr>
+<td>Directive</td>
+<td style="text-align:center">ng g directive my-new-directive</td>
+<td style="text-align:right">新建一个指令</td>
+</tr>
+<tr>
+<td>Pipe</td>
+<td style="text-align:center">ng g pipe my-new-pipe</td>
+<td style="text-align:right">新建一个管道</td>
+</tr>
+<tr>
+<td>Service</td>
+<td style="text-align:center">ng g service my-new-service</td>
+<td style="text-align:right">新建一个服务</td>
+</tr>
+<tr>
+<td>Class</td>
+<td style="text-align:center">ng g class my-new-class</td>
+<td style="text-align:right">新建一个类</td>
+</tr>
+<tr>
+<td>Interface</td>
+<td style="text-align:center">ng g interface my-new-interface</td>
+<td style="text-align:right">新建一个接口</td>
+</tr>
+<tr>
+<td>Enum</td>
+<td style="text-align:center">ng g enum my-new-enum</td>
+<td style="text-align:right">新建一个枚举</td>
+</tr>
+<tr>
+<td>Module</td>
+<td style="text-align:center">ng g module my-module</td>
+<td style="text-align:right">新建一个模块</td>
+</tr>
+</tbody>
+</table>
+<h5 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h5><ul>
+<li>启动服务<code>ng serve</code></li>
+<li>打包<code>ng build</code></li>
+</ul>
+<h5 id="目录树详解"><a href="#目录树详解" class="headerlink" title="目录树详解"></a>目录树详解</h5><p><img src="/images/pasted-29.png" alt="upload successful"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 前端 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Angular </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Angular-双向数据绑定]]></title>
+      <url>/2018/01/23/ngular-%E5%8F%8C%E5%90%91%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9A/</url>
+      <content type="html"><![CDATA[<h4 id="双向数据绑定"><a href="#双向数据绑定" class="headerlink" title="双向数据绑定"></a>双向数据绑定</h4><h6 id="主要代码如下"><a href="#主要代码如下" class="headerlink" title="主要代码如下"></a>主要代码如下</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># [(ngModel)]=&quot;password&quot;，使用[(ngModel)]进行绑定password属性</span><br><span class="line">&lt;input type=&quot;password&quot; [(ngModel)]=&quot;password&quot; value=&quot;&#123;&#123;password&#125;&#125;&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p><code>[(ngModel)]</code>是一个Angular语法，用与把<code>password</code>绑定到输入框中。 它的数据流是双向的：从属性到输入框，并且从输入框回到属性。<br>不幸的是，做了这项改动之后，我们的程序崩溃了。 打开浏览器的控制台，我们会看到Angular抱怨说：“ngModel … isn’t a known property of input.”（ngModel不是input元素的已知属性）<br>虽然<code>NgModel</code>是一个有效的Angular指令，但它默认情况下却是不可用的。 它属于一个可选模块<code>FormsModule</code>。 我们必须选择使用那个模块。</p>
+<h6 id="导入FormMoule模块"><a href="#导入FormMoule模块" class="headerlink" title="导入FormMoule模块"></a>导入<code>FormMoule</code>模块</h6><p>打开<code>app.module.ts</code>文件，并且从<code>@angular/forms</code>库中导入符号<code>FormsModule</code>。 然后把<code>FormsModule</code>添加到<code>@NgModule</code>元数据的<code>imports</code>数组中，它是当前应用正在使用的外部模块列表。<br>修改后的<code>AppModule</code>是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import &#123;BrowserModule&#125; from &apos;@angular/platform-browser&apos;;</span><br><span class="line">import &#123;NgModule&#125; from &apos;@angular/core&apos;;</span><br><span class="line">import &#123;FormsModule&#125; from &apos;@angular/forms&apos;;</span><br><span class="line"></span><br><span class="line">import &#123;AppComponent&#125; from &apos;./app.component&apos;;</span><br><span class="line">import &#123;UserComponent&#125; from &apos;./user/user.component&apos;;</span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">  declarations: [</span><br><span class="line">    AppComponent,</span><br><span class="line">    UserComponent</span><br><span class="line">  ],</span><br><span class="line">  imports: [</span><br><span class="line">    BrowserModule,</span><br><span class="line">    FormsModule</span><br><span class="line">  ],</span><br><span class="line">  providers: [],</span><br><span class="line">  bootstrap: [AppComponent]</span><br><span class="line">&#125;)</span><br><span class="line">export class AppModule &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h6 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h6><ul>
+<li><a href="https://angular.cn/api/forms/FormsModule" target="_blank" rel="noopener">FormsModule</a></li>
+<li><a href="https://angular.cn/api/forms/NgControlStatus" target="_blank" rel="noopener">ngModel</a></li>
+<li><a href="https://angular.cn/guide/template-syntax#ngModel" target="_blank" rel="noopener">模板语法</a></li>
+<li><a href="https://angular.cn/guide/forms#ngModel" target="_blank" rel="noopener">表单</a></li>
+<li><a href="https://angular.cn/tutorial" target="_blank" rel="noopener">Angular官网</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 前端 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Angular </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Angular CLI 安装和使用]]></title>
+      <url>/2018/01/19/Angular-CLI-%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/</url>
+      <content type="html"><![CDATA[<h5 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h5><ol>
+<li>关于Angular版本，Angular官方已经统一命名<code>Angular 1.x</code>统称为<code>Angular JS</code>；<code>Angular 2.x</code>及以上统称<code>Angular</code>；</li>
+<li><code>CLI</code>是<code>Command Line Interface</code>的简写，是一种命令行接口，实现自动化开发流程，比如：ionic cli、vue cli等；它可以创建项目、添加文件以及执行一大堆开发任务，比如测试、打包和发布。</li>
+</ol>
+<h5 id="安装Angular-CLI"><a href="#安装Angular-CLI" class="headerlink" title="安装Angular CLI"></a>安装Angular CLI</h5><ul>
+<li><p>确认是否安装node和npm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">node -v # 6.9.4</span><br><span class="line">npm -v # 3.10.10</span><br><span class="line">// node 版本高于6.9.3  npm版本高于3.0.0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置淘宝镜像，安装node-sass</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">设置环境变量</span><br><span class="line">set SASS_BINARY_SITE=https://npm.taobao.org/mirrors/node-sass/</span><br><span class="line">npm install node-sass</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装Angular CLI</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install @angular/cli</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>验证，执行<code>ng v</code>命令。出现下图情况则为安装成功。</p>
+</li>
+</ul>
+<p><img src="/images/pasted-24.png" alt="upload successful"></p>
+<h5 id="基于IDEA创建第一个AngularJS想用"><a href="#基于IDEA创建第一个AngularJS想用" class="headerlink" title="基于IDEA创建第一个AngularJS想用"></a>基于IDEA创建第一个AngularJS想用</h5><ul>
+<li><p>创建项目,Anaular CLI选项，就是刚刚安装的。<br><img src="/images/pasted-25.png" alt="upload successful"><br><img src="/images/pasted-26.png" alt="upload successful"></p>
+</li>
+<li><p>创建的过程会下载创建一些资源如下图：<br><img src="/images/pasted-27.png" alt="upload successful"></p>
+</li>
+<li><p>使用<code>ng server</code>启动服务，访问端口<code>localhost:4200</code></p>
+</li>
+</ul>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Angular CLI </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MyBatis二级缓存应用第三方（Redis）]]></title>
+      <url>/2018/01/19/Batis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E5%BA%94%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%EF%BC%88Redis%EF%BC%89/</url>
+      <content type="html"><![CDATA[<h5 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h5><p>使用mybatis时可以使用二级缓存提高查询速度，进而改善用户体验。 使用redis做mybatis的二级缓存可内存可控&lt;如将单独的服务器部署出来用于二级缓存&gt;，管理方便。</p>
+<h5 id="使用思路"><a href="#使用思路" class="headerlink" title="使用思路"></a>使用思路</h5><ul>
+<li>配置redis-applicationContext.xml 设置redis服务连接各参数</li>
+<li>在配置文件中使用标签，设置开启二级</li>
+<li>在需要使用二级h缓存的mapper.xml中使用将cache映射到指定的MybatisRedis类中</li>
+<li>映射类MybatisRedisCache实现MyBatis包中的Cache类，并重写其中各方法； 在重写各方法体中，使用redisFactory和redis服务建立连接，将缓存的数据加载到指定的redis内存中(putObject方法)或将redis 服务中的数据从缓存中读取出来(getObject方法)； 在redis服务中写入和加载数据时需要借用spring-data-redis.jar中JdkSerializationRedisSerializer.class中的序列化(serialize) 和反序列化方法(deserialize),此为包中封装的redis默认的序列化方法；</li>
+<li>映射类中的各方法重写完成后即可实现mybatis数据二级缓存到redis服务中</li>
+</ul>
+<h5 id="代码实践"><a href="#代码实践" class="headerlink" title="代码实践"></a>代码实践</h5><ul>
+<li><p>配置redis-applicationContext.xml<br><img src="/images/pasted-21.png" alt="upload successful"></p>
+</li>
+<li><p>mybatis-config.xml配置开启二级缓存<br><img src="/images/pasted-22.png" alt="upload successful"></p>
+</li>
+<li><p>在mapper.xml中映射缓存类MybatisRedisCache<br><img src="/images/pasted-23.png" alt="upload successful"></p>
+</li>
+<li><p>实现<a href="/files/MybatisRedisCache.java">MybatisRedisCache</a>接口</p>
+</li>
+<li><p>使用中间类<a href="/files/RedisCacheTransfer.java">RedisCacheTransfer</a>解决MybatisRedisCache.jedisConnectionFactory的静态注入。</p>
+</li>
+</ul>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Mybatis </tag>
+            
+            <tag> Redis </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Next主题之live2d，看板娘，博客宠物]]></title>
+      <url>/2018/01/19/xt%E4%B8%BB%E9%A2%98%E4%B9%8Blive2d%EF%BC%8C%E7%9C%8B%E6%9D%BF%E5%A8%98%EF%BC%8C%E5%8D%9A%E5%AE%A2%E5%AE%A0%E7%89%A9/</url>
+      <content type="html"><![CDATA[<h5 id="为博客加入看板娘，宠物"><a href="#为博客加入看板娘，宠物" class="headerlink" title="为博客加入看板娘，宠物"></a>为博客加入看板娘，宠物</h5><p>效果图如下：<br><img src="/images/pasted-18.png" alt="upload successful"></p>
+<h5 id="具体实现方法"><a href="#具体实现方法" class="headerlink" title="具体实现方法"></a>具体实现方法</h5><ul>
+<li>live2d插件安装<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -save hexo-helper-live2d</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>注意：需要在项目的根目录下执行哦</p>
+<ul>
+<li><p>然后打开<code>Hexo/blog/themes/next/layout</code><br>的<code>_layout.swig</code>,将下面代码放到<code>&lt;/body&gt;</code>之前：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; live2d() &#125;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后在在 <code>hexo</code> 的 <code>_config.yml</code> 中添加参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">live2d:</span><br><span class="line">  model: wanko</span><br><span class="line">  bottom: -30</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果想让宠物在移动端不显示的话再<code>主题配置文件</code>中加入以下代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">live2d:</span><br><span class="line">  model: wanko</span><br><span class="line">  bottom: -30</span><br><span class="line">  mobileShow: false</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这样就配置成功了！</p>
+<h5 id="live2d的详细配置解释"><a href="#live2d的详细配置解释" class="headerlink" title="live2d的详细配置解释"></a>live2d的详细配置解释</h5><ul>
+<li>live2d的项目地址在<a href="https://github.com/EYHN/hexo-helper-live2d" target="_blank" rel="noopener">这里</a></li>
+<li><strong>Settings</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># Live2D</span><br><span class="line">## https://github.com/EYHN/hexo-helper-live2d</span><br><span class="line">live2d:</span><br><span class="line">  model: z16 # 展示模型的代码. 默认: z16</span><br><span class="line">  width: 150 # 这个模型的宽度. 默认: 150</span><br><span class="line">  height: 300 # 这个模型的高度. default: 300</span><br><span class="line">  scaling: 1 # 分辨率缩放. default: 2</span><br><span class="line">  opacityDefault: 0.7 # 透明度. default: 0.7</span><br><span class="line">  opacityHover: 1 # The opacity when hover. default: 1</span><br><span class="line">  mobileShow: true #是否在移动设备上显示. default: true</span><br><span class="line">  mobileScaling: 0.5 # The scaling on mobile. default: 0.5</span><br><span class="line">  position: right # 模型所在网页的左边还是右边. default: right</span><br><span class="line">  horizontalOffset: 0 # 横向偏移量. default: 0</span><br><span class="line">  verticalOffset: -20 # 纵向偏移量. default: -20</span><br><span class="line">  id: live2dcanvas # live2d元素的ID. default: live2dcanvas</span><br><span class="line">  deviceJsSource: local # 当前设备脚本的源代码. default: local</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ol>
+<li><a href="https://huaji8.top/post/live2d-plugin-2.0/" target="_blank" rel="noopener">live2d模型预览</a></li>
+<li><a href="https://github.com/EYHN/hexo-helper-live2d" target="_blank" rel="noopener">live2d项目地址</a></li>
+</ol>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Markdown基本语法]]></title>
+      <url>/2018/01/19/rkdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
+      <content type="html"><![CDATA[<h5 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h5><p>只需要在文本前面加上 # 即可，同理、你还可以增加二级标题、三级标题、四级标题、五级标题和六级标题，总共六级，只需要增加 # 即可，标题字号相应降低。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 一级标题</span><br><span class="line">## 二级标题</span><br><span class="line">### 三级标题</span><br><span class="line">#### 四级标题</span><br><span class="line">##### 五级标题</span><br><span class="line">###### 六级标题</span><br></pre></td></tr></table></figure></p>
+<p>注：# 和「一级标题」之间建议保留一个字符的空格，这是最标准的 Markdown 写法。</p>
+<h5 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h5><p>列表格式也很常用，在 Markdown 中，你只需要在文字前面加上 -/* 就可以了，例如：</p>
+<ul>
+<li>无序列表</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 文本1</span><br><span class="line">- 文本2</span><br><span class="line">- 文本3</span><br></pre></td></tr></table></figure>
+<ul>
+<li>有序列表</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 文本1</span><br><span class="line">2. 文本2</span><br><span class="line">3. 文本3</span><br></pre></td></tr></table></figure>
+<h5 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h5><p>使用 <code>[显示文本](链接地址)</code> 这样的语法即可，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[百度传送门](www.baidu.com)</span><br></pre></td></tr></table></figure></p>
+<p>图片插入<code>![](图片链接地址)</code>，图片链接地址可以是相对路径，绝对路径，也可以是网上的资源。</p>
+<h5 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h5><p>引用他人的文字，这个时候引用这个格式就很有必要了，在 Markdown 中，你只需要在你希望引用的文字前面加上 &gt; 就好了，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; 引用演示</span><br></pre></td></tr></table></figure></p>
+<h5 id="粗体和斜体"><a href="#粗体和斜体" class="headerlink" title="粗体和斜体"></a>粗体和斜体</h5><p>Markdown 的粗体和斜体也非常简单，用两个 <code>*</code> 包含一段文本就是粗体的语法，用一个 <code>*</code> 包含一段文本就是斜体的语法。例如：<br>演示语句：<em>我是斜体</em>，<strong>我是粗体</strong><br>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*我是斜体*，**我是粗体**</span><br></pre></td></tr></table></figure></p>
+<h5 id="代码引用"><a href="#代码引用" class="headerlink" title="代码引用"></a>代码引用</h5><p>字段的代码用<code>进行包裹，段落的代码用</code>进行包裹。</p>
+<h5 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">| Tables        | Are           | Cool  |</span><br><span class="line">| ------------- |:-------------:| -----:|</span><br><span class="line">| col 3 is      | right-aligned | $1600 |</span><br><span class="line">| col 2 is      | centered      |   $12 |</span><br><span class="line">| zebra stripes | are neat      |    $1 |</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<table>
+<thead>
+<tr>
+<th>Tables</th>
+<th style="text-align:center">Are</th>
+<th style="text-align:right">Cool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>col 3 is</td>
+<td style="text-align:center">right-aligned</td>
+<td style="text-align:right">$1600</td>
+</tr>
+<tr>
+<td>col 2 is</td>
+<td style="text-align:center">centered</td>
+<td style="text-align:right">$12</td>
+</tr>
+<tr>
+<td>zebra stripes</td>
+<td style="text-align:center">are neat</td>
+<td style="text-align:right">$1</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+      
+        <categories>
+            
+            <category> 语法 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+            <tag> Markdown </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[GitLab之IP修改]]></title>
+      <url>/2018/01/19/GitLab%E4%B9%8BIP%E4%BF%AE%E6%94%B9/</url>
+      <content type="html"><![CDATA[<h5 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h5><p>虚拟机的IP地址变动了，用新的IP地址直接访问虚拟的gitlab没问题，开发者的项目上修改对应的远程地址也就可以关联上了。但是出现一个问题，如下图所示：<br>项目的下载地址还是原有的IP地址，不是现有IP地址。基于这样的问题给出以下修改。<br><img src="/images/pasted-14.png" alt="upload successful"></p>
+<h5 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h5><p>PS:笔者用的是ubuntu的系统</p>
+<ul>
+<li><p>进入gitlab的配置目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/gitlab/embedded/service/gitlab-rails/config</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用<code>ls</code>命令查看目录下的文件，如下图：。目录中会包含一个<code>gitlab.yml</code>的文件。<br>  <img src="/images/pasted-15.png" alt="upload successful"></p>
+</li>
+<li><p>打开并修改相关配置，用<code>vi gitlab.yml</code>命令进行打开。将图中host修改成新指定的IP即可。例如我这里就将IP修改为<code>192.168.16.182</code><br>  <img src="/images/pasted-16.png" alt="upload successful"></p>
+</li>
+<li><p><code>gitlab-ctl restart</code>重启服务即可，效果图如下：<br>  <img src="/images/pasted-17.png" alt="upload successful"></p>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> IT </category>
+            
+            <category> 版本控制 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> GitLab </tag>
+            
+            <tag> IP </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Hexo主题之NexT]]></title>
+      <url>/2018/01/18/xo%E6%9B%BF%E6%8D%A2%E4%B8%BB%E9%A2%98%E4%B8%BANexT/</url>
+      <content type="html"><![CDATA[<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><ul>
+<li><p>下载NexT主题，下载地址请前往<font size="4"><a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">这里</a></font>。如下图！或者点击<font size="4"><a href="https://github.com/iissnan/hexo-theme-next/archive/master.zip" target="_blank" rel="noopener">这里</a></font>直接进行下载。</p>
+<p>  <img src="/images/pasted-2.png" alt="upload successful"></p>
+</li>
+<li><p>将下载下来的文件解压，放到根目录下的themes文件夹下。如下图中的next下存储的就是NexT主题。</p>
+<p>  <img src="/images/pasted-4.png" alt="upload successful"></p>
+</li>
+</ul>
+<h5 id="启用主题"><a href="#启用主题" class="headerlink" title="启用主题"></a>启用主题</h5><p>修改<font size="4">./_config.yml</font>中的theme配置<br><code>theme: next</code></p>
+<h5 id="添加评论功能"><a href="#添加评论功能" class="headerlink" title="添加评论功能"></a>添加评论功能</h5><ul>
+<li>前往<a href="https://github.com" target="_blank" rel="noopener">Github</a>创建OAuth App。<a href="https://github.com/settings/applications/new" target="_blank" rel="noopener">传送门直接新建</a>，前提需要已经登录了。</li>
+<li><p>打开如下图：</p>
+<p>  <img src="/images/pasted-8.png" alt="upload successful"></p>
+</li>
+<li>Authorization callback URL这一项填写需要谨慎，一般是自己的域名，回调用的，其他随意填写。</li>
+<li><p>会生成如下内容：Client ID和Client Secret</p>
+<p>  <img src="/images/pasted-9.png" alt="upload successful"></p>
+</li>
+<li><p>编辑主题配置文件(_config.yml)，启用评论功能：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">gitment:</span><br><span class="line">  enable: true</span><br><span class="line">  lazy: true #用一个按钮延迟加载评论。</span><br><span class="line">  github_user: #Github ID</span><br><span class="line">  github_repo: #评论存储仓库</span><br><span class="line">  client_id: #在上一步获取的到的</span><br><span class="line">  client_secret: #在上一步获取的到的</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>效果如下：</p>
+<p>  <img src="/images/pasted-10.png" alt="upload successful"></p>
+</li>
+</ul>
+<h5 id="添加打赏功能"><a href="#添加打赏功能" class="headerlink" title="添加打赏功能"></a>添加打赏功能</h5><p>一下代码都是被注释掉，去掉注释，并且配置对应的图片的路径，图片是支付宝，微信的<font size="5">收款码</font>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">reward_comment: I&apos;m not rich, but still hold the dream.</span><br><span class="line">wechatpay: /images/wechatpay.jpg</span><br><span class="line">alipay: /images/alipay.jpg</span><br></pre></td></tr></table></figure></p>
+<h5 id="添加查询功能"><a href="#添加查询功能" class="headerlink" title="添加查询功能"></a>添加查询功能</h5><h6 id="Local-Search"><a href="#Local-Search" class="headerlink" title="Local Search"></a>Local Search</h6><ul>
+<li><p>安装<code>hexo-generator-searchdb</code>，在站点的根目录下执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编辑站点配置文件(_config.yml)，新增以下内容到任意位置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br><span class="line">  format: html</span><br><span class="line">  limit: 10000</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编辑主题配置文件(_config.yml)，启用本地搜索功能：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Local search</span><br><span class="line">local_search:</span><br><span class="line">  enable: true</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="添加字数统计"><a href="#添加字数统计" class="headerlink" title="添加字数统计"></a>添加字数统计</h5><p>效果如图：</p>
+<p><img src="/images/pasted-11.png" alt="upload successful"></p>
+<ul>
+<li><p>安装插件，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-wordcount --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在主题配置文件(_config.yml)中找到<code>post_wordcount</code>对相关参数做以下配置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">post_wordcount:</span><br><span class="line">  item_text: true</span><br><span class="line">  wordcount: true</span><br><span class="line">  min2read: true</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="添加文章访问量统计之LeanCloud"><a href="#添加文章访问量统计之LeanCloud" class="headerlink" title="添加文章访问量统计之LeanCloud"></a>添加文章访问量统计之LeanCloud</h5><ul>
+<li>前往注册，<a href="https://leancloud.cn/" target="_blank" rel="noopener">传送门</a></li>
+<li>创建一个应用</li>
+<li>进入应用，在左侧导航栏<code>存储</code>中创建一个Class，注意Class的名字必须是<font size="4">Counter</font>，如下图。</li>
+</ul>
+<p><img src="/images/pasted-12.png" alt="upload successful"></p>
+<ul>
+<li>在左侧导航栏<code>设置</code>中<code>应用Key</code>能找到App ID和App Key这两个是要填入Hexo的配置中。</li>
+</ul>
+<p><img src="/images/pasted-13.png" alt="upload successful"></p>
+<ul>
+<li><p>修改Hexo主题配置文件，在文件中找到类似以下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Show number of visitors to each article.</span><br><span class="line"># You can visit https://leancloud.cn get AppID and AppKey.</span><br><span class="line">leancloud_visitors:</span><br><span class="line">  enable: true</span><br><span class="line">  app_id: 对应App ID</span><br><span class="line">  app_key: 对应App Key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>至此配置成功</p>
+</li>
+</ul>
+<h5 id="文章加密"><a href="#文章加密" class="headerlink" title="文章加密"></a>文章加密</h5><ol>
+<li><p>打开<code>themes-&gt;next-&gt;layout-&gt;_partials-&gt;head.swig</code>文件,在以下位置插入这样一段代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    (function()&#123;</span><br><span class="line">        if(&apos;&#123;&#123; page.password &#125;&#125;&apos;)&#123;</span><br><span class="line">            if (prompt(&apos;请输入文章密码&apos;) !== &apos;&#123;&#123; page.password &#125;&#125;&apos;)&#123;</span><br><span class="line">                alert(&apos;密码错误！&apos;);</span><br><span class="line">                history.back();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)();</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>插入位置参考下图：<br><img src="/images/pasted-19.png" alt="upload successful"></p>
+</li>
+<li><p>然后向指定文章插入<code>password: password</code><br><img src="/images/pasted-20.png" alt="upload successful"></p>
+</li>
+</ol>
+<h5 id="博文静态资源压缩"><a href="#博文静态资源压缩" class="headerlink" title="博文静态资源压缩"></a>博文静态资源压缩</h5><ul>
+<li><p>插件安装，执行以下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install gulp -g</span><br><span class="line">npm install gulp-minify-css gulp-uglify gulp-htmlmin gulp-htmlclean gulp --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在项目的根目录中创建<code>gulpfile.js</code>文件，将<font size="4" color="red"><a href="/files/gulpfile.js">这里</a></font>的代码拷贝到创建的<code>gulpfile.js</code>文件中。</p>
+</li>
+<li>生成博文是执行 <code>hexo g &amp;&amp; gulp</code></li>
+</ul>
+<h5 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h5><h6 id="Next主题标签，分类，关于界面打开出现404的情况。"><a href="#Next主题标签，分类，关于界面打开出现404的情况。" class="headerlink" title="Next主题标签，分类，关于界面打开出现404的情况。"></a>Next主题标签，分类，关于界面打开出现404的情况。</h6><p>1.1创建标签导航</p>
+<ul>
+<li>在Hexo项目的根目录下打开CMD命令执行以下命令<br><code>hexo new page &quot;tags&quot;</code></li>
+<li>执行结束后，会在./source文件夹下出现一个<font size="4">tags</font>文件夹里面默认有一个index.md的文件，这就是我们创建的导航栏的分类页面</li>
+<li>对index.md进行修改代码如下，重复部分忽略：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: 标签</span><br><span class="line">date: 2018-01-18 11:20:02</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>1.2创建分类导航</p>
+<ul>
+<li>在Hexo项目的根目录下打开CMD命令执行以下命令<br><code>hexo new page &quot;categories&quot;</code></li>
+<li>执行结束后，会在./source文件夹下出现一个<font size="4">categories</font>文件夹里面默认有一个index.md的文件，这就是我们创建的导航栏的分类页面</li>
+<li>对index.md进行修改代码如下，重复部分忽略：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: 分类</span><br><span class="line">date: 2018-01-18 11:20:02</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>1.3创建关于导航</p>
+<ul>
+<li>在Hexo项目的根目录下打开CMD命令执行以下命令<br><code>hexo new page &quot;about&quot;</code></li>
+<li>执行结束后，会在./source文件夹下出现一个<font size="4">about</font>文件夹里面默认有一个index.md的文件，这就是我们创建的导航栏的分类页面</li>
+<li>对index.md进行修改代码如下，重复部分忽略：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: 关于</span><br><span class="line">date: 2018-01-18 11:20:02</span><br><span class="line">type: &quot;about&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ul>
+<li><a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">NexT官方</a></li>
+<li><a href="http://theme-next.iissnan.com/third-party-services.html" target="_blank" rel="noopener">NexT第三方服务集成</a></li>
+<li><a href="https://segmentfault.com/a/1190000009544924" target="_blank" rel="noopener">个性化配置参考</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Blog </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+            <tag> NexT </tag>
+            
+            <tag> NexT优化 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[GitHub+Hexo搭建个人博客]]></title>
+      <url>/2018/01/17/GitHub-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+      <content type="html"><![CDATA[<hr>
+<h5 id="1-拥有一个GitHub账号"><a href="#1-拥有一个GitHub账号" class="headerlink" title="1.拥有一个GitHub账号"></a>1.拥有一个GitHub账号</h5><p><a href="https://github.com" target="_blank" rel="noopener">前往</a>以下地址进行申请</p>
+<hr>
+<h5 id="2-创建博客仓库"><a href="#2-创建博客仓库" class="headerlink" title="2.创建博客仓库"></a>2.创建博客仓库</h5><h6 id="2-1-New-respository"><a href="#2-1-New-respository" class="headerlink" title="2.1 New respository"></a>2.1 New respository</h6><p><img src="/images/pasted-0.png" alt="pasted-0.png"></p>
+<h6 id="2-2-填写信息"><a href="#2-2-填写信息" class="headerlink" title="2.2 填写信息"></a>2.2 填写信息</h6><ul>
+<li>标注【1】处填写github_username.github.io。</li>
+<li>github_username用自己的用户名称代替。</li>
+<li>点击【Create repository】创建仓库。至此github的仓库创建好了。<br><img src="/images/pasted-1.png" alt="pasted-1.png"></li>
+</ul>
+<hr>
+<h5 id="3-安装Hexo"><a href="#3-安装Hexo" class="headerlink" title="3.安装Hexo"></a>3.安装Hexo</h5><h6 id="3-1安装Node-js"><a href="#3-1安装Node-js" class="headerlink" title="3.1安装Node.js"></a>3.1安装Node.js</h6><ul>
+<li><a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js官方下载地址</a>，并且配置环境变量。</li>
+<li><a href="https://baidu.com" target="_blank" rel="noopener">Windows环境变量配置</a>,目前没有编写博客，后续补充。</li>
+<li><a href="https://baidu.com" target="_blank" rel="noopener">Liunx环境变量配置</a>,目前没有编写博客，后续补充。<h6 id="3-2设置npm淘宝镜像站点"><a href="#3-2设置npm淘宝镜像站点" class="headerlink" title="3.2设置npm淘宝镜像站点"></a>3.2设置npm淘宝镜像站点</h6></li>
+<li>npm默认源的下载速度可能很慢，建议使用淘宝镜像替换。</li>
+<li>执行下面命令，将npm的源设置成淘宝镜像站点<br><code>npm config set registry &quot;https://registry.npm.taobao.org&quot;</code></li>
+<li>配置Node.js的环境变量</li>
+</ul>
+<h6 id="3-2安装Hexo"><a href="#3-2安装Hexo" class="headerlink" title="3.2安装Hexo"></a>3.2安装Hexo</h6><ul>
+<li>执行一下命令安装Hexo，Hexo是安装在shell打开的当前路径下的<br><code>npm install hexo-cli g</code></li>
+<li>初始化博客，初始化的博客是在shell打开的当前路径下创建目录<br><code>hexo init blog</code></li>
+<li>进入blog的主目录中<br><code>cd blog</code></li>
+<li>安装Hexo扩展插件<br><code>npm install</code></li>
+<li>安装其它插件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-server --save</span><br><span class="line"># 可视化博客编辑插件</span><br><span class="line">npm install hexo-admin --save</span><br><span class="line">npm install hexo-generator-archive --save</span><br><span class="line">npm install hexo-generator-feed --save</span><br><span class="line">npm install hexo-generator-search --save</span><br><span class="line">npm install hexo-generator-tag --save</span><br><span class="line"># git发布插件</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">npm install hexo-generator-sitemap --save</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>至此安装完毕！！！</p>
+<hr>
+<h5 id="4-Hexo基本使用"><a href="#4-Hexo基本使用" class="headerlink" title="4.Hexo基本使用"></a>4.Hexo基本使用</h5><h6 id="4-1启用Hexo服务"><a href="#4-1启用Hexo服务" class="headerlink" title="4.1启用Hexo服务"></a>4.1启用Hexo服务</h6><ul>
+<li>静态页面生成<br><code>hexo generate</code></li>
+<li>启动本地服务<br><code>hexo server</code></li>
+<li>打开浏览器，地址栏中输入：[<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> ],应该可以看见刚刚创建的博客了</li>
+</ul>
+<h6 id="4-2问题答疑"><a href="#4-2问题答疑" class="headerlink" title="4.2问题答疑"></a>4.2问题答疑</h6><ul>
+<li>如果出现无法访问的情况，可能是4000这个端口被占用了。解决方式，关闭服务，修改端口，再次启动服务器。相关代码如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 修改端口</span><br><span class="line">hexo s -p 5000</span><br><span class="line"># 关闭服务</span><br><span class="line">Ctrl+C</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h5 id="5-将Hexo博客部署到GitHub上"><a href="#5-将Hexo博客部署到GitHub上" class="headerlink" title="5.将Hexo博客部署到GitHub上"></a>5.将Hexo博客部署到GitHub上</h5><h6 id="5-1配置"><a href="#5-1配置" class="headerlink" title="5.1配置"></a>5.1配置</h6><ul>
+<li><p>修改配置文件blog/_config.yml，修改deploy项的内容，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: https://hexo.io/docs/deployment.html</span><br><span class="line">deploy:</span><br><span class="line">  # 类型</span><br><span class="line">  type: git</span><br><span class="line">  # 仓库的地址</span><br><span class="line">  repo: https://github.com/Sunshineuun/Sunshineuun.github.io.git</span><br><span class="line">  # 分支</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注意：yml的语法要求各个标签【:】分号必须有空格。</p>
+</li>
+<li>注意：repo是对应仓库的地址，在<code>hexo deploy</code>的时候会提示输入密码。</li>
+</ul>
+<h6 id="5-2部署"><a href="#5-2部署" class="headerlink" title="5.2部署"></a>5.2部署</h6><ul>
+<li><p>执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 清空静态页面</span><br><span class="line">hexo clean</span><br><span class="line"># 生成静态页面</span><br><span class="line">hexo generate</span><br><span class="line"># 部署 </span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开网页，输入<a href="http://github_username.github.io" target="_blank" rel="noopener">http://github_username.github.io</a> ，打开github上托管的博客。如我的博客地址是：<a href="http://Sunshineuun.github.io。" target="_blank" rel="noopener">http://Sunshineuun.github.io。</a></p>
+</li>
+</ul>
+<hr>
+<h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ul>
+<li><a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo官网</a></li>
+<li><a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">NexT官网</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Blog </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> GitHub </tag>
+            
+            <tag> Hexo </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Hexo可视化编辑]]></title>
+      <url>/2018/01/17/HelloWorld/</url>
+      <content type="html"><![CDATA[<h5 id="后端管理插件hexo-admin"><a href="#后端管理插件hexo-admin" class="headerlink" title="后端管理插件hexo-admin"></a>后端管理插件hexo-admin</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">插件可以直接在网页端创建、编辑markdown文章内容，并将内容发布到_posts里，提供标签，分类配置。</span><br></pre></td></tr></table></figure>
+<h6 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 安装插件</span><br><span class="line">npm install --save hexo-admin</span><br><span class="line"># 启动服务</span><br><span class="line">hexo server -d</span><br><span class="line"># 登陆地址</span><br><span class="line">open http://localhost:4000/admin/</span><br></pre></td></tr></table></figure>
+<p>登陆查看即可</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> GitHub </tag>
+            
+            <tag> Hexo </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Hello World]]></title>
+      <url>/2018/01/17/hello-world/</url>
+      <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+      
+        
+    </entry>
+    
+  
+  
 </search>

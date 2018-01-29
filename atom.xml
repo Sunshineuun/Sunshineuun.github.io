@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sunshineuun.github.io/"/>
-  <updated>2018-01-26T06:08:29.594Z</updated>
+  <updated>2018-01-29T05:54:00.971Z</updated>
   <id>https://sunshineuun.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Oracle数值类型主键自增长</title>
+    <link href="https://sunshineuun.github.io/2018/01/29/Oracle%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B%E4%B8%BB%E9%94%AE%E8%87%AA%E5%A2%9E%E9%95%BF/"/>
+    <id>https://sunshineuun.github.io/2018/01/29/Oracle数值类型主键自增长/</id>
+    <published>2018-01-29T05:47:00.000Z</published>
+    <updated>2018-01-29T05:54:00.971Z</updated>
+    
+    <content type="html"><![CDATA[<h5 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h5> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> CREATE TABLE K_USER (</span><br><span class="line">  ID       NUMBER PRIMARY KEY,</span><br><span class="line">  USER_NAME VARCHAR(45) NOT NULL,</span><br><span class="line">  pd VARCHAR(45) NOT NULL,</span><br><span class="line">  ENABLED  NUMBER DEFAULT 1 NOT NULL</span><br><span class="line">);</span><br></pre></td></tr></table></figure><h5 id="创建自增序列"><a href="#创建自增序列" class="headerlink" title="创建自增序列"></a>创建自增序列</h5> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE SEQUENCE K_USER_ID_AUTOINC -- 序列的名称</span><br><span class="line"> MINVALUE 1 -- 最小值</span><br><span class="line"> MAXVALUE 99999999 -- 最大值</span><br><span class="line"> START WITH 1 -- 从多少开始</span><br><span class="line"> INCREMENT BY 1 -- 每次序列加多少</span><br><span class="line"> NOCACHE;</span><br></pre></td></tr></table></figure><h5 id="创建序列"><a href="#创建序列" class="headerlink" title="创建序列"></a>创建序列</h5> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE OR REPLACE TRIGGER K_USER_ID_TRIGGER -- 监听的名称</span><br><span class="line"> BEFORE INSERT ON K_USER FOR EACH ROW WHEN (new.ID IS NULL)</span><br><span class="line"> -- 在插入循环ID为空的列</span><br><span class="line">   BEGIN</span><br><span class="line">     SELECT K_USER_ID_AUTOINC.nextval INTO :new.id FROM dual;</span><br><span class="line">   END;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h5 id=&quot;创建表&quot;&gt;&lt;a href=&quot;#创建表&quot; class=&quot;headerlink&quot; title=&quot;创建表&quot;&gt;&lt;/a&gt;创建表&lt;/h5&gt; &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="Oracle" scheme="https://sunshineuun.github.io/tags/Oracle/"/>
+    
+  </entry>
   
   <entry>
     <title>Ubuntu常用操作命令</title>
