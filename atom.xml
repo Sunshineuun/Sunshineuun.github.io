@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sunshineuun.github.io/"/>
-  <updated>2018-02-01T05:22:46.549Z</updated>
+  <updated>2018-03-18T08:21:03.860Z</updated>
   <id>https://sunshineuun.github.io/</id>
   
   <author>
@@ -15,6 +15,328 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MongoDB</title>
+    <link href="https://sunshineuun.github.io/2018/03/18/ongoDB/"/>
+    <id>https://sunshineuun.github.io/2018/03/18/ongoDB/</id>
+    <published>2018-03-18T07:44:00.000Z</published>
+    <updated>2018-03-18T08:21:03.860Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="更新命令"><a href="#更新命令" class="headerlink" title="更新命令"></a>更新命令</h4><h5 id="update"><a href="#update" class="headerlink" title="update"></a>update</h5><p>格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.update(criteria,objNew,upsert,multi)</span><br></pre></td></tr></table></figure></p><p>参数说明如下：<br><strong>criteria</strong>：查询条件<br><strong>objNew</strong>：update对象和一些更新操作符<br><strong>upsert</strong>：如果不存在update的记录，是否插入objNew这个新的文档，true为插入，默认为false，不插入。<br><strong>multi</strong>：默认是false，只更新找到的第一条记录。如果为true，把按条件查询出来的记录全部更新。</p><h5 id="save"><a href="#save" class="headerlink" title="save"></a>save</h5><p>格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.save(obj)</span><br></pre></td></tr></table></figure></p><p>参数说明如下：<br>obj：代表需要更新的对象，如果集合内部已经存在一个和obj相同的<strong>_id</strong>的记录，Mongodb会把obj对象替换集合内已存在的记录，如果不存在，则会插入obj对象。</p><h5 id="更新操作符号"><a href="#更新操作符号" class="headerlink" title="更新操作符号"></a>更新操作符号</h5><h6 id="inc"><a href="#inc" class="headerlink" title="$inc"></a>$inc</h6><p>用法：{$inc:{field:value}}<br>作用：对一个数字字段的某个field增加value<br>说明：只能运用在数值类型上</p><h6 id="set"><a href="#set" class="headerlink" title="$set"></a>$set</h6><p>用法：{$set:{field:value}}<br>作用：把文档中某个字段field的值设为value</p><h6 id="unset"><a href="#unset" class="headerlink" title="$unset"></a>$unset</h6><p>用法：{$unset:{field:1}}<br>作用：删除某个字段field</p><h6 id="push"><a href="#push" class="headerlink" title="$push"></a>$push</h6><p>用法：{$push:{field:value}}<br>作用：把value追加到field里。<br>说明：field只能是数组类型，如果field不存在，会自动插入一个数组类型</p><h6 id="pushAll"><a href="#pushAll" class="headerlink" title="pushAll"></a>pushAll</h6><p>用法：{$pushAll:{field:value_array}}<br>作用：用法同$push一样，只是$pushAll可以一次追加多个值到一个数组字段内。<br>说明：field只能是数组类型。</p><h6 id="addToSet"><a href="#addToSet" class="headerlink" title="$addToSet"></a>$addToSet</h6><p>用法：{$addToSet:{field:value}}<br>作用：加一个值到数组内，而且只有当这个值在数组中不存在时才增加。<br>说明：结果是append，不是add，就算存入的是数组，它也是单个值<br>举例：存入[ “A3”, “A4” ]的效果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ &quot;Michael&quot;, &quot;A1&quot;, &quot;A2&quot;, [ &quot;A3&quot;, &quot;A4&quot; ] ]</span><br></pre></td></tr></table></figure></p><h6 id="pop"><a href="#pop" class="headerlink" title="$pop"></a>$pop</h6><p>用法：删除数组内第一个值：{$pop:{field:-1}}、删除数组内最后一个值：{$pop:{field:1}}<br>作用：用于删除数组内的一个值</p><h6 id="pull"><a href="#pull" class="headerlink" title="$pull"></a>$pull</h6><p>用法：{$pull:{field:_value}}<br>作用：从数组field内删除一个等于_value的值</p><h6 id="pullAll"><a href="#pullAll" class="headerlink" title="$pullAll"></a>$pullAll</h6><p>用法：{$pullAll:value_array}<br>作用：用法同$pull一样，可以一次性删除数组内的多个值。</p><h6 id="rename"><a href="#rename" class="headerlink" title="$rename"></a>$rename</h6><p>用法：{$rename:{old_field_name:new_field_name}}<br>作用：对字段进行重命名</p><h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ul><li><a href="https://www.yiibai.com/mongodb/mongodb_quick_guide.html" target="_blank" rel="noopener">快速入门</a></li><li><a href="https://www.cnblogs.com/yu-zhang/p/5210966.html" target="_blank" rel="noopener">博客-更新命令(save,update)</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;更新命令&quot;&gt;&lt;a href=&quot;#更新命令&quot; class=&quot;headerlink&quot; title=&quot;更新命令&quot;&gt;&lt;/a&gt;更新命令&lt;/h4&gt;&lt;h5 id=&quot;update&quot;&gt;&lt;a href=&quot;#update&quot; class=&quot;headerlink&quot; title=&quot;updat
+      
+    
+    </summary>
+    
+    
+      <category term="MongoDB" scheme="https://sunshineuun.github.io/tags/MongoDB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>后端开发知识要点</title>
+    <link href="https://sunshineuun.github.io/2018/03/18/%E7%AB%AF%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E8%A6%81%E7%82%B9/"/>
+    <id>https://sunshineuun.github.io/2018/03/18/端开发知识要点/</id>
+    <published>2018-03-18T07:32:00.000Z</published>
+    <updated>2018-03-18T08:21:13.284Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="基础篇"><a href="#基础篇" class="headerlink" title="基础篇"></a>基础篇</h4><h5 id="基本功"><a href="#基本功" class="headerlink" title="基本功"></a>基本功</h5><h6 id="面向对象的特征"><a href="#面向对象的特征" class="headerlink" title="面向对象的特征"></a>面向对象的特征</h6><ol><li>抽象<br> 抽象使我们更接近于事物的本质。<strong>抽象的过程就是一个提炼存在于事物之间共同拥有的元素，而这些事务之间共同拥有的元素往往是这一事物区别于其他事物关键的东西，这些元素就构成了事物的本质.</strong></li><li>继承<br>  既是拓展的过程，也是归类的过程。</li><li>封装<br>  私有化的一个过程。</li><li>多态性<br>  多种表达形式。</li></ol><h6 id="final-finally-finalize-的区别"><a href="#final-finally-finalize-的区别" class="headerlink" title="final, finally, finalize 的区别"></a>final, finally, finalize 的区别</h6><ul><li>final，修饰变量，常量；修饰Class，不运行被继承；修饰方法，拒绝重载；总之就是只能这样了的意思。</li><li>finally，抛出异常继续执行的代码块。</li><li>finalize，是一个清理方法。</li></ul><h6 id="int-和-Integer-有什么区别"><a href="#int-和-Integer-有什么区别" class="headerlink" title="int 和 Integer 有什么区别"></a>int 和 Integer 有什么区别</h6><p>int是基础类型，Integer是int的包装类；Integer是一个对象。</p><h6 id="重载和重写的区别"><a href="#重载和重写的区别" class="headerlink" title="重载和重写的区别"></a>重载和重写的区别</h6><ul><li>重载同一方法名称，但是不同参数，已达到多态的效果。</li><li>重写，也称覆盖，覆盖父类的方法。</li></ul><h6 id="抽象类和接口有什么区别"><a href="#抽象类和接口有什么区别" class="headerlink" title="抽象类和接口有什么区别"></a>抽象类和接口有什么区别</h6><ul><li>个人理解：抽象类有具体方法实现；接口中的方法，都是由继承类实现。</li><li>接口是对动作的抽象，而抽象类是对根源的抽象。</li></ul><hr><ol><li>接口和抽象类都是继承树的上层，他们的共同点如下：<br> 1.1    都是上层的抽象层。<br>1.2 都不能被实例化<br>1.3 都能包含抽象的方法，这些抽象的方法用于描述类具备的功能，但是不比提供具体的实现。</li><li>它们的区别如下：<br> 2.1 在抽象类中可以写非抽象的方法，从而避免在子类中重复书写它们，这样可以提高代码的复用性，这是抽象类的优势；接口中只能有抽象的方法。<br>2.2 一个类只能继承一个直接父类，这个父类可以是具体的类也可是抽象类；但是一个类可以实现多个接口。</li></ol><p>参考：<a href="https://www.zhihu.com/question/20149818" target="_blank" rel="noopener">知乎-接口和抽象类有什么区别？</a></p><h6 id="说说反射的用途及实现"><a href="#说说反射的用途及实现" class="headerlink" title="说说反射的用途及实现"></a>说说反射的用途及实现</h6><p>用途：获取当前对象几乎所有的信息，属性，方法，注解等。<br>参考：<a href="http://www.sczyh30.com/posts/Java/java-reflection-1/" target="_blank" rel="noopener">反射理解基础</a></p><h6 id="说说自定义注解的场景及实现"><a href="#说说自定义注解的场景及实现" class="headerlink" title="说说自定义注解的场景及实现"></a>说说自定义注解的场景及实现</h6><h6 id="HTTP-请求的-GET-与-POST-方式的区别"><a href="#HTTP-请求的-GET-与-POST-方式的区别" class="headerlink" title="HTTP 请求的 GET 与 POST 方式的区别"></a>HTTP 请求的 GET 与 POST 方式的区别</h6><h6 id="session-与-cookie-区别"><a href="#session-与-cookie-区别" class="headerlink" title="session 与 cookie 区别"></a>session 与 cookie 区别</h6><h6 id="session-分布式处理"><a href="#session-分布式处理" class="headerlink" title="session 分布式处理"></a>session 分布式处理</h6><h6 id="JDBC-流程"><a href="#JDBC-流程" class="headerlink" title="JDBC 流程"></a>JDBC 流程</h6><h6 id="MVC-设计思想"><a href="#MVC-设计思想" class="headerlink" title="MVC 设计思想"></a>MVC 设计思想</h6><h6 id="equals-与-的区别"><a href="#equals-与-的区别" class="headerlink" title="equals 与 == 的区别"></a>equals 与 == 的区别</h6>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;基础篇&quot;&gt;&lt;a href=&quot;#基础篇&quot; class=&quot;headerlink&quot; title=&quot;基础篇&quot;&gt;&lt;/a&gt;基础篇&lt;/h4&gt;&lt;h5 id=&quot;基本功&quot;&gt;&lt;a href=&quot;#基本功&quot; class=&quot;headerlink&quot; title=&quot;基本功&quot;&gt;&lt;/a&gt;基本功&lt;/h
+      
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="https://sunshineuun.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MongoDB</title>
+    <link href="https://sunshineuun.github.io/2018/03/12/goDB/"/>
+    <id>https://sunshineuun.github.io/2018/03/12/goDB/</id>
+    <published>2018-03-12T12:45:01.000Z</published>
+    <updated>2018-03-12T13:03:13.329Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="更新命令"><a href="#更新命令" class="headerlink" title="更新命令"></a>更新命令</h4><h5 id="update"><a href="#update" class="headerlink" title="update"></a>update</h5><p>格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.update(criteria,objNew,upsert,multi)</span><br></pre></td></tr></table></figure></p><p>参数说明如下：<br><strong>criteria</strong>：查询条件<br><strong>objNew</strong>：update对象和一些更新操作符<br><strong>upsert</strong>：如果不存在update的记录，是否插入objNew这个新的文档，true为插入，默认为false，不插入。<br><strong>multi</strong>：默认是false，只更新找到的第一条记录。如果为true，把按条件查询出来的记录全部更新。</p><h5 id="save"><a href="#save" class="headerlink" title="save"></a>save</h5><p>格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.save(obj)</span><br></pre></td></tr></table></figure></p><p>参数说明如下：<br>obj：代表需要更新的对象，如果集合内部已经存在一个和obj相同的<strong>_id</strong>的记录，Mongodb会把obj对象替换集合内已存在的记录，如果不存在，则会插入obj对象。</p><h5 id="更新操作符号"><a href="#更新操作符号" class="headerlink" title="更新操作符号"></a>更新操作符号</h5><h6 id="inc"><a href="#inc" class="headerlink" title="$inc"></a>$inc</h6><p>用法：{$inc:{field:value}}<br>作用：对一个数字字段的某个field增加value<br>说明：只能运用在数值类型上</p><h6 id="set"><a href="#set" class="headerlink" title="$set"></a>$set</h6><p>用法：{$set:{field:value}}<br>作用：把文档中某个字段field的值设为value</p><h6 id="unset"><a href="#unset" class="headerlink" title="$unset"></a>$unset</h6><p>用法：{$unset:{field:1}}<br>作用：删除某个字段field</p><h6 id="push"><a href="#push" class="headerlink" title="$push"></a>$push</h6><p>用法：{$push:{field:value}}<br>作用：把value追加到field里。<br>说明：field只能是数组类型，如果field不存在，会自动插入一个数组类型</p><h6 id="pushAll"><a href="#pushAll" class="headerlink" title="pushAll"></a>pushAll</h6><p>用法：{$pushAll:{field:value_array}}<br>作用：用法同$push一样，只是$pushAll可以一次追加多个值到一个数组字段内。<br>说明：field只能是数组类型。</p><h6 id="addToSet"><a href="#addToSet" class="headerlink" title="$addToSet"></a>$addToSet</h6><p>用法：{$addToSet:{field:value}}<br>作用：加一个值到数组内，而且只有当这个值在数组中不存在时才增加。<br>说明：结果是append，不是add，就算存入的是数组，它也是单个值<br>举例：存入[ “A3”, “A4” ]的效果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ &quot;Michael&quot;, &quot;A1&quot;, &quot;A2&quot;, [ &quot;A3&quot;, &quot;A4&quot; ] ]</span><br></pre></td></tr></table></figure></p><h6 id="pop"><a href="#pop" class="headerlink" title="$pop"></a>$pop</h6><p>用法：删除数组内第一个值：{$pop:{field:-1}}、删除数组内最后一个值：{$pop:{field:1}}<br>作用：用于删除数组内的一个值</p><h6 id="pull"><a href="#pull" class="headerlink" title="$pull"></a>$pull</h6><p>用法：{$pull:{field:_value}}<br>作用：从数组field内删除一个等于_value的值</p><h6 id="pullAll"><a href="#pullAll" class="headerlink" title="$pullAll"></a>$pullAll</h6><p>用法：{$pullAll:value_array}<br>作用：用法同$pull一样，可以一次性删除数组内的多个值。</p><h6 id="rename"><a href="#rename" class="headerlink" title="$rename"></a>$rename</h6><p>用法：{$rename:{old_field_name:new_field_name}}<br>作用：对字段进行重命名</p><h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ul><li><a href="https://www.yiibai.com/mongodb/mongodb_quick_guide.html" target="_blank" rel="noopener">快速入门</a></li><li><a href="https://www.cnblogs.com/yu-zhang/p/5210966.html" target="_blank" rel="noopener">博客-更新命令(save,update)</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;更新命令&quot;&gt;&lt;a href=&quot;#更新命令&quot; class=&quot;headerlink&quot; title=&quot;更新命令&quot;&gt;&lt;/a&gt;更新命令&lt;/h4&gt;&lt;h5 id=&quot;update&quot;&gt;&lt;a href=&quot;#update&quot; class=&quot;headerlink&quot; title=&quot;updat
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Python常用命令</title>
+    <link href="https://sunshineuun.github.io/2018/03/08/ython%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
+    <id>https://sunshineuun.github.io/2018/03/08/ython常用命令/</id>
+    <published>2018-03-08T09:01:41.000Z</published>
+    <updated>2018-03-08T09:03:51.212Z</updated>
+    
+    <content type="html"><![CDATA[<p>python查看所有module api文档<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m pydoc -p 4895</span><br></pre></td></tr></table></figure></p><hr>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;python查看所有module api文档&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;t
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>个人报销</title>
+    <link href="https://sunshineuun.github.io/2018/03/06/%E4%BA%BA%E6%8A%A5%E9%94%80/"/>
+    <id>https://sunshineuun.github.io/2018/03/06/人报销/</id>
+    <published>2018-03-06T05:35:01.000Z</published>
+    <updated>2018-03-06T05:35:36.787Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>交通费<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">23+73+92+15+51+45+50+35+32+18+81+124+38+55+130+40+99=1001</span><br><span class="line">164+87+294+197+18+44+22+40+18+14+14+14+47+27=1000</span><br><span class="line">224+19+35+19+59+69+32+110+24+17+29+43+17+21+27+46+27+39=800多</span><br></pre></td></tr></table></figure></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;交通费&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>MongoDB注册为windows服务</title>
+    <link href="https://sunshineuun.github.io/2018/03/05/ngoDB%E6%B3%A8%E5%86%8Cwindows%E6%9C%8D%E5%8A%A1/"/>
+    <id>https://sunshineuun.github.io/2018/03/05/ngoDB注册windows服务/</id>
+    <published>2018-03-05T05:44:13.000Z</published>
+    <updated>2018-03-05T05:46:37.531Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li><p>以系统管理员身份打开“运行”窗口，输入cmd 回车，并切换至MongoDB的bin目录运行以下语句。</p></li><li><p>语句为： mongod.exe –dbpath=D:\install\MongoDB\data –logpath=D:\install\MongoDB\log\mongodb.log –install –serviceName “MongoDB”</p></li></ol><p>PS:惊讶–pbpath指的的mongodb安装路径，logpath指的是mongodb日志存放路径，–install –serviceName指的是安装成为系统服务，服务名称为 MongoDB</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ol&gt;
+&lt;li&gt;&lt;p&gt;以系统管理员身份打开“运行”窗口，输入cmd 回车，并切换至MongoDB的bin目录运行以下语句。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;语句为： mongod.exe –dbpath=D:\install\MongoDB\data –logpath=D:\
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Selenium浏览器滚动条操作</title>
+    <link href="https://sunshineuun.github.io/2018/03/05/lenium%E6%B5%8F%E8%A7%88%E5%99%A8%E6%BB%9A%E5%8A%A8%E6%9D%A1%E6%93%8D%E4%BD%9C/"/>
+    <id>https://sunshineuun.github.io/2018/03/05/lenium浏览器滚动条操作/</id>
+    <published>2018-03-05T05:35:20.000Z</published>
+    <updated>2018-03-05T05:40:49.153Z</updated>
+    
+    <content type="html"><![CDATA[<p>通过<code>driver.execute_script()</code>执行js代码进行操作。</p><p>滚动到底部<code>window.scrollTo(0, document.body.scrollHeight)</code><br>PS:其实就是通过<code>window.scrollTo()</code>进行处理的，第一个参数是横向向参数，第二个参数是纵向参数。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;通过&lt;code&gt;driver.execute_script()&lt;/code&gt;执行js代码进行操作。&lt;/p&gt;
+&lt;p&gt;滚动到底部&lt;code&gt;window.scrollTo(0, document.body.scrollHeight)&lt;/code&gt;&lt;br&gt;PS:其实就是通过&lt;co
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Winning-Tech-3月</title>
+    <link href="https://sunshineuun.github.io/2018/03/02/nning-Tech/"/>
+    <id>https://sunshineuun.github.io/2018/03/02/nning-Tech/</id>
+    <published>2018-03-02T07:03:00.000Z</published>
+    <updated>2018-03-02T08:46:37.670Z</updated>
+    
+    <content type="html"><![CDATA[<p>2018年3月</p><h6 id="公司计划"><a href="#公司计划" class="headerlink" title="公司计划"></a>公司计划</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root = /Winning/2018/3月份</span><br><span class="line">TASK1 - 部门经理分配的任务，【root/各主体资料库进度总览.xlsx】文档中，待爬取网站爬取可行性分析。</span><br><span class="line">TASK2 - 产品经理分配的任务，中药方剂库数据爬取。【root/中药方剂库-产品.xlsx】</span><br><span class="line">TASK3 - 产品迭代任务，2.8版本需求评估，开发。</span><br><span class="line">TASK4 - 数据挖掘组分配的任务，药品说明书网站数据爬取。目前只提供了一个网站，后续补充。</span><br></pre></td></tr></table></figure><h6 id="个人计划"><a href="#个人计划" class="headerlink" title="个人计划"></a>个人计划</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.react学习</span><br><span class="line">2.springboot学习</span><br><span class="line">3.前后端分离学习</span><br><span class="line">4.python爬虫进阶</span><br><span class="line">5.java、javaweb基础巩固</span><br><span class="line">6.servlet学习</span><br></pre></td></tr></table></figure><p><strong>2018年3月2日</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 中药方剂库数据爬取分析及其计划评估。TASK2</span><br><span class="line">2. KBMS bug修复，【社保药品分类与代码】查询后，树无限展开问题处理。</span><br><span class="line">3. KBMS2.8版本需求分析及其评估。TASK3</span><br><span class="line">4. 分析数据挖掘组需要爬取的网站。TASK1</span><br></pre></td></tr></table></figure></p><p><strong>2018年3月5日</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. 分析爬取网站的可行性。TASK1</span><br></pre></td></tr></table></figure></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;2018年3月&lt;/p&gt;
+&lt;h6 id=&quot;公司计划&quot;&gt;&lt;a href=&quot;#公司计划&quot; class=&quot;headerlink&quot; title=&quot;公司计划&quot;&gt;&lt;/a&gt;公司计划&lt;/h6&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td cla
+      
+    
+    </summary>
+    
+      <category term="Winning" scheme="https://sunshineuun.github.io/categories/Winning/"/>
+    
+    
+      <category term="工作" scheme="https://sunshineuun.github.io/tags/%E5%B7%A5%E4%BD%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Oracle日常错误</title>
+    <link href="https://sunshineuun.github.io/2018/03/01/Oracle%E6%97%A5%E5%B8%B8%E9%94%99%E8%AF%AF/"/>
+    <id>https://sunshineuun.github.io/2018/03/01/Oracle日常错误/</id>
+    <published>2018-03-01T06:40:00.000Z</published>
+    <updated>2018-03-01T06:44:53.130Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li><p>在实际的 LONG 或 LOB 列之后提供了扩展的非 LONG 绑定数据</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在INSERT操作的时候，需要将LONG或者LOB类型的列放到其他类型的后面，否则出错</span><br></pre></td></tr></table></figure></li><li><p>ORA-01461: 仅能绑定要插入 LONG 列的 LONG 值</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字段插入类型超过了VARCHAR2(4000),需要调整为CLOB类型。</span><br></pre></td></tr></table></figure></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ol&gt;
+&lt;li&gt;&lt;p&gt;在实际的 LONG 或 LOB 列之后提供了扩展的非 LONG 绑定数据&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1
+      
+    
+    </summary>
+    
+    
+      <category term="Oracle" scheme="https://sunshineuun.github.io/tags/Oracle/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java错误日志_01</title>
+    <link href="https://sunshineuun.github.io/2018/02/07/va%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97-01/"/>
+    <id>https://sunshineuun.github.io/2018/02/07/va错误日志-01/</id>
+    <published>2018-02-07T06:55:58.000Z</published>
+    <updated>2018-02-07T07:03:06.284Z</updated>
+    
+    <content type="html"><![CDATA[<h5 id="背景描述"><a href="#背景描述" class="headerlink" title="背景描述"></a>背景描述</h5><p>在终端运行<code>java -jar xxx.jar</code>的时候。在终端运行可执行jar，jar包中带main方法。</p><h5 id="错误信息如下"><a href="#错误信息如下" class="headerlink" title="错误信息如下"></a>错误信息如下</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Error: A JNI error has occurred, please check your installation and try again</span><br><span class="line">Exception in thread &quot;main&quot; java.lang.SecurityException: Invalid signature file digest for Manifest main attributes</span><br><span class="line">        at sun.security.util.SignatureFileVerifier.processImpl(SignatureFileVerifier.java:284)</span><br><span class="line">        at sun.security.util.SignatureFileVerifier.process(SignatureFileVerifier.java:238)</span><br><span class="line">        at java.util.jar.JarVerifier.processEntry(JarVerifier.java:316)</span><br><span class="line">        at java.util.jar.JarVerifier.update(JarVerifier.java:228)</span><br><span class="line">        at java.util.jar.JarFile.initializeVerifier(JarFile.java:383)</span><br><span class="line">        at java.util.jar.JarFile.getInputStream(JarFile.java:450)</span><br><span class="line">        at sun.misc.URLClassPath$JarLoader$2.getInputStream(URLClassPath.java:940)</span><br><span class="line">        at sun.misc.Resource.cachedInputStream(Resource.java:77)</span><br><span class="line">        at sun.misc.Resource.getByteBuffer(Resource.java:160)</span><br><span class="line">        at java.net.URLClassLoader.defineClass(URLClassLoader.java:454)</span><br><span class="line">        at java.net.URLClassLoader.access$100(URLClassLoader.java:73)</span><br><span class="line">        at java.net.URLClassLoader$1.run(URLClassLoader.java:368)</span><br><span class="line">        at java.net.URLClassLoader$1.run(URLClassLoader.java:362)</span><br><span class="line">        at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">        at java.net.URLClassLoader.findClass(URLClassLoader.java:361)</span><br><span class="line">        at java.lang.ClassLoader.loadClass(ClassLoader.java:424)</span><br><span class="line">        at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)</span><br><span class="line">        at java.lang.ClassLoader.loadClass(ClassLoader.java:357)</span><br><span class="line">        at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:495)</span><br></pre></td></tr></table></figure><h5 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h5><p>删除对应目录下的三类文件<code>META-INF/*.RSA;META-INF/*.DSA;META-INF/*.SF</code>即可。</p><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ul><li><a href="http://blog.csdn.net/dai451954706/article/details/50086295" target="_blank" rel="noopener">1</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h5 id=&quot;背景描述&quot;&gt;&lt;a href=&quot;#背景描述&quot; class=&quot;headerlink&quot; title=&quot;背景描述&quot;&gt;&lt;/a&gt;背景描述&lt;/h5&gt;&lt;p&gt;在终端运行&lt;code&gt;java -jar xxx.jar&lt;/code&gt;的时候。在终端运行可执行jar，jar包中带main方
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Jrebel破解大法</title>
+    <link href="https://sunshineuun.github.io/2018/02/07/ebel%E7%A0%B4%E8%A7%A3%E5%A4%A7%E6%B3%95/"/>
+    <id>https://sunshineuun.github.io/2018/02/07/ebel破解大法/</id>
+    <published>2018-02-07T05:42:14.000Z</published>
+    <updated>2018-02-07T05:50:59.788Z</updated>
+    
+    <content type="html"><![CDATA[<h5 id="使用License-Server进行破解"><a href="#使用License-Server进行破解" class="headerlink" title="使用License Server进行破解"></a>使用License Server进行破解</h5><h6 id="搭建License-Server服务"><a href="#搭建License-Server服务" class="headerlink" title="搭建License Server服务"></a>搭建License Server服务</h6><ul><li>工具下载，百度网盘<a href="https://pan.baidu.com/s/1ggKESHP" target="_blank" rel="noopener">传送门</a>,密码<strong>zmzk</strong></li><li>将项目导入IDEA中，运行起来，或者打成jar进行运行。提示如下。对于端口冲突的话，修改端口会在后面提到。<br><img src="/images/pasted-43.png" alt="upload successful"></li><li>然后到IDEA中激活Jrebel。<br><img src="/images/pasted-42.png" alt="upload successful"></li><li>至此应该破解成功了。</li></ul><h6 id="端口修改"><a href="#端口修改" class="headerlink" title="端口修改"></a>端口修改</h6><p><img src="/images/pasted-44.png" alt="upload successful"></p><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ul><li><a href="http://blog.csdn.net/weisheixiaoxin/article/details/79200535" target="_blank" rel="noopener">Jrebel 热部署 最新版破解 ！！监听端口实现 免费！转载博客于此</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h5 id=&quot;使用License-Server进行破解&quot;&gt;&lt;a href=&quot;#使用License-Server进行破解&quot; class=&quot;headerlink&quot; title=&quot;使用License Server进行破解&quot;&gt;&lt;/a&gt;使用License Server进行破解&lt;/h5&gt;&lt;
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>React基础一</title>
+    <link href="https://sunshineuun.github.io/2018/02/02/React%E5%9F%BA%E7%A1%80%E4%B8%80/"/>
+    <id>https://sunshineuun.github.io/2018/02/02/React基础一/</id>
+    <published>2018-02-02T02:44:00.000Z</published>
+    <updated>2018-02-02T06:40:52.575Z</updated>
+    
+    <content type="html"><![CDATA[<h5 id="项目创建"><a href="#项目创建" class="headerlink" title="项目创建"></a>项目创建</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install -g create-react-app       /* 安装create-react-app，建议使用cnpm */</span><br><span class="line">create-react-app myapp                 /* 使用命令创建应用，myapp为项目名称 */</span><br><span class="line">cd myapp                                        /* 进入目录，然后启动 */</span><br><span class="line">npm start</span><br></pre></td></tr></table></figure><h5 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h5><p>生成项目后，脚手架为了“优雅”… …隐藏了所有的webpack相关的配置文件，此时查看myapp文件夹目录，会发现找不到任何webpack配置文件。执行以下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run eject</span><br></pre></td></tr></table></figure></p><h5 id="webpack3构建react工程"><a href="#webpack3构建react工程" class="headerlink" title="webpack3构建react工程"></a>webpack3构建react工程</h5><h6 id="安装webpack"><a href="#安装webpack" class="headerlink" title="安装webpack"></a>安装webpack</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev webpack</span><br></pre></td></tr></table></figure><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ul><li><a href="https://www.jianshu.com/p/5e6c620ff4d6" target="_blank" rel="noopener">Create-React-App创建antd-mobile开发环境</a></li><li><a href="https://www.cnblogs.com/yswz/p/7165031.html" target="_blank" rel="noopener">使用babel-plugin-import实现antd组件库中的组件按需加载</a></li><li><a href="https://github.com/ant-design/babel-plugin-import" target="_blank" rel="noopener">babel-plugin-import github</a></li><li><a href="https://www.jianshu.com/p/b9e04d3c8650" target="_blank" rel="noopener">webpack3构建react工程</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h5 id=&quot;项目创建&quot;&gt;&lt;a href=&quot;#项目创建&quot; class=&quot;headerlink&quot; title=&quot;项目创建&quot;&gt;&lt;/a&gt;项目创建&lt;/h5&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pr
+      
+    
+    </summary>
+    
+    
+      <category term="React" scheme="https://sunshineuun.github.io/tags/React/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>开发戒律</title>
+    <link href="https://sunshineuun.github.io/2018/02/01/%E5%BC%80%E5%8F%91%E6%88%92%E5%BE%8B/"/>
+    <id>https://sunshineuun.github.io/2018/02/01/开发戒律/</id>
+    <published>2018-02-01T08:04:00.000Z</published>
+    <updated>2018-02-01T08:06:14.668Z</updated>
+    
+    <content type="html"><![CDATA[<p>2018年2月1日16:04:51</p><ol><li>sql执行一定要使用绑定参数，不然出现以下特殊字符就出错。【’ ,】，英文的引号，逗号的。</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;2018年2月1日16:04:51&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;sql执行一定要使用绑定参数，不然出现以下特殊字符就出错。【’ ,】，英文的引号，逗号的。&lt;/li&gt;
+&lt;/ol&gt;
+
+      
+    
+    </summary>
+    
+    
+      <category term="告诫" scheme="https://sunshineuun.github.io/tags/%E5%91%8A%E8%AF%AB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring Security日常问题</title>
+    <link href="https://sunshineuun.github.io/2018/02/01/Spring-Security%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/"/>
+    <id>https://sunshineuun.github.io/2018/02/01/Spring-Security日常问题/</id>
+    <published>2018-02-01T07:40:00.000Z</published>
+    <updated>2018-02-01T07:46:39.463Z</updated>
+    
+    <content type="html"><![CDATA[<h6 id="页面获取Spring-Security登录用户"><a href="#页面获取Spring-Security登录用户" class="headerlink" title="页面获取Spring Security登录用户"></a>页面获取Spring Security登录用户</h6><p>简介：  spring security 把SPRING_SECURITY_CONTEXT 放入了session 没有直接把username 放进去。</p><ul><li><p>前台取值方式一:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;session.SPRING_SECURITY_CONTEXT.authentication.principal.username&#125;</span><br></pre></td></tr></table></figure></li><li><p>前台取值方式二: 在页面端用tag获取</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ taglib prefix=&apos;security&apos; uri=&apos;http://www.springframework.org/security/tags&apos;%&gt;</span><br><span class="line">    &lt;security:authentication property=&quot;principal.username&quot;&gt;&lt;/security:authentication&gt;</span><br></pre></td></tr></table></figure></li></ul><p>或者<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;security:authorize ifAllGranted=&quot;ROLE_ADMIN&quot;&gt;  </span><br><span class="line">      &lt;security:authentication property=&quot;principal.username&quot;&gt;&lt;/security:authentication&gt;   </span><br><span class="line">&lt;/security:authorize&gt;</span><br></pre></td></tr></table></figure></p><ul><li>后台取值:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()  </span><br><span class="line">    .getAuthentication()  </span><br><span class="line">    .getPrincipal();  </span><br><span class="line">      </span><br><span class="line">userDetails.getUsername()</span><br></pre></td></tr></table></figure></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h6 id=&quot;页面获取Spring-Security登录用户&quot;&gt;&lt;a href=&quot;#页面获取Spring-Security登录用户&quot; class=&quot;headerlink&quot; title=&quot;页面获取Spring Security登录用户&quot;&gt;&lt;/a&gt;页面获取Spring Securi
+      
+    
+    </summary>
+    
+    
+      <category term="Spring Security" scheme="https://sunshineuun.github.io/tags/Spring-Security/"/>
+    
+  </entry>
   
   <entry>
     <title>TDC书单</title>
@@ -150,376 +472,6 @@
       <category term="JenKins" scheme="https://sunshineuun.github.io/tags/JenKins/"/>
     
       <category term="自动化构建" scheme="https://sunshineuun.github.io/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Maven打包问题</title>
-    <link href="https://sunshineuun.github.io/2018/01/26/Maven%E6%89%93%E5%8C%85%E9%97%AE%E9%A2%98/"/>
-    <id>https://sunshineuun.github.io/2018/01/26/Maven打包问题/</id>
-    <published>2018-01-26T03:32:48.000Z</published>
-    <updated>2018-01-26T03:35:38.816Z</updated>
-    
-    <content type="html"><![CDATA[<ol><li>Maven所有的打包都是依赖Maven仓库的，并不依赖项目。</li><li>每个Maven都需要依赖到具体的项目。</li><li>关于Maven<code>parent</code>的节点需要学习。</li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ol&gt;
-&lt;li&gt;Maven所有的打包都是依赖Maven仓库的，并不依赖项目。&lt;/li&gt;
-&lt;li&gt;每个Maven都需要依赖到具体的项目。&lt;/li&gt;
-&lt;li&gt;关于Maven&lt;code&gt;parent&lt;/code&gt;的节点需要学习。&lt;/li&gt;
-&lt;/ol&gt;
-
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Spring Boot使用Druid数据源</title>
-    <link href="https://sunshineuun.github.io/2018/01/24/pring-Boot%E4%BD%BF%E7%94%A8Druid%E6%95%B0%E6%8D%AE%E6%BA%90/"/>
-    <id>https://sunshineuun.github.io/2018/01/24/pring-Boot使用Druid数据源/</id>
-    <published>2018-01-24T12:45:00.000Z</published>
-    <updated>2018-01-24T13:39:19.219Z</updated>
-    
-    <content type="html"><![CDATA[<h6 id="添加pom文件依赖"><a href="#添加pom文件依赖" class="headerlink" title="添加pom文件依赖"></a>添加pom文件依赖</h6><p>数据库驱动的jar，视你用的是什么数据库添加对应pom依赖。我这里用oracle数据库所以就添加oracle的依赖。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- alibaba的druid数据库连接池 --&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line"> &lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;druid&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.1.6&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;com.oracle&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;ojdbc14&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;10.2.0.4.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p><h5 id="配置yml文件中druid数据库连接池"><a href="#配置yml文件中druid数据库连接池" class="headerlink" title="配置yml文件中druid数据库连接池"></a>配置yml文件中druid数据库连接池</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">    datasource:</span><br><span class="line">        name: test</span><br><span class="line">        username: root</span><br><span class="line">        password: root</span><br><span class="line">        url: jdbc:oracle:thin:@192.168.16.113:1521:sunshine</span><br><span class="line">        driver-class-name: oracle.jdbc.driver.OracleDriver # 数据库驱动配置</span><br><span class="line">        type: com.alibaba.druid.pool.DruidDataSource</span><br><span class="line">        # aliyun数据连接池配置</span><br><span class="line">        druid:</span><br><span class="line">          username: root</span><br><span class="line">          password: root</span><br><span class="line">          # 初始化连接数</span><br><span class="line">          initial-size: 1</span><br><span class="line">          # 最小连接数</span><br><span class="line">          min-idle: 3</span><br><span class="line">          # 最大连接数</span><br><span class="line">          max-active: 20</span><br><span class="line">          # 配置获取连接等待超时的时间</span><br><span class="line">          max-wait: 60000</span><br><span class="line">          # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒</span><br><span class="line">          time-between-eviction-runs-millis: 60000</span><br><span class="line">          # 配置一个连接在池中最小生存的时间，单位是毫秒</span><br><span class="line">          min-evictable-idle-time-millis: 30000</span><br><span class="line">          validation-query: select&apos;x&apos;</span><br><span class="line">          test-while-idle: true</span><br><span class="line">          test-on-borrow: false</span><br><span class="line">          test-on-return: false</span><br><span class="line">          # 打开PSCache，并且指定每个连接上PSCache的大小</span><br><span class="line">          pool-prepared-statements: true</span><br><span class="line">          max-pool-prepared-statement-per-connection-size: 20</span><br><span class="line">          # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，&apos;wall&apos;用于防火墙</span><br><span class="line">          filters: stat,wall,slf4j</span><br><span class="line">          # 通过connectProperties属性来打开mergeSql功能；慢SQL记录</span><br><span class="line">          connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000</span><br><span class="line">          # 合并多个DruidDataSource的监控数据</span><br><span class="line">          useGlobalDataSourceStat: true</span><br></pre></td></tr></table></figure><h5 id="配置Druid的监控统计功能"><a href="#配置Druid的监控统计功能" class="headerlink" title="配置Druid的监控统计功能"></a>配置Druid的监控统计功能</h5><ul><li>@Confing注解 配置类，代码见<a href="/files/DruidConfiguration.java">DruidConfiguration.java</a></li><li>基于注解<br>首先在启动类上加上注解：@ServletComponentScan使Spring能够扫描到我们自己编写的servlet和filter。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">//druid数据源状态监控.</span><br><span class="line">@WebServlet(urlPatterns = &quot;/druid/*&quot;,</span><br><span class="line">    initParams = &#123;</span><br><span class="line">        // IP白名单 (没有配置或者为空，则允许所有访问)</span><br><span class="line">        @WebInitParam(name = &quot;allow&quot;, value = &quot;192.168.1.72,127.0.0.1&quot;),</span><br><span class="line">        // IP黑名单 (存在共同时，deny优先于allow)</span><br><span class="line">        @WebInitParam(name = &quot;deny&quot;, value = &quot;192.168.1.73&quot;),</span><br><span class="line">        // 用户名</span><br><span class="line">        @WebInitParam(name = &quot;loginUsername&quot;, value = &quot;admin&quot;),</span><br><span class="line">        // 密码</span><br><span class="line">        @WebInitParam(name = &quot;loginPassword&quot;, value = &quot;admin&quot;),</span><br><span class="line">        // 禁用HTML页面上的“Reset All”功能</span><br><span class="line">        @WebInitParam(name = &quot;resetEnable&quot;, value = &quot;false&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line">public class DruidStatViewServlet extends StatViewServlet &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// druid过滤器. </span><br><span class="line">@WebFilter(filterName = &quot;druidWebStatFilter&quot;, urlPatterns = &quot;/*&quot;,</span><br><span class="line">    initParams = &#123;</span><br><span class="line">        // 忽略资源</span><br><span class="line">        @WebInitParam(name = &quot;exclusions&quot;, </span><br><span class="line">       value=&quot;*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line">public class DruidStatFilter extends WebStatFilter &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ul><h5 id="效果如下："><a href="#效果如下：" class="headerlink" title="效果如下："></a>效果如下：</h5><p><img src="/images/pasted-36.png" alt="/images/pasted-36.png"></p><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><p><a href="https://segmentfault.com/a/1190000009132815" target="_blank" rel="noopener">Spring Boot 使用 Druid 数据库连接池</a><br><a href="https://github.com/alibaba/druid" target="_blank" rel="noopener">Druid的官方地址</a><br><a href="https://www.oschina.net/p/druid" target="_blank" rel="noopener">JDBC连接池、监控组件 Druid</a></p><h5 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h5><h6 id="property-for-user-to-setup"><a href="#property-for-user-to-setup" class="headerlink" title="(*) property for user to setup"></a>(*) property for user to setup</h6><p>查看数据源的时候出现<code>(*) property for user to setup</code>错误信息。<br>原因未初始化数据源。<a href="https://github.com/alibaba/druid/issues/1802" target="_blank" rel="noopener">详情传送门</a><br><img src="/images/pasted-37.png" alt="upload successful"><br>但是笔者的解决方案，多点几下<strong>数据源</strong>按钮，就能显示出数据了，感觉这个界面还是有问题的，目前将就着用，不受影响。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h6 id=&quot;添加pom文件依赖&quot;&gt;&lt;a href=&quot;#添加pom文件依赖&quot; class=&quot;headerlink&quot; title=&quot;添加pom文件依赖&quot;&gt;&lt;/a&gt;添加pom文件依赖&lt;/h6&gt;&lt;p&gt;数据库驱动的jar，视你用的是什么数据库添加对应pom依赖。我这里用oracle数据
-      
-    
-    </summary>
-    
-    
-      <category term="Spring Boot" scheme="https://sunshineuun.github.io/tags/Spring-Boot/"/>
-    
-      <category term="Druid" scheme="https://sunshineuun.github.io/tags/Druid/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Maven配置阿里云镜像库</title>
-    <link href="https://sunshineuun.github.io/2018/01/24/Maven%E4%BD%BF%E7%94%A8Aliyun%E9%95%9C%E5%83%8F%E5%BA%93/"/>
-    <id>https://sunshineuun.github.io/2018/01/24/Maven使用Aliyun镜像库/</id>
-    <published>2018-01-24T08:57:00.000Z</published>
-    <updated>2018-01-24T09:01:29.004Z</updated>
-    
-    <content type="html"><![CDATA[<p>在<code>profile &gt; repositories</code>节点下增加阿里的镜像库<br><img src="/images/pasted-35.png" alt="upload successful"></p><p>代码如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;repository&gt;</span><br><span class="line"> &lt;id&gt;aliyunmaven&lt;/id&gt;</span><br><span class="line">&lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;</span><br><span class="line">&lt;/repository&gt;</span><br></pre></td></tr></table></figure></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;在&lt;code&gt;profile &amp;gt; repositories&lt;/code&gt;节点下增加阿里的镜像库&lt;br&gt;&lt;img src=&quot;/images/pasted-35.png&quot; alt=&quot;upload successful&quot;&gt;&lt;/p&gt;
-&lt;p&gt;代码如下&lt;br&gt;&lt;figure cl
-      
-    
-    </summary>
-    
-      <category term="Maven" scheme="https://sunshineuun.github.io/categories/Maven/"/>
-    
-    
-      <category term="Maven" scheme="https://sunshineuun.github.io/tags/Maven/"/>
-    
-      <category term="Aliyun" scheme="https://sunshineuun.github.io/tags/Aliyun/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring boot项目创建</title>
-    <link href="https://sunshineuun.github.io/2018/01/24/ring-boot%E9%A1%B9%E7%9B%AE%E5%88%9B%E5%BB%BA/"/>
-    <id>https://sunshineuun.github.io/2018/01/24/ring-boot项目创建/</id>
-    <published>2018-01-24T07:10:00.000Z</published>
-    <updated>2018-01-24T08:46:47.874Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="使用IDEA创建项目"><a href="#使用IDEA创建项目" class="headerlink" title="使用IDEA创建项目"></a>使用IDEA创建项目</h5><ul><li><p>New Project，选择<code>Spring Initializr</code>，Next，Next<br><img src="/images/pasted-33.png" alt="upload successful"></p></li><li><p>选择相关集成的JAR包<br><img src="/images/pasted-34.png" alt="upload successful"></p></li></ul><h6 id="Core"><a href="#Core" class="headerlink" title="Core"></a>Core</h6><table><thead><tr><th>工具名称</th><th style="text-align:center">说明</th><th style="text-align:center">参考地址</th></tr></thead><tbody><tr><td>DevTools</td><td style="text-align:center">热部署</td><td style="text-align:center"><a href="http://blog.csdn.net/cl_andywin/article/details/53781737?ABstrategy=codes_snippets_optimize_v3" target="_blank" rel="noopener">详情前往</a></td></tr><tr><td>Security</td><td style="text-align:center">权限控制</td><td style="text-align:center">-</td></tr><tr><td>Lombok</td><td style="text-align:center">代码模板，省略了get/set的方法，IDEA中有Lombok的插件</td><td style="text-align:center">-</td></tr><tr><td>Configration Processor</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Session</td><td style="text-align:center">分布式Session共享</td><td style="text-align:center">-</td></tr><tr><td>Cache</td><td style="text-align:center">缓存，具体位置</td><td style="text-align:center"><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html" target="_blank" rel="noopener">详情前往</a></td></tr><tr><td>Validation</td><td style="text-align:center">后端的数据校验</td><td style="text-align:center">-</td></tr><tr><td>Retry</td><td style="text-align:center">spring熔断机制</td><td style="text-align:center">-</td></tr><tr><td>JTA</td><td style="text-align:center">分布式事务处理，Atomikos,Bitronix,Narayana</td><td style="text-align:center">-</td></tr><tr><td>Aspects</td><td style="text-align:center">AOP处理</td><td style="text-align:center">-</td></tr></tbody></table><h5 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h5><table><thead><tr><th>工具名称</th><th style="text-align:center">说明</th><th style="text-align:center">参考地址</th></tr></thead><tbody><tr><td>Web</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Rest Repositories</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Rest Repositories HAL Browser</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>HATEOAS</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Web Services</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Jersey JAX-RS</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Websocket</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>REST Docs</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Vaadin</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Apache CXF</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Ratpack</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Mobile</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Keycloak</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr></tbody></table><h5 id="Template-Engines"><a href="#Template-Engines" class="headerlink" title="Template Engines"></a>Template Engines</h5><table><thead><tr><th>工具名称</th><th style="text-align:center">说明</th><th style="text-align:center">参考地址</th></tr></thead><tbody><tr><td>Yhymeleaf</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Freemarker</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Mustache</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Groovy Templates</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr></tbody></table><h5 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h5><table><thead><tr><th>工具名称</th><th style="text-align:center">说明</th><th style="text-align:center">参考地址</th></tr></thead><tbody><tr><td>JPA</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>MySql</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>H2</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>JDBC</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Mybatis</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>PostgreSQL</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>SQL Server</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>HSQLDB</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Apache Derby</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Liquibase</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Flyway</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>JOOQ</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr></tbody></table><h5 id="NoSQL"><a href="#NoSQL" class="headerlink" title="NoSQL"></a>NoSQL</h5><table><thead><tr><th>工具名称</th><th style="text-align:center">说明</th><th style="text-align:center">参考地址</th></tr></thead><tbody><tr><td>Redis</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>MongoDB</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Reactive Redis</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Reactive MongoDB</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Embedded MongoDB</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Elasticsearch</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Solr</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Cassandra</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Couchbase</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Neo4j</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Gemfire</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr></tbody></table><h5 id="Cloud-Core-分布式核心"><a href="#Cloud-Core-分布式核心" class="headerlink" title="Cloud Core-分布式核心"></a>Cloud Core-分布式核心</h5><table><thead><tr><th>工具名称</th><th style="text-align:center">说明</th><th style="text-align:center">参考地址</th></tr></thead><tbody><tr><td>Cloud Connectors</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Cloud Bootstrap</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Cloud Security</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Cloud OAuth2</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Cloud Task</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr></tbody></table><h5 id="Cloud-Config-分布式配置中心"><a href="#Cloud-Config-分布式配置中心" class="headerlink" title="Cloud Config-分布式配置中心"></a>Cloud Config-分布式配置中心</h5><table><thead><tr><th>工具名称</th><th style="text-align:center">说明</th><th style="text-align:center">参考地址</th></tr></thead><tbody><tr><td>Cloud Client</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Cloud Server</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Vault Configuration</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Zookeeper Configuration</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Consul Configuration</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr></tbody></table><h5 id="Cloud-Discovery-分布式服务注册"><a href="#Cloud-Discovery-分布式服务注册" class="headerlink" title="Cloud Discovery-分布式服务注册"></a>Cloud Discovery-分布式服务注册</h5><table><thead><tr><th>工具名称</th><th style="text-align:center">说明</th><th style="text-align:center">参考地址</th></tr></thead><tbody><tr><td>Zookeeper Discovery</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr></tbody></table><h5 id="Cloud-Routing-动态数据路由"><a href="#Cloud-Routing-动态数据路由" class="headerlink" title="Cloud Routing-动态数据路由"></a>Cloud Routing-动态数据路由</h5><table><thead><tr><th>工具名称</th><th style="text-align:center">说明</th><th style="text-align:center">参考地址</th></tr></thead><tbody><tr><td>Zuul</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Ribbon</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Feign</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr></tbody></table><h5 id="Cloud-Circuit-Breaker-熔断器"><a href="#Cloud-Circuit-Breaker-熔断器" class="headerlink" title="Cloud Circuit Breaker-熔断器"></a>Cloud Circuit Breaker-熔断器</h5><table><thead><tr><th>工具名称</th><th style="text-align:center">说明</th><th style="text-align:center">参考地址</th></tr></thead><tbody><tr><td>Hystrix</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Turbine</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr></tbody></table><h5 id="Cloud-Tracing-分布式追踪器"><a href="#Cloud-Tracing-分布式追踪器" class="headerlink" title="Cloud Tracing-分布式追踪器"></a>Cloud Tracing-分布式追踪器</h5><table><thead><tr><th>工具名称</th><th style="text-align:center">说明</th><th style="text-align:center">参考地址</th></tr></thead><tbody><tr><td>Zipkin UI</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Zipkin Stream</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Zipkin Client</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Sleuth Stream</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr></tbody></table><h5 id="Cloud-Messaging-分布式消息总线"><a href="#Cloud-Messaging-分布式消息总线" class="headerlink" title="Cloud Messaging-分布式消息总线"></a>Cloud Messaging-分布式消息总线</h5><table><thead><tr><th>工具名称</th><th style="text-align:center">说明</th><th style="text-align:center">参考地址</th></tr></thead><tbody><tr><td>Cloud Bus Kafka</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Cloud Bus AMQP</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Stream Binder Rabbit</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr><tr><td>Stream Binder Kafka</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr></tbody></table><h5 id="以下省略一部分，都是些看不懂的东西。"><a href="#以下省略一部分，都是些看不懂的东西。" class="headerlink" title="以下省略一部分，都是些看不懂的东西。"></a>以下省略一部分，都是些看不懂的东西。</h5><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><p><a href="https://www.jetbrains.com/help/idea/2016.3/creating-spring-boot-projects.html" target="_blank" rel="noopener">IntelliJ IDEA Spring Boot Help</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;使用IDEA创建项目&quot;&gt;&lt;a href=&quot;#使用IDEA创建项目&quot; class=&quot;headerlink&quot; title=&quot;使用IDEA创建项目&quot;&gt;&lt;/a&gt;使用IDEA创建项目&lt;/h5&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;New Project，选择&lt;code&gt;Spring In
-      
-    
-    </summary>
-    
-      <category term="后端" scheme="https://sunshineuun.github.io/categories/%E5%90%8E%E7%AB%AF/"/>
-    
-      <category term="Spring 框架" scheme="https://sunshineuun.github.io/categories/%E5%90%8E%E7%AB%AF/Spring-%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="Spring boot" scheme="https://sunshineuun.github.io/tags/Spring-boot/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>TILT3D-Firefox</title>
-    <link href="https://sunshineuun.github.io/2018/01/24/ILT3D-Firefox/"/>
-    <id>https://sunshineuun.github.io/2018/01/24/ILT3D-Firefox/</id>
-    <published>2018-01-24T04:18:00.000Z</published>
-    <updated>2018-01-24T07:09:28.315Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="TILT-3D-效果如下"><a href="#TILT-3D-效果如下" class="headerlink" title="TILT 3D 效果如下"></a>TILT 3D 效果如下</h5><p><img src="/images/pasted-30.png" alt="upload successful"></p><h5 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h5><p>将网页已3D的模型展示出来。</p><h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><ul><li>因为目前貌似有版本影响的问题，笔者用的版本为<code>49.0.2</code>。</li><li>菜单栏 &gt;&gt; 工具 &gt;&gt; Web开发者 &gt;&gt; 获取更多工具</li><li><p>查询Tilt组件，结果如下图；点击进去安装，重启FireFox即可。<br><img src="/images/pasted-31.png" alt="upload successful"></p></li><li><p>菜单栏 &gt;&gt; 工具 &gt;&gt; Web开发者下找到Tilt工具，笔者是用<code>Ctrl+Shift+M</code>调用的。具体视情况而定。<br><img src="/images/pasted-32.png" alt="upload successful"></p></li></ul><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><p><a href="https://addons.mozilla.org/en-US/firefox/addon/tilt/" target="_blank" rel="noopener">插件地址-US</a><br><a href="https://addons.mozilla.org/zh-CN/firefox/addon/tilt/" target="_blank" rel="noopener">插件地址-ZH</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;TILT-3D-效果如下&quot;&gt;&lt;a href=&quot;#TILT-3D-效果如下&quot; class=&quot;headerlink&quot; title=&quot;TILT 3D 效果如下&quot;&gt;&lt;/a&gt;TILT 3D 效果如下&lt;/h5&gt;&lt;p&gt;&lt;img src=&quot;/images/pasted-30.pn
-      
-    
-    </summary>
-    
-      <category term="前端" scheme="https://sunshineuun.github.io/categories/%E5%89%8D%E7%AB%AF/"/>
-    
-    
-      <category term="Tilt 3D" scheme="https://sunshineuun.github.io/tags/Tilt-3D/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Angular-脚手架</title>
-    <link href="https://sunshineuun.github.io/2018/01/23/ngular-%E8%84%9A%E6%89%8B%E6%9E%B6/"/>
-    <id>https://sunshineuun.github.io/2018/01/23/ngular-脚手架/</id>
-    <published>2018-01-23T07:43:00.000Z</published>
-    <updated>2018-01-24T07:09:42.159Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="脚手架命令"><a href="#脚手架命令" class="headerlink" title="脚手架命令"></a>脚手架命令</h5><table><thead><tr><th>范围</th><th style="text-align:center">命令</th><th style="text-align:right">作用</th></tr></thead><tbody><tr><td>new</td><td style="text-align:center">right-aligned</td><td style="text-align:right">初始化新项目</td></tr><tr><td>Component</td><td style="text-align:center">ng g component my-new-component</td><td style="text-align:right">新建一个组件</td></tr><tr><td>Directive</td><td style="text-align:center">ng g directive my-new-directive</td><td style="text-align:right">新建一个指令</td></tr><tr><td>Pipe</td><td style="text-align:center">ng g pipe my-new-pipe</td><td style="text-align:right">新建一个管道</td></tr><tr><td>Service</td><td style="text-align:center">ng g service my-new-service</td><td style="text-align:right">新建一个服务</td></tr><tr><td>Class</td><td style="text-align:center">ng g class my-new-class</td><td style="text-align:right">新建一个类</td></tr><tr><td>Interface</td><td style="text-align:center">ng g interface my-new-interface</td><td style="text-align:right">新建一个接口</td></tr><tr><td>Enum</td><td style="text-align:center">ng g enum my-new-enum</td><td style="text-align:right">新建一个枚举</td></tr><tr><td>Module</td><td style="text-align:center">ng g module my-module</td><td style="text-align:right">新建一个模块</td></tr></tbody></table><h5 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h5><ul><li>启动服务<code>ng serve</code></li><li>打包<code>ng build</code></li></ul><h5 id="目录树详解"><a href="#目录树详解" class="headerlink" title="目录树详解"></a>目录树详解</h5><p><img src="/images/pasted-29.png" alt="upload successful"></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;脚手架命令&quot;&gt;&lt;a href=&quot;#脚手架命令&quot; class=&quot;headerlink&quot; title=&quot;脚手架命令&quot;&gt;&lt;/a&gt;脚手架命令&lt;/h5&gt;&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;范围&lt;/th&gt;
-&lt;th style=&quot;text-align:center
-      
-    
-    </summary>
-    
-      <category term="前端" scheme="https://sunshineuun.github.io/categories/%E5%89%8D%E7%AB%AF/"/>
-    
-    
-      <category term="Angular" scheme="https://sunshineuun.github.io/tags/Angular/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Angular-双向数据绑定</title>
-    <link href="https://sunshineuun.github.io/2018/01/23/ngular-%E5%8F%8C%E5%90%91%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9A/"/>
-    <id>https://sunshineuun.github.io/2018/01/23/ngular-双向数据绑定/</id>
-    <published>2018-01-23T03:19:00.000Z</published>
-    <updated>2018-01-24T07:09:50.670Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="双向数据绑定"><a href="#双向数据绑定" class="headerlink" title="双向数据绑定"></a>双向数据绑定</h4><h6 id="主要代码如下"><a href="#主要代码如下" class="headerlink" title="主要代码如下"></a>主要代码如下</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># [(ngModel)]=&quot;password&quot;，使用[(ngModel)]进行绑定password属性</span><br><span class="line">&lt;input type=&quot;password&quot; [(ngModel)]=&quot;password&quot; value=&quot;&#123;&#123;password&#125;&#125;&quot;/&gt;</span><br></pre></td></tr></table></figure><p><code>[(ngModel)]</code>是一个Angular语法，用与把<code>password</code>绑定到输入框中。 它的数据流是双向的：从属性到输入框，并且从输入框回到属性。<br>不幸的是，做了这项改动之后，我们的程序崩溃了。 打开浏览器的控制台，我们会看到Angular抱怨说：“ngModel … isn’t a known property of input.”（ngModel不是input元素的已知属性）<br>虽然<code>NgModel</code>是一个有效的Angular指令，但它默认情况下却是不可用的。 它属于一个可选模块<code>FormsModule</code>。 我们必须选择使用那个模块。</p><h6 id="导入FormMoule模块"><a href="#导入FormMoule模块" class="headerlink" title="导入FormMoule模块"></a>导入<code>FormMoule</code>模块</h6><p>打开<code>app.module.ts</code>文件，并且从<code>@angular/forms</code>库中导入符号<code>FormsModule</code>。 然后把<code>FormsModule</code>添加到<code>@NgModule</code>元数据的<code>imports</code>数组中，它是当前应用正在使用的外部模块列表。<br>修改后的<code>AppModule</code>是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import &#123;BrowserModule&#125; from &apos;@angular/platform-browser&apos;;</span><br><span class="line">import &#123;NgModule&#125; from &apos;@angular/core&apos;;</span><br><span class="line">import &#123;FormsModule&#125; from &apos;@angular/forms&apos;;</span><br><span class="line"></span><br><span class="line">import &#123;AppComponent&#125; from &apos;./app.component&apos;;</span><br><span class="line">import &#123;UserComponent&#125; from &apos;./user/user.component&apos;;</span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">  declarations: [</span><br><span class="line">    AppComponent,</span><br><span class="line">    UserComponent</span><br><span class="line">  ],</span><br><span class="line">  imports: [</span><br><span class="line">    BrowserModule,</span><br><span class="line">    FormsModule</span><br><span class="line">  ],</span><br><span class="line">  providers: [],</span><br><span class="line">  bootstrap: [AppComponent]</span><br><span class="line">&#125;)</span><br><span class="line">export class AppModule &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><h6 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h6><ul><li><a href="https://angular.cn/api/forms/FormsModule" target="_blank" rel="noopener">FormsModule</a></li><li><a href="https://angular.cn/api/forms/NgControlStatus" target="_blank" rel="noopener">ngModel</a></li><li><a href="https://angular.cn/guide/template-syntax#ngModel" target="_blank" rel="noopener">模板语法</a></li><li><a href="https://angular.cn/guide/forms#ngModel" target="_blank" rel="noopener">表单</a></li><li><a href="https://angular.cn/tutorial" target="_blank" rel="noopener">Angular官网</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;双向数据绑定&quot;&gt;&lt;a href=&quot;#双向数据绑定&quot; class=&quot;headerlink&quot; title=&quot;双向数据绑定&quot;&gt;&lt;/a&gt;双向数据绑定&lt;/h4&gt;&lt;h6 id=&quot;主要代码如下&quot;&gt;&lt;a href=&quot;#主要代码如下&quot; class=&quot;headerlink&quot; titl
-      
-    
-    </summary>
-    
-      <category term="前端" scheme="https://sunshineuun.github.io/categories/%E5%89%8D%E7%AB%AF/"/>
-    
-    
-      <category term="Angular" scheme="https://sunshineuun.github.io/tags/Angular/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Angular CLI 安装和使用</title>
-    <link href="https://sunshineuun.github.io/2018/01/19/Angular-CLI-%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/"/>
-    <id>https://sunshineuun.github.io/2018/01/19/Angular-CLI-安装和使用/</id>
-    <published>2018-01-19T13:20:00.000Z</published>
-    <updated>2018-01-19T13:51:03.626Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h5><ol><li>关于Angular版本，Angular官方已经统一命名<code>Angular 1.x</code>统称为<code>Angular JS</code>；<code>Angular 2.x</code>及以上统称<code>Angular</code>；</li><li><code>CLI</code>是<code>Command Line Interface</code>的简写，是一种命令行接口，实现自动化开发流程，比如：ionic cli、vue cli等；它可以创建项目、添加文件以及执行一大堆开发任务，比如测试、打包和发布。</li></ol><h5 id="安装Angular-CLI"><a href="#安装Angular-CLI" class="headerlink" title="安装Angular CLI"></a>安装Angular CLI</h5><ul><li><p>确认是否安装node和npm</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">node -v # 6.9.4</span><br><span class="line">npm -v # 3.10.10</span><br><span class="line">// node 版本高于6.9.3  npm版本高于3.0.0</span><br></pre></td></tr></table></figure></li><li><p>设置淘宝镜像，安装node-sass</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">设置环境变量</span><br><span class="line">set SASS_BINARY_SITE=https://npm.taobao.org/mirrors/node-sass/</span><br><span class="line">npm install node-sass</span><br></pre></td></tr></table></figure></li><li><p>安装Angular CLI</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install @angular/cli</span><br></pre></td></tr></table></figure></li><li><p>验证，执行<code>ng v</code>命令。出现下图情况则为安装成功。</p></li></ul><p><img src="/images/pasted-24.png" alt="upload successful"></p><h5 id="基于IDEA创建第一个AngularJS想用"><a href="#基于IDEA创建第一个AngularJS想用" class="headerlink" title="基于IDEA创建第一个AngularJS想用"></a>基于IDEA创建第一个AngularJS想用</h5><ul><li><p>创建项目,Anaular CLI选项，就是刚刚安装的。<br><img src="/images/pasted-25.png" alt="upload successful"><br><img src="/images/pasted-26.png" alt="upload successful"></p></li><li><p>创建的过程会下载创建一些资源如下图：<br><img src="/images/pasted-27.png" alt="upload successful"></p></li><li><p>使用<code>ng server</code>启动服务，访问端口<code>localhost:4200</code></p></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;背景介绍&quot;&gt;&lt;a href=&quot;#背景介绍&quot; class=&quot;headerlink&quot; title=&quot;背景介绍&quot;&gt;&lt;/a&gt;背景介绍&lt;/h5&gt;&lt;ol&gt;
-&lt;li&gt;关于Angular版本，Angular官方已经统一命名&lt;code&gt;Angular 1.x&lt;/code&gt;统称为&lt;c
-      
-    
-    </summary>
-    
-    
-      <category term="Angular CLI" scheme="https://sunshineuun.github.io/tags/Angular-CLI/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MyBatis二级缓存应用第三方（Redis）</title>
-    <link href="https://sunshineuun.github.io/2018/01/19/Batis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E5%BA%94%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%EF%BC%88Redis%EF%BC%89/"/>
-    <id>https://sunshineuun.github.io/2018/01/19/Batis二级缓存应用第三方（Redis）/</id>
-    <published>2018-01-19T05:48:00.000Z</published>
-    <updated>2018-01-19T13:20:02.424Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h5><p>使用mybatis时可以使用二级缓存提高查询速度，进而改善用户体验。 使用redis做mybatis的二级缓存可内存可控&lt;如将单独的服务器部署出来用于二级缓存&gt;，管理方便。</p><h5 id="使用思路"><a href="#使用思路" class="headerlink" title="使用思路"></a>使用思路</h5><ul><li>配置redis-applicationContext.xml 设置redis服务连接各参数</li><li>在配置文件中使用标签，设置开启二级</li><li>在需要使用二级h缓存的mapper.xml中使用将cache映射到指定的MybatisRedis类中</li><li>映射类MybatisRedisCache实现MyBatis包中的Cache类，并重写其中各方法； 在重写各方法体中，使用redisFactory和redis服务建立连接，将缓存的数据加载到指定的redis内存中(putObject方法)或将redis 服务中的数据从缓存中读取出来(getObject方法)； 在redis服务中写入和加载数据时需要借用spring-data-redis.jar中JdkSerializationRedisSerializer.class中的序列化(serialize) 和反序列化方法(deserialize),此为包中封装的redis默认的序列化方法；</li><li>映射类中的各方法重写完成后即可实现mybatis数据二级缓存到redis服务中</li></ul><h5 id="代码实践"><a href="#代码实践" class="headerlink" title="代码实践"></a>代码实践</h5><ul><li><p>配置redis-applicationContext.xml<br><img src="/images/pasted-21.png" alt="upload successful"></p></li><li><p>mybatis-config.xml配置开启二级缓存<br><img src="/images/pasted-22.png" alt="upload successful"></p></li><li><p>在mapper.xml中映射缓存类MybatisRedisCache<br><img src="/images/pasted-23.png" alt="upload successful"></p></li><li><p>实现<a href="/files/MybatisRedisCache.java">MybatisRedisCache</a>接口</p></li><li><p>使用中间类<a href="/files/RedisCacheTransfer.java">RedisCacheTransfer</a>解决MybatisRedisCache.jedisConnectionFactory的静态注入。</p></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h5&gt;&lt;p&gt;使用mybatis时可以使用二级缓存提高查询速度，进而改善用户体验。 使用redis做mybatis的二级缓存可内存可控&amp;lt;如将单独的服
-      
-    
-    </summary>
-    
-    
-      <category term="Mybatis" scheme="https://sunshineuun.github.io/tags/Mybatis/"/>
-    
-      <category term="Redis" scheme="https://sunshineuun.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Next主题之live2d，看板娘，博客宠物</title>
-    <link href="https://sunshineuun.github.io/2018/01/19/xt%E4%B8%BB%E9%A2%98%E4%B9%8Blive2d%EF%BC%8C%E7%9C%8B%E6%9D%BF%E5%A8%98%EF%BC%8C%E5%8D%9A%E5%AE%A2%E5%AE%A0%E7%89%A9/"/>
-    <id>https://sunshineuun.github.io/2018/01/19/xt主题之live2d，看板娘，博客宠物/</id>
-    <published>2018-01-19T05:02:50.000Z</published>
-    <updated>2018-01-19T05:17:49.959Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="为博客加入看板娘，宠物"><a href="#为博客加入看板娘，宠物" class="headerlink" title="为博客加入看板娘，宠物"></a>为博客加入看板娘，宠物</h5><p>效果图如下：<br><img src="/images/pasted-18.png" alt="upload successful"></p><h5 id="具体实现方法"><a href="#具体实现方法" class="headerlink" title="具体实现方法"></a>具体实现方法</h5><ul><li>live2d插件安装<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -save hexo-helper-live2d</span><br></pre></td></tr></table></figure></li></ul><p>注意：需要在项目的根目录下执行哦</p><ul><li><p>然后打开<code>Hexo/blog/themes/next/layout</code><br>的<code>_layout.swig</code>,将下面代码放到<code>&lt;/body&gt;</code>之前：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; live2d() &#125;&#125;</span><br></pre></td></tr></table></figure></li><li><p>然后在在 <code>hexo</code> 的 <code>_config.yml</code> 中添加参数：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">live2d:</span><br><span class="line">  model: wanko</span><br><span class="line">  bottom: -30</span><br></pre></td></tr></table></figure></li><li><p>如果想让宠物在移动端不显示的话再<code>主题配置文件</code>中加入以下代码:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">live2d:</span><br><span class="line">  model: wanko</span><br><span class="line">  bottom: -30</span><br><span class="line">  mobileShow: false</span><br></pre></td></tr></table></figure></li></ul><p>这样就配置成功了！</p><h5 id="live2d的详细配置解释"><a href="#live2d的详细配置解释" class="headerlink" title="live2d的详细配置解释"></a>live2d的详细配置解释</h5><ul><li>live2d的项目地址在<a href="https://github.com/EYHN/hexo-helper-live2d" target="_blank" rel="noopener">这里</a></li><li><strong>Settings</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># Live2D</span><br><span class="line">## https://github.com/EYHN/hexo-helper-live2d</span><br><span class="line">live2d:</span><br><span class="line">  model: z16 # 展示模型的代码. 默认: z16</span><br><span class="line">  width: 150 # 这个模型的宽度. 默认: 150</span><br><span class="line">  height: 300 # 这个模型的高度. default: 300</span><br><span class="line">  scaling: 1 # 分辨率缩放. default: 2</span><br><span class="line">  opacityDefault: 0.7 # 透明度. default: 0.7</span><br><span class="line">  opacityHover: 1 # The opacity when hover. default: 1</span><br><span class="line">  mobileShow: true #是否在移动设备上显示. default: true</span><br><span class="line">  mobileScaling: 0.5 # The scaling on mobile. default: 0.5</span><br><span class="line">  position: right # 模型所在网页的左边还是右边. default: right</span><br><span class="line">  horizontalOffset: 0 # 横向偏移量. default: 0</span><br><span class="line">  verticalOffset: -20 # 纵向偏移量. default: -20</span><br><span class="line">  id: live2dcanvas # live2d元素的ID. default: live2dcanvas</span><br><span class="line">  deviceJsSource: local # 当前设备脚本的源代码. default: local</span><br></pre></td></tr></table></figure></li></ul><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ol><li><a href="https://huaji8.top/post/live2d-plugin-2.0/" target="_blank" rel="noopener">live2d模型预览</a></li><li><a href="https://github.com/EYHN/hexo-helper-live2d" target="_blank" rel="noopener">live2d项目地址</a></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;为博客加入看板娘，宠物&quot;&gt;&lt;a href=&quot;#为博客加入看板娘，宠物&quot; class=&quot;headerlink&quot; title=&quot;为博客加入看板娘，宠物&quot;&gt;&lt;/a&gt;为博客加入看板娘，宠物&lt;/h5&gt;&lt;p&gt;效果图如下：&lt;br&gt;&lt;img src=&quot;/images/pasted
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Markdown基本语法</title>
-    <link href="https://sunshineuun.github.io/2018/01/19/rkdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/"/>
-    <id>https://sunshineuun.github.io/2018/01/19/rkdown基本语法/</id>
-    <published>2018-01-19T04:13:00.000Z</published>
-    <updated>2018-01-23T07:43:01.698Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h5><p>只需要在文本前面加上 # 即可，同理、你还可以增加二级标题、三级标题、四级标题、五级标题和六级标题，总共六级，只需要增加 # 即可，标题字号相应降低。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 一级标题</span><br><span class="line">## 二级标题</span><br><span class="line">### 三级标题</span><br><span class="line">#### 四级标题</span><br><span class="line">##### 五级标题</span><br><span class="line">###### 六级标题</span><br></pre></td></tr></table></figure></p><p>注：# 和「一级标题」之间建议保留一个字符的空格，这是最标准的 Markdown 写法。</p><h5 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h5><p>列表格式也很常用，在 Markdown 中，你只需要在文字前面加上 -/* 就可以了，例如：</p><ul><li>无序列表</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 文本1</span><br><span class="line">- 文本2</span><br><span class="line">- 文本3</span><br></pre></td></tr></table></figure><ul><li>有序列表</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 文本1</span><br><span class="line">2. 文本2</span><br><span class="line">3. 文本3</span><br></pre></td></tr></table></figure><h5 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h5><p>使用 <code>[显示文本](链接地址)</code> 这样的语法即可，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[百度传送门](www.baidu.com)</span><br></pre></td></tr></table></figure></p><p>图片插入<code>![](图片链接地址)</code>，图片链接地址可以是相对路径，绝对路径，也可以是网上的资源。</p><h5 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h5><p>引用他人的文字，这个时候引用这个格式就很有必要了，在 Markdown 中，你只需要在你希望引用的文字前面加上 &gt; 就好了，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; 引用演示</span><br></pre></td></tr></table></figure></p><h5 id="粗体和斜体"><a href="#粗体和斜体" class="headerlink" title="粗体和斜体"></a>粗体和斜体</h5><p>Markdown 的粗体和斜体也非常简单，用两个 <code>*</code> 包含一段文本就是粗体的语法，用一个 <code>*</code> 包含一段文本就是斜体的语法。例如：<br>演示语句：<em>我是斜体</em>，<strong>我是粗体</strong><br>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*我是斜体*，**我是粗体**</span><br></pre></td></tr></table></figure></p><h5 id="代码引用"><a href="#代码引用" class="headerlink" title="代码引用"></a>代码引用</h5><p>字段的代码用<code>进行包裹，段落的代码用</code>进行包裹。</p><h5 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">| Tables        | Are           | Cool  |</span><br><span class="line">| ------------- |:-------------:| -----:|</span><br><span class="line">| col 3 is      | right-aligned | $1600 |</span><br><span class="line">| col 2 is      | centered      |   $12 |</span><br><span class="line">| zebra stripes | are neat      |    $1 |</span><br></pre></td></tr></table></figure><p>效果如下：</p><table><thead><tr><th>Tables</th><th style="text-align:center">Are</th><th style="text-align:right">Cool</th></tr></thead><tbody><tr><td>col 3 is</td><td style="text-align:center">right-aligned</td><td style="text-align:right">$1600</td></tr><tr><td>col 2 is</td><td style="text-align:center">centered</td><td style="text-align:right">$12</td></tr><tr><td>zebra stripes</td><td style="text-align:center">are neat</td><td style="text-align:right">$1</td></tr></tbody></table>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;标题&quot;&gt;&lt;a href=&quot;#标题&quot; class=&quot;headerlink&quot; title=&quot;标题&quot;&gt;&lt;/a&gt;标题&lt;/h5&gt;&lt;p&gt;只需要在文本前面加上 # 即可，同理、你还可以增加二级标题、三级标题、四级标题、五级标题和六级标题，总共六级，只需要增加 # 即可，标题字号
-      
-    
-    </summary>
-    
-      <category term="语法" scheme="https://sunshineuun.github.io/categories/%E8%AF%AD%E6%B3%95/"/>
-    
-    
-      <category term="Hexo" scheme="https://sunshineuun.github.io/tags/Hexo/"/>
-    
-      <category term="Markdown" scheme="https://sunshineuun.github.io/tags/Markdown/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>GitLab之IP修改</title>
-    <link href="https://sunshineuun.github.io/2018/01/19/GitLab%E4%B9%8BIP%E4%BF%AE%E6%94%B9/"/>
-    <id>https://sunshineuun.github.io/2018/01/19/GitLab之IP修改/</id>
-    <published>2018-01-19T02:35:00.000Z</published>
-    <updated>2018-01-19T05:01:05.927Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h5><p>虚拟机的IP地址变动了，用新的IP地址直接访问虚拟的gitlab没问题，开发者的项目上修改对应的远程地址也就可以关联上了。但是出现一个问题，如下图所示：<br>项目的下载地址还是原有的IP地址，不是现有IP地址。基于这样的问题给出以下修改。<br><img src="/images/pasted-14.png" alt="upload successful"></p><h5 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h5><p>PS:笔者用的是ubuntu的系统</p><ul><li><p>进入gitlab的配置目录</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/gitlab/embedded/service/gitlab-rails/config</span><br></pre></td></tr></table></figure></li><li><p>用<code>ls</code>命令查看目录下的文件，如下图：。目录中会包含一个<code>gitlab.yml</code>的文件。<br>  <img src="/images/pasted-15.png" alt="upload successful"></p></li><li><p>打开并修改相关配置，用<code>vi gitlab.yml</code>命令进行打开。将图中host修改成新指定的IP即可。例如我这里就将IP修改为<code>192.168.16.182</code><br>  <img src="/images/pasted-16.png" alt="upload successful"></p></li><li><p><code>gitlab-ctl restart</code>重启服务即可，效果图如下：<br>  <img src="/images/pasted-17.png" alt="upload successful"></p></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;问题背景&quot;&gt;&lt;a href=&quot;#问题背景&quot; class=&quot;headerlink&quot; title=&quot;问题背景&quot;&gt;&lt;/a&gt;问题背景&lt;/h5&gt;&lt;p&gt;虚拟机的IP地址变动了，用新的IP地址直接访问虚拟的gitlab没问题，开发者的项目上修改对应的远程地址也就可以关联上了。但
-      
-    
-    </summary>
-    
-      <category term="IT" scheme="https://sunshineuun.github.io/categories/IT/"/>
-    
-      <category term="版本控制" scheme="https://sunshineuun.github.io/categories/IT/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/"/>
-    
-    
-      <category term="GitLab" scheme="https://sunshineuun.github.io/tags/GitLab/"/>
-    
-      <category term="IP" scheme="https://sunshineuun.github.io/tags/IP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hexo主题之NexT</title>
-    <link href="https://sunshineuun.github.io/2018/01/18/xo%E6%9B%BF%E6%8D%A2%E4%B8%BB%E9%A2%98%E4%B8%BANexT/"/>
-    <id>https://sunshineuun.github.io/2018/01/18/xo替换主题为NexT/</id>
-    <published>2018-01-18T03:34:00.000Z</published>
-    <updated>2018-01-18T03:34:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><ul><li><p>下载NexT主题，下载地址请前往<font size="4"><a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">这里</a></font>。如下图！或者点击<font size="4"><a href="https://github.com/iissnan/hexo-theme-next/archive/master.zip" target="_blank" rel="noopener">这里</a></font>直接进行下载。</p><p>  <img src="/images/pasted-2.png" alt="upload successful"></p></li><li><p>将下载下来的文件解压，放到根目录下的themes文件夹下。如下图中的next下存储的就是NexT主题。</p><p>  <img src="/images/pasted-4.png" alt="upload successful"></p></li></ul><h5 id="启用主题"><a href="#启用主题" class="headerlink" title="启用主题"></a>启用主题</h5><p>修改<font size="4">./_config.yml</font>中的theme配置<br><code>theme: next</code></p><h5 id="添加评论功能"><a href="#添加评论功能" class="headerlink" title="添加评论功能"></a>添加评论功能</h5><ul><li>前往<a href="https://github.com" target="_blank" rel="noopener">Github</a>创建OAuth App。<a href="https://github.com/settings/applications/new" target="_blank" rel="noopener">传送门直接新建</a>，前提需要已经登录了。</li><li><p>打开如下图：</p><p>  <img src="/images/pasted-8.png" alt="upload successful"></p></li><li>Authorization callback URL这一项填写需要谨慎，一般是自己的域名，回调用的，其他随意填写。</li><li><p>会生成如下内容：Client ID和Client Secret</p><p>  <img src="/images/pasted-9.png" alt="upload successful"></p></li><li><p>编辑主题配置文件(_config.yml)，启用评论功能：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">gitment:</span><br><span class="line">  enable: true</span><br><span class="line">  lazy: true #用一个按钮延迟加载评论。</span><br><span class="line">  github_user: #Github ID</span><br><span class="line">  github_repo: #评论存储仓库</span><br><span class="line">  client_id: #在上一步获取的到的</span><br><span class="line">  client_secret: #在上一步获取的到的</span><br></pre></td></tr></table></figure></li><li><p>效果如下：</p><p>  <img src="/images/pasted-10.png" alt="upload successful"></p></li></ul><h5 id="添加打赏功能"><a href="#添加打赏功能" class="headerlink" title="添加打赏功能"></a>添加打赏功能</h5><p>一下代码都是被注释掉，去掉注释，并且配置对应的图片的路径，图片是支付宝，微信的<font size="5">收款码</font>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">reward_comment: I&apos;m not rich, but still hold the dream.</span><br><span class="line">wechatpay: /images/wechatpay.jpg</span><br><span class="line">alipay: /images/alipay.jpg</span><br></pre></td></tr></table></figure></p><h5 id="添加查询功能"><a href="#添加查询功能" class="headerlink" title="添加查询功能"></a>添加查询功能</h5><h6 id="Local-Search"><a href="#Local-Search" class="headerlink" title="Local Search"></a>Local Search</h6><ul><li><p>安装<code>hexo-generator-searchdb</code>，在站点的根目录下执行以下命令：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure></li><li><p>编辑站点配置文件(_config.yml)，新增以下内容到任意位置：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br><span class="line">  format: html</span><br><span class="line">  limit: 10000</span><br></pre></td></tr></table></figure></li><li><p>编辑主题配置文件(_config.yml)，启用本地搜索功能：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Local search</span><br><span class="line">local_search:</span><br><span class="line">  enable: true</span><br></pre></td></tr></table></figure></li></ul><h5 id="添加字数统计"><a href="#添加字数统计" class="headerlink" title="添加字数统计"></a>添加字数统计</h5><p>效果如图：</p><p><img src="/images/pasted-11.png" alt="upload successful"></p><ul><li><p>安装插件，代码如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-wordcount --save</span><br></pre></td></tr></table></figure></li><li><p>在主题配置文件(_config.yml)中找到<code>post_wordcount</code>对相关参数做以下配置。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">post_wordcount:</span><br><span class="line">  item_text: true</span><br><span class="line">  wordcount: true</span><br><span class="line">  min2read: true</span><br></pre></td></tr></table></figure></li></ul><h5 id="添加文章访问量统计之LeanCloud"><a href="#添加文章访问量统计之LeanCloud" class="headerlink" title="添加文章访问量统计之LeanCloud"></a>添加文章访问量统计之LeanCloud</h5><ul><li>前往注册，<a href="https://leancloud.cn/" target="_blank" rel="noopener">传送门</a></li><li>创建一个应用</li><li>进入应用，在左侧导航栏<code>存储</code>中创建一个Class，注意Class的名字必须是<font size="4">Counter</font>，如下图。</li></ul><p><img src="/images/pasted-12.png" alt="upload successful"></p><ul><li>在左侧导航栏<code>设置</code>中<code>应用Key</code>能找到App ID和App Key这两个是要填入Hexo的配置中。</li></ul><p><img src="/images/pasted-13.png" alt="upload successful"></p><ul><li><p>修改Hexo主题配置文件，在文件中找到类似以下代码：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Show number of visitors to each article.</span><br><span class="line"># You can visit https://leancloud.cn get AppID and AppKey.</span><br><span class="line">leancloud_visitors:</span><br><span class="line">  enable: true</span><br><span class="line">  app_id: 对应App ID</span><br><span class="line">  app_key: 对应App Key</span><br></pre></td></tr></table></figure></li><li><p>至此配置成功</p></li></ul><h5 id="文章加密"><a href="#文章加密" class="headerlink" title="文章加密"></a>文章加密</h5><ol><li><p>打开<code>themes-&gt;next-&gt;layout-&gt;_partials-&gt;head.swig</code>文件,在以下位置插入这样一段代码：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    (function()&#123;</span><br><span class="line">        if(&apos;&#123;&#123; page.password &#125;&#125;&apos;)&#123;</span><br><span class="line">            if (prompt(&apos;请输入文章密码&apos;) !== &apos;&#123;&#123; page.password &#125;&#125;&apos;)&#123;</span><br><span class="line">                alert(&apos;密码错误！&apos;);</span><br><span class="line">                history.back();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)();</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></li><li><p>插入位置参考下图：<br><img src="/images/pasted-19.png" alt="upload successful"></p></li><li><p>然后向指定文章插入<code>password: password</code><br><img src="/images/pasted-20.png" alt="upload successful"></p></li></ol><h5 id="博文静态资源压缩"><a href="#博文静态资源压缩" class="headerlink" title="博文静态资源压缩"></a>博文静态资源压缩</h5><ul><li><p>插件安装，执行以下命令</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install gulp -g</span><br><span class="line">npm install gulp-minify-css gulp-uglify gulp-htmlmin gulp-htmlclean gulp --save</span><br></pre></td></tr></table></figure></li><li><p>在项目的根目录中创建<code>gulpfile.js</code>文件，将<font size="4" color="red"><a href="/files/gulpfile.js">这里</a></font>的代码拷贝到创建的<code>gulpfile.js</code>文件中。</p></li><li>生成博文是执行 <code>hexo g &amp;&amp; gulp</code></li></ul><h5 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h5><h6 id="Next主题标签，分类，关于界面打开出现404的情况。"><a href="#Next主题标签，分类，关于界面打开出现404的情况。" class="headerlink" title="Next主题标签，分类，关于界面打开出现404的情况。"></a>Next主题标签，分类，关于界面打开出现404的情况。</h6><p>1.1创建标签导航</p><ul><li>在Hexo项目的根目录下打开CMD命令执行以下命令<br><code>hexo new page &quot;tags&quot;</code></li><li>执行结束后，会在./source文件夹下出现一个<font size="4">tags</font>文件夹里面默认有一个index.md的文件，这就是我们创建的导航栏的分类页面</li><li>对index.md进行修改代码如下，重复部分忽略：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: 标签</span><br><span class="line">date: 2018-01-18 11:20:02</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure></li></ul><p>1.2创建分类导航</p><ul><li>在Hexo项目的根目录下打开CMD命令执行以下命令<br><code>hexo new page &quot;categories&quot;</code></li><li>执行结束后，会在./source文件夹下出现一个<font size="4">categories</font>文件夹里面默认有一个index.md的文件，这就是我们创建的导航栏的分类页面</li><li>对index.md进行修改代码如下，重复部分忽略：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: 分类</span><br><span class="line">date: 2018-01-18 11:20:02</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure></li></ul><p>1.3创建关于导航</p><ul><li>在Hexo项目的根目录下打开CMD命令执行以下命令<br><code>hexo new page &quot;about&quot;</code></li><li>执行结束后，会在./source文件夹下出现一个<font size="4">about</font>文件夹里面默认有一个index.md的文件，这就是我们创建的导航栏的分类页面</li><li>对index.md进行修改代码如下，重复部分忽略：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: 关于</span><br><span class="line">date: 2018-01-18 11:20:02</span><br><span class="line">type: &quot;about&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure></li></ul><hr><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ul><li><a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">NexT官方</a></li><li><a href="http://theme-next.iissnan.com/third-party-services.html" target="_blank" rel="noopener">NexT第三方服务集成</a></li><li><a href="https://segmentfault.com/a/1190000009544924" target="_blank" rel="noopener">个性化配置参考</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h5&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;下载NexT主题，下载地址请前往&lt;font size=&quot;4&quot;&gt;&lt;a href=&quot;https://github.com/ii
-      
-    
-    </summary>
-    
-      <category term="Blog" scheme="https://sunshineuun.github.io/categories/Blog/"/>
-    
-    
-      <category term="Hexo" scheme="https://sunshineuun.github.io/tags/Hexo/"/>
-    
-      <category term="NexT" scheme="https://sunshineuun.github.io/tags/NexT/"/>
-    
-      <category term="NexT优化" scheme="https://sunshineuun.github.io/tags/NexT%E4%BC%98%E5%8C%96/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>GitHub+Hexo搭建个人博客</title>
-    <link href="https://sunshineuun.github.io/2018/01/17/GitHub-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
-    <id>https://sunshineuun.github.io/2018/01/17/GitHub-Hexo搭建个人博客/</id>
-    <published>2018-01-17T06:22:00.000Z</published>
-    <updated>2018-01-18T03:34:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<hr><h5 id="1-拥有一个GitHub账号"><a href="#1-拥有一个GitHub账号" class="headerlink" title="1.拥有一个GitHub账号"></a>1.拥有一个GitHub账号</h5><p><a href="https://github.com" target="_blank" rel="noopener">前往</a>以下地址进行申请</p><hr><h5 id="2-创建博客仓库"><a href="#2-创建博客仓库" class="headerlink" title="2.创建博客仓库"></a>2.创建博客仓库</h5><h6 id="2-1-New-respository"><a href="#2-1-New-respository" class="headerlink" title="2.1 New respository"></a>2.1 New respository</h6><p><img src="/images/pasted-0.png" alt="pasted-0.png"></p><h6 id="2-2-填写信息"><a href="#2-2-填写信息" class="headerlink" title="2.2 填写信息"></a>2.2 填写信息</h6><ul><li>标注【1】处填写github_username.github.io。</li><li>github_username用自己的用户名称代替。</li><li>点击【Create repository】创建仓库。至此github的仓库创建好了。<br><img src="/images/pasted-1.png" alt="pasted-1.png"></li></ul><hr><h5 id="3-安装Hexo"><a href="#3-安装Hexo" class="headerlink" title="3.安装Hexo"></a>3.安装Hexo</h5><h6 id="3-1安装Node-js"><a href="#3-1安装Node-js" class="headerlink" title="3.1安装Node.js"></a>3.1安装Node.js</h6><ul><li><a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js官方下载地址</a>，并且配置环境变量。</li><li><a href="https://baidu.com" target="_blank" rel="noopener">Windows环境变量配置</a>,目前没有编写博客，后续补充。</li><li><a href="https://baidu.com" target="_blank" rel="noopener">Liunx环境变量配置</a>,目前没有编写博客，后续补充。<h6 id="3-2设置npm淘宝镜像站点"><a href="#3-2设置npm淘宝镜像站点" class="headerlink" title="3.2设置npm淘宝镜像站点"></a>3.2设置npm淘宝镜像站点</h6></li><li>npm默认源的下载速度可能很慢，建议使用淘宝镜像替换。</li><li>执行下面命令，将npm的源设置成淘宝镜像站点<br><code>npm config set registry &quot;https://registry.npm.taobao.org&quot;</code></li><li>配置Node.js的环境变量</li></ul><h6 id="3-2安装Hexo"><a href="#3-2安装Hexo" class="headerlink" title="3.2安装Hexo"></a>3.2安装Hexo</h6><ul><li>执行一下命令安装Hexo，Hexo是安装在shell打开的当前路径下的<br><code>npm install hexo-cli g</code></li><li>初始化博客，初始化的博客是在shell打开的当前路径下创建目录<br><code>hexo init blog</code></li><li>进入blog的主目录中<br><code>cd blog</code></li><li>安装Hexo扩展插件<br><code>npm install</code></li><li>安装其它插件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-server --save</span><br><span class="line"># 可视化博客编辑插件</span><br><span class="line">npm install hexo-admin --save</span><br><span class="line">npm install hexo-generator-archive --save</span><br><span class="line">npm install hexo-generator-feed --save</span><br><span class="line">npm install hexo-generator-search --save</span><br><span class="line">npm install hexo-generator-tag --save</span><br><span class="line"># git发布插件</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">npm install hexo-generator-sitemap --save</span><br></pre></td></tr></table></figure></li></ul><p>至此安装完毕！！！</p><hr><h5 id="4-Hexo基本使用"><a href="#4-Hexo基本使用" class="headerlink" title="4.Hexo基本使用"></a>4.Hexo基本使用</h5><h6 id="4-1启用Hexo服务"><a href="#4-1启用Hexo服务" class="headerlink" title="4.1启用Hexo服务"></a>4.1启用Hexo服务</h6><ul><li>静态页面生成<br><code>hexo generate</code></li><li>启动本地服务<br><code>hexo server</code></li><li>打开浏览器，地址栏中输入：[<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> ],应该可以看见刚刚创建的博客了</li></ul><h6 id="4-2问题答疑"><a href="#4-2问题答疑" class="headerlink" title="4.2问题答疑"></a>4.2问题答疑</h6><ul><li>如果出现无法访问的情况，可能是4000这个端口被占用了。解决方式，关闭服务，修改端口，再次启动服务器。相关代码如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 修改端口</span><br><span class="line">hexo s -p 5000</span><br><span class="line"># 关闭服务</span><br><span class="line">Ctrl+C</span><br></pre></td></tr></table></figure></li></ul><hr><h5 id="5-将Hexo博客部署到GitHub上"><a href="#5-将Hexo博客部署到GitHub上" class="headerlink" title="5.将Hexo博客部署到GitHub上"></a>5.将Hexo博客部署到GitHub上</h5><h6 id="5-1配置"><a href="#5-1配置" class="headerlink" title="5.1配置"></a>5.1配置</h6><ul><li><p>修改配置文件blog/_config.yml，修改deploy项的内容，如下所示：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: https://hexo.io/docs/deployment.html</span><br><span class="line">deploy:</span><br><span class="line">  # 类型</span><br><span class="line">  type: git</span><br><span class="line">  # 仓库的地址</span><br><span class="line">  repo: https://github.com/Sunshineuun/Sunshineuun.github.io.git</span><br><span class="line">  # 分支</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure></li><li><p>注意：yml的语法要求各个标签【:】分号必须有空格。</p></li><li>注意：repo是对应仓库的地址，在<code>hexo deploy</code>的时候会提示输入密码。</li></ul><h6 id="5-2部署"><a href="#5-2部署" class="headerlink" title="5.2部署"></a>5.2部署</h6><ul><li><p>执行以下命令：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 清空静态页面</span><br><span class="line">hexo clean</span><br><span class="line"># 生成静态页面</span><br><span class="line">hexo generate</span><br><span class="line"># 部署 </span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure></li><li><p>打开网页，输入<a href="http://github_username.github.io" target="_blank" rel="noopener">http://github_username.github.io</a> ，打开github上托管的博客。如我的博客地址是：<a href="http://Sunshineuun.github.io。" target="_blank" rel="noopener">http://Sunshineuun.github.io。</a></p></li></ul><hr><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ul><li><a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo官网</a></li><li><a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">NexT官网</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;hr&gt;
-&lt;h5 id=&quot;1-拥有一个GitHub账号&quot;&gt;&lt;a href=&quot;#1-拥有一个GitHub账号&quot; class=&quot;headerlink&quot; title=&quot;1.拥有一个GitHub账号&quot;&gt;&lt;/a&gt;1.拥有一个GitHub账号&lt;/h5&gt;&lt;p&gt;&lt;a href=&quot;https://
-      
-    
-    </summary>
-    
-      <category term="Blog" scheme="https://sunshineuun.github.io/categories/Blog/"/>
-    
-    
-      <category term="GitHub" scheme="https://sunshineuun.github.io/tags/GitHub/"/>
-    
-      <category term="Hexo" scheme="https://sunshineuun.github.io/tags/Hexo/"/>
     
   </entry>
   

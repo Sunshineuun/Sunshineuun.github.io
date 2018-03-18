@@ -1,6 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[MongoDB]]></title>
+    <url>%2F2018%2F03%2F18%2FongoDB%2F</url>
+    <content type="text"><![CDATA[更新命令update格式如下：1db.collection.update(criteria,objNew,upsert,multi) 参数说明如下：criteria：查询条件objNew：update对象和一些更新操作符upsert：如果不存在update的记录，是否插入objNew这个新的文档，true为插入，默认为false，不插入。multi：默认是false，只更新找到的第一条记录。如果为true，把按条件查询出来的记录全部更新。 save格式如下：1db.collection.save(obj) 参数说明如下：obj：代表需要更新的对象，如果集合内部已经存在一个和obj相同的_id的记录，Mongodb会把obj对象替换集合内已存在的记录，如果不存在，则会插入obj对象。 更新操作符号$inc用法：{$inc:{field:value}}作用：对一个数字字段的某个field增加value说明：只能运用在数值类型上 $set用法：{$set:{field:value}}作用：把文档中某个字段field的值设为value $unset用法：{$unset:{field:1}}作用：删除某个字段field $push用法：{$push:{field:value}}作用：把value追加到field里。说明：field只能是数组类型，如果field不存在，会自动插入一个数组类型 pushAll用法：{$pushAll:{field:value_array}}作用：用法同$push一样，只是$pushAll可以一次追加多个值到一个数组字段内。说明：field只能是数组类型。 $addToSet用法：{$addToSet:{field:value}}作用：加一个值到数组内，而且只有当这个值在数组中不存在时才增加。说明：结果是append，不是add，就算存入的是数组，它也是单个值举例：存入[ “A3”, “A4” ]的效果1[ &quot;Michael&quot;, &quot;A1&quot;, &quot;A2&quot;, [ &quot;A3&quot;, &quot;A4&quot; ] ] $pop用法：删除数组内第一个值：{$pop:{field:-1}}、删除数组内最后一个值：{$pop:{field:1}}作用：用于删除数组内的一个值 $pull用法：{$pull:{field:_value}}作用：从数组field内删除一个等于_value的值 $pullAll用法：{$pullAll:value_array}作用：用法同$pull一样，可以一次性删除数组内的多个值。 $rename用法：{$rename:{old_field_name:new_field_name}}作用：对字段进行重命名 参考资料 快速入门 博客-更新命令(save,update)]]></content>
+      <tags>
+        <tag>MongoDB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[后端开发知识要点]]></title>
+    <url>%2F2018%2F03%2F18%2F%E7%AB%AF%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E8%A6%81%E7%82%B9%2F</url>
+    <content type="text"><![CDATA[基础篇基本功面向对象的特征 抽象 抽象使我们更接近于事物的本质。抽象的过程就是一个提炼存在于事物之间共同拥有的元素，而这些事务之间共同拥有的元素往往是这一事物区别于其他事物关键的东西，这些元素就构成了事物的本质. 继承 既是拓展的过程，也是归类的过程。 封装 私有化的一个过程。 多态性 多种表达形式。 final, finally, finalize 的区别 final，修饰变量，常量；修饰Class，不运行被继承；修饰方法，拒绝重载；总之就是只能这样了的意思。 finally，抛出异常继续执行的代码块。 finalize，是一个清理方法。 int 和 Integer 有什么区别int是基础类型，Integer是int的包装类；Integer是一个对象。 重载和重写的区别 重载同一方法名称，但是不同参数，已达到多态的效果。 重写，也称覆盖，覆盖父类的方法。 抽象类和接口有什么区别 个人理解：抽象类有具体方法实现；接口中的方法，都是由继承类实现。 接口是对动作的抽象，而抽象类是对根源的抽象。 接口和抽象类都是继承树的上层，他们的共同点如下： 1.1 都是上层的抽象层。1.2 都不能被实例化1.3 都能包含抽象的方法，这些抽象的方法用于描述类具备的功能，但是不比提供具体的实现。 它们的区别如下： 2.1 在抽象类中可以写非抽象的方法，从而避免在子类中重复书写它们，这样可以提高代码的复用性，这是抽象类的优势；接口中只能有抽象的方法。2.2 一个类只能继承一个直接父类，这个父类可以是具体的类也可是抽象类；但是一个类可以实现多个接口。 参考：知乎-接口和抽象类有什么区别？ 说说反射的用途及实现用途：获取当前对象几乎所有的信息，属性，方法，注解等。参考：反射理解基础 说说自定义注解的场景及实现HTTP 请求的 GET 与 POST 方式的区别session 与 cookie 区别session 分布式处理JDBC 流程MVC 设计思想equals 与 == 的区别]]></content>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[MongoDB]]></title>
+    <url>%2F2018%2F03%2F12%2FgoDB%2F</url>
+    <content type="text"><![CDATA[更新命令update格式如下：1db.collection.update(criteria,objNew,upsert,multi) 参数说明如下：criteria：查询条件objNew：update对象和一些更新操作符upsert：如果不存在update的记录，是否插入objNew这个新的文档，true为插入，默认为false，不插入。multi：默认是false，只更新找到的第一条记录。如果为true，把按条件查询出来的记录全部更新。 save格式如下：1db.collection.save(obj) 参数说明如下：obj：代表需要更新的对象，如果集合内部已经存在一个和obj相同的_id的记录，Mongodb会把obj对象替换集合内已存在的记录，如果不存在，则会插入obj对象。 更新操作符号$inc用法：{$inc:{field:value}}作用：对一个数字字段的某个field增加value说明：只能运用在数值类型上 $set用法：{$set:{field:value}}作用：把文档中某个字段field的值设为value $unset用法：{$unset:{field:1}}作用：删除某个字段field $push用法：{$push:{field:value}}作用：把value追加到field里。说明：field只能是数组类型，如果field不存在，会自动插入一个数组类型 pushAll用法：{$pushAll:{field:value_array}}作用：用法同$push一样，只是$pushAll可以一次追加多个值到一个数组字段内。说明：field只能是数组类型。 $addToSet用法：{$addToSet:{field:value}}作用：加一个值到数组内，而且只有当这个值在数组中不存在时才增加。说明：结果是append，不是add，就算存入的是数组，它也是单个值举例：存入[ “A3”, “A4” ]的效果1[ &quot;Michael&quot;, &quot;A1&quot;, &quot;A2&quot;, [ &quot;A3&quot;, &quot;A4&quot; ] ] $pop用法：删除数组内第一个值：{$pop:{field:-1}}、删除数组内最后一个值：{$pop:{field:1}}作用：用于删除数组内的一个值 $pull用法：{$pull:{field:_value}}作用：从数组field内删除一个等于_value的值 $pullAll用法：{$pullAll:value_array}作用：用法同$pull一样，可以一次性删除数组内的多个值。 $rename用法：{$rename:{old_field_name:new_field_name}}作用：对字段进行重命名 参考资料 快速入门 博客-更新命令(save,update)]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Python常用命令]]></title>
+    <url>%2F2018%2F03%2F08%2Fython%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%2F</url>
+    <content type="text"><![CDATA[python查看所有module api文档1python -m pydoc -p 4895]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[个人报销]]></title>
+    <url>%2F2018%2F03%2F06%2F%E4%BA%BA%E6%8A%A5%E9%94%80%2F</url>
+    <content type="text"><![CDATA[交通费12323+73+92+15+51+45+50+35+32+18+81+124+38+55+130+40+99=1001164+87+294+197+18+44+22+40+18+14+14+14+47+27=1000224+19+35+19+59+69+32+110+24+17+29+43+17+21+27+46+27+39=800多]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[MongoDB注册为windows服务]]></title>
+    <url>%2F2018%2F03%2F05%2FngoDB%E6%B3%A8%E5%86%8Cwindows%E6%9C%8D%E5%8A%A1%2F</url>
+    <content type="text"><![CDATA[以系统管理员身份打开“运行”窗口，输入cmd 回车，并切换至MongoDB的bin目录运行以下语句。 语句为： mongod.exe –dbpath=D:\install\MongoDB\data –logpath=D:\install\MongoDB\log\mongodb.log –install –serviceName “MongoDB” PS:惊讶–pbpath指的的mongodb安装路径，logpath指的是mongodb日志存放路径，–install –serviceName指的是安装成为系统服务，服务名称为 MongoDB]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Selenium浏览器滚动条操作]]></title>
+    <url>%2F2018%2F03%2F05%2Flenium%E6%B5%8F%E8%A7%88%E5%99%A8%E6%BB%9A%E5%8A%A8%E6%9D%A1%E6%93%8D%E4%BD%9C%2F</url>
+    <content type="text"><![CDATA[通过driver.execute_script()执行js代码进行操作。 滚动到底部window.scrollTo(0, document.body.scrollHeight)PS:其实就是通过window.scrollTo()进行处理的，第一个参数是横向向参数，第二个参数是纵向参数。]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Winning-Tech-3月]]></title>
+    <url>%2F2018%2F03%2F02%2Fnning-Tech%2F</url>
+    <content type="text"><![CDATA[2018年3月 公司计划12345root = /Winning/2018/3月份TASK1 - 部门经理分配的任务，【root/各主体资料库进度总览.xlsx】文档中，待爬取网站爬取可行性分析。TASK2 - 产品经理分配的任务，中药方剂库数据爬取。【root/中药方剂库-产品.xlsx】TASK3 - 产品迭代任务，2.8版本需求评估，开发。TASK4 - 数据挖掘组分配的任务，药品说明书网站数据爬取。目前只提供了一个网站，后续补充。 个人计划1234561.react学习2.springboot学习3.前后端分离学习4.python爬虫进阶5.java、javaweb基础巩固6.servlet学习 2018年3月2日12341. 中药方剂库数据爬取分析及其计划评估。TASK22. KBMS bug修复，【社保药品分类与代码】查询后，树无限展开问题处理。3. KBMS2.8版本需求分析及其评估。TASK34. 分析数据挖掘组需要爬取的网站。TASK1 2018年3月5日11. 分析爬取网站的可行性。TASK1]]></content>
+      <categories>
+        <category>Winning</category>
+      </categories>
+      <tags>
+        <tag>工作</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Oracle日常错误]]></title>
+    <url>%2F2018%2F03%2F01%2FOracle%E6%97%A5%E5%B8%B8%E9%94%99%E8%AF%AF%2F</url>
+    <content type="text"><![CDATA[在实际的 LONG 或 LOB 列之后提供了扩展的非 LONG 绑定数据 1在INSERT操作的时候，需要将LONG或者LOB类型的列放到其他类型的后面，否则出错 ORA-01461: 仅能绑定要插入 LONG 列的 LONG 值 1字段插入类型超过了VARCHAR2(4000),需要调整为CLOB类型。]]></content>
+      <tags>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Java错误日志_01]]></title>
+    <url>%2F2018%2F02%2F07%2Fva%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97-01%2F</url>
+    <content type="text"><![CDATA[背景描述在终端运行java -jar xxx.jar的时候。在终端运行可执行jar，jar包中带main方法。 错误信息如下123456789101112131415161718192021Error: A JNI error has occurred, please check your installation and try againException in thread &quot;main&quot; java.lang.SecurityException: Invalid signature file digest for Manifest main attributes at sun.security.util.SignatureFileVerifier.processImpl(SignatureFileVerifier.java:284) at sun.security.util.SignatureFileVerifier.process(SignatureFileVerifier.java:238) at java.util.jar.JarVerifier.processEntry(JarVerifier.java:316) at java.util.jar.JarVerifier.update(JarVerifier.java:228) at java.util.jar.JarFile.initializeVerifier(JarFile.java:383) at java.util.jar.JarFile.getInputStream(JarFile.java:450) at sun.misc.URLClassPath$JarLoader$2.getInputStream(URLClassPath.java:940) at sun.misc.Resource.cachedInputStream(Resource.java:77) at sun.misc.Resource.getByteBuffer(Resource.java:160) at java.net.URLClassLoader.defineClass(URLClassLoader.java:454) at java.net.URLClassLoader.access$100(URLClassLoader.java:73) at java.net.URLClassLoader$1.run(URLClassLoader.java:368) at java.net.URLClassLoader$1.run(URLClassLoader.java:362) at java.security.AccessController.doPrivileged(Native Method) at java.net.URLClassLoader.findClass(URLClassLoader.java:361) at java.lang.ClassLoader.loadClass(ClassLoader.java:424) at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331) at java.lang.ClassLoader.loadClass(ClassLoader.java:357) at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:495) 解决方式删除对应目录下的三类文件META-INF/*.RSA;META-INF/*.DSA;META-INF/*.SF即可。 参考文献 1]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Jrebel破解大法]]></title>
+    <url>%2F2018%2F02%2F07%2Febel%E7%A0%B4%E8%A7%A3%E5%A4%A7%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[使用License Server进行破解搭建License Server服务 工具下载，百度网盘传送门,密码zmzk 将项目导入IDEA中，运行起来，或者打成jar进行运行。提示如下。对于端口冲突的话，修改端口会在后面提到。 然后到IDEA中激活Jrebel。 至此应该破解成功了。 端口修改 参考文献 Jrebel 热部署 最新版破解 ！！监听端口实现 免费！转载博客于此]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[React基础一]]></title>
+    <url>%2F2018%2F02%2F02%2FReact%E5%9F%BA%E7%A1%80%E4%B8%80%2F</url>
+    <content type="text"><![CDATA[项目创建1234npm install -g create-react-app /* 安装create-react-app，建议使用cnpm */create-react-app myapp /* 使用命令创建应用，myapp为项目名称 */cd myapp /* 进入目录，然后启动 */npm start 项目结构生成项目后，脚手架为了“优雅”… …隐藏了所有的webpack相关的配置文件，此时查看myapp文件夹目录，会发现找不到任何webpack配置文件。执行以下命令：1npm run eject webpack3构建react工程安装webpack1npm install --save-dev webpack 参考文献 Create-React-App创建antd-mobile开发环境 使用babel-plugin-import实现antd组件库中的组件按需加载 babel-plugin-import github webpack3构建react工程]]></content>
+      <tags>
+        <tag>React</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[开发戒律]]></title>
+    <url>%2F2018%2F02%2F01%2F%E5%BC%80%E5%8F%91%E6%88%92%E5%BE%8B%2F</url>
+    <content type="text"><![CDATA[2018年2月1日16:04:51 sql执行一定要使用绑定参数，不然出现以下特殊字符就出错。【’ ,】，英文的引号，逗号的。]]></content>
+      <tags>
+        <tag>告诫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Spring Security日常问题]]></title>
+    <url>%2F2018%2F02%2F01%2FSpring-Security%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98%2F</url>
+    <content type="text"><![CDATA[页面获取Spring Security登录用户简介： spring security 把SPRING_SECURITY_CONTEXT 放入了session 没有直接把username 放进去。 前台取值方式一: 1$&#123;session.SPRING_SECURITY_CONTEXT.authentication.principal.username&#125; 前台取值方式二: 在页面端用tag获取 12&lt;%@ taglib prefix=&apos;security&apos; uri=&apos;http://www.springframework.org/security/tags&apos;%&gt; &lt;security:authentication property=&quot;principal.username&quot;&gt;&lt;/security:authentication&gt; 或者123&lt;security:authorize ifAllGranted=&quot;ROLE_ADMIN&quot;&gt; &lt;security:authentication property=&quot;principal.username&quot;&gt;&lt;/security:authentication&gt; &lt;/security:authorize&gt; 后台取值:12345UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext() .getAuthentication() .getPrincipal(); userDetails.getUsername()]]></content>
+      <tags>
+        <tag>Spring Security</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[TDC书单]]></title>
     <url>%2F2018%2F02%2F01%2FTDC%E4%B9%A6%E5%8D%95%2F</url>
     <content type="text"><![CDATA[公告《分布式Java应用：基础与实践》书本找回，谁借用这本书，未告知管理员的，请及时告知。感谢。 为了保证资源能够充分利用，在书闲置之时，请各位及时还书。可以在下方留言，邮箱，扣扣等方式告知，到我这里拿钥匙，或者我可以给你送过去。感谢合作！ 联系人：邱胜明 手机号码：15958624595 QQ：583853240 邮箱：qiushengming@tech-winning.com 书名 作者 借书日期 还书日期 借书人 京东系统质量保障技术实战 商城研发POP平台 著 MongoDB实战（第二版） 华中科技大学出版社 Java多线程编程核心技术 高洪岩 精通自动化测试框架设计 陈冬严 2018/1/31 2018/2/22 陈进美 Web接口开发与自动化测试――基于Python语言 虫师 2018/2/1 - 陈俊杰 Selenium2自动化测试实战基于Python语言 虫师 Python核心编程（第3版） [美]WesleyChun著；孙波翔，李斌，李晗译 2018/1/31 2018/2/28 吴维维 Docker经典实例 [美]戈阿冈（SébastienGoasguen）著；刘斌译 2018/1/31 2018/2/28 吴维维 深入浅出Node.js 朴灵 2018/2/1 范健伟 Spring源码深度解析 郝佳 2018/2/1 - 杨浩 大型网站系统与Java中间件实践 曾宪杰 分布式Java应用：基础与实践 林昊 深度学习入门之PyTorch 廖星宇 TensorFlow：实战Google深度学习框架 才云科技Caicloud，郑泽宇，顾思宇著 TensorFlow技术解析与实战 李嘉璇 Redis开发与运维 付磊 2018/2/1 2018/4/20 于祥通 分布式服务框架原理与实践 李林锋 2018/2/1 2018/4/20 于祥通 Java性能权威指南 奥克斯 2018/2/1 2018/4/20 于祥通 Redis开发与运维 付磊，张益军著 分布式服务架构：原理、设计与实战 李艳鹏，杨彪著 2018/2/1 2018/4/28 田升 WebAPI的设计与开发 水野贵明著；盛荣译 2018/2/1 2018/3/15 万玉 看透SpringMVC:源代码分析与实践 韩路彪著 2018/2/1 2018/3/1 尚梦思 HTML5+CSS3+JavaScript从入门到精通（标准版 未来科技著 程序员的修炼——从优秀到卓越 [美]Jeff,Atwood著 Oracle性能诊断艺术（第2版） [瑞士]ChristianAntognini著；王作佳，刘迪译 2018/2/1 - 许林峰 高性能MySQL（第3版） BaronSchwartzPeterZaitsevVadimTkachenko著；宁海元，周振兴，彭立勋等译 疯狂SpringCloud微服务架构实战 作者：杨恩雄 2018/2/1 2018/2/25 李赏 Node.js微服务 DavidGonzalez著赵震一郑伟杰译 2018/2/1 - 范建伟]]></content>
@@ -136,7 +230,7 @@
   <entry>
     <title><![CDATA[Markdown基本语法]]></title>
     <url>%2F2018%2F01%2F19%2Frkdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%2F</url>
-    <content type="text"><![CDATA[标题只需要在文本前面加上 # 即可，同理、你还可以增加二级标题、三级标题、四级标题、五级标题和六级标题，总共六级，只需要增加 # 即可，标题字号相应降低。123456# 一级标题## 二级标题### 三级标题#### 四级标题##### 五级标题###### 六级标题 注：# 和「一级标题」之间建议保留一个字符的空格，这是最标准的 Markdown 写法。 列表列表格式也很常用，在 Markdown 中，你只需要在文字前面加上 -/* 就可以了，例如： 无序列表 123- 文本1- 文本2- 文本3 有序列表 1231. 文本12. 文本23. 文本3 链接使用 [显示文本](链接地址) 这样的语法即可，例如：1[百度传送门](www.baidu.com) 图片插入![](图片链接地址)，图片链接地址可以是相对路径，绝对路径，也可以是网上的资源。 引用引用他人的文字，这个时候引用这个格式就很有必要了，在 Markdown 中，你只需要在你希望引用的文字前面加上 &gt; 就好了，例如：1&gt; 引用演示 粗体和斜体Markdown 的粗体和斜体也非常简单，用两个 * 包含一段文本就是粗体的语法，用一个 * 包含一段文本就是斜体的语法。例如：演示语句：我是斜体，我是粗体代码如下：1*我是斜体*，**我是粗体** 代码引用字段的代码用进行包裹，段落的代码用进行包裹。 表格12345| Tables | Are | Cool || ------------- |:-------------:| -----:|| col 3 is | right-aligned | $1600 || col 2 is | centered | $12 || zebra stripes | are neat | $1 | 效果如下： Tables Are Cool col 3 is right-aligned $1600 col 2 is centered $12 zebra stripes are neat $1]]></content>
+    <content type="text"><![CDATA[标题只需要在文本前面加上 # 即可，同理、你还可以增加二级标题、三级标题、四级标题、五级标题和六级标题，总共六级，只需要增加 # 即可，标题字号相应降低。123456# 一级标题## 二级标题### 三级标题#### 四级标题##### 五级标题###### 六级标题 注：# 和「一级标题」之间建议保留一个字符的空格，这是最标准的 Markdown 写法。 列表列表格式也很常用，在 Markdown 中，你只需要在文字前面加上 -/* 就可以了，例如： 无序列表 123- 文本1- 文本2- 文本3 有序列表 1231. 文本12. 文本23. 文本3 链接使用 [显示文本](链接地址) 这样的语法即可，例如：1[百度传送门](www.baidu.com) 图片插入![](图片链接地址)，图片链接地址可以是相对路径，绝对路径，也可以是网上的资源。 引用引用他人的文字，这个时候引用这个格式就很有必要了，在 Markdown 中，你只需要在你希望引用的文字前面加上 &gt; 就好了，例如：1&gt; 引用演示 粗体和斜体Markdown 的粗体和斜体也非常简单，用两个 * 包含一段文本就是粗体的语法，用一个 * 包含一段文本就是斜体的语法。例如：演示语句：我是斜体，我是粗体代码如下：123456789*我是斜体*，**我是粗体***斜体文字*_斜体文字_**加粗文字**__加粗文字__ 代码引用字段的代码用进行包裹，段落的代码用进行包裹。 表格12345| Tables | Are | Cool || ------------- |:-------------:| -----:|| col 3 is | right-aligned | $1600 || col 2 is | centered | $12 || zebra stripes | are neat | $1 | 效果如下： Tables Are Cool col 3 is right-aligned $1600 col 2 is centered $12 zebra stripes are neat $1]]></content>
       <categories>
         <category>语法</category>
       </categories>
