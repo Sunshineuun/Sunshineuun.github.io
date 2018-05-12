@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sunshineuun.github.io/"/>
-  <updated>2018-03-18T08:21:03.860Z</updated>
+  <updated>2018-05-11T03:45:31.334Z</updated>
   <id>https://sunshineuun.github.io/</id>
   
   <author>
@@ -15,6 +15,454 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Oracle 临时表空间相关操作</title>
+    <link href="https://sunshineuun.github.io/2018/05/11/racle-%E4%B8%B4%E6%97%B6%E8%A1%A8%E7%A9%BA%E9%97%B4%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/"/>
+    <id>https://sunshineuun.github.io/2018/05/11/racle-临时表空间相关操作/</id>
+    <published>2018-05-11T02:13:31.000Z</published>
+    <updated>2018-05-11T03:45:31.334Z</updated>
+    
+    <content type="html"><![CDATA[<h5 id="查询用户默认临时表空间"><a href="#查询用户默认临时表空间" class="headerlink" title="查询用户默认临时表空间"></a>查询用户默认临时表空间</h5><p><code>select temporary_tablespace from dba_users where username=&#39;用户名&#39;;</code></p><h5 id="补充知识"><a href="#补充知识" class="headerlink" title="补充知识"></a>补充知识</h5><h6 id="不要创建单个文件超过32GB的表空间"><a href="#不要创建单个文件超过32GB的表空间" class="headerlink" title="不要创建单个文件超过32GB的表空间"></a>不要创建单个文件超过32GB的表空间</h6><p>如果你创建的表空间超过32GB，请把这个表空间存储为多个数据文件，每个文件不大于32GB。这样，就可以成功的创建表空间。</p><h5 id="查看表空间利用率"><a href="#查看表空间利用率" class="headerlink" title="查看表空间利用率"></a>查看表空间利用率</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">  D.TABLESPACE_NAME,</span><br><span class="line">  SPACE || &apos;M&apos;                                            &quot;SUM_SPACE(M)&quot;,</span><br><span class="line">  BLOCKS                                                  &quot;SUM_BLOCKS&quot;,</span><br><span class="line">  SPACE - NVL(FREE_SPACE, 0) || &apos;M&apos;                       &quot;USED_SPACE(M)&quot;,</span><br><span class="line">  ROUND((1 - NVL(FREE_SPACE, 0) / SPACE) * 100, 2) || &apos;%&apos; &quot;USED_RATE(%)&quot;,</span><br><span class="line">  FREE_SPACE || &apos;M&apos;                                       &quot;FREE_SPACE(M)&quot;</span><br><span class="line">FROM (SELECT</span><br><span class="line">        TABLESPACE_NAME,</span><br><span class="line">        ROUND(SUM(BYTES) / (1024 * 1024), 2) SPACE,</span><br><span class="line">        SUM(BLOCKS)                          BLOCKS</span><br><span class="line">      FROM DBA_DATA_FILES</span><br><span class="line">      GROUP BY TABLESPACE_NAME) D,</span><br><span class="line">  (SELECT</span><br><span class="line">     TABLESPACE_NAME,</span><br><span class="line">     ROUND(SUM(BYTES) / (1024 * 1024), 2) FREE_SPACE</span><br><span class="line">   FROM DBA_FREE_SPACE</span><br><span class="line">   GROUP BY TABLESPACE_NAME) F</span><br><span class="line">WHERE D.TABLESPACE_NAME = F.TABLESPACE_NAME (+)</span><br><span class="line">UNION ALL                                           </span><br><span class="line">  </span><br><span class="line">--如果有临时表空间    </span><br><span class="line">SELECT</span><br><span class="line">  D.TABLESPACE_NAME,</span><br><span class="line">  SPACE || &apos;M&apos;                                      &quot;SUM_SPACE(M)&quot;,</span><br><span class="line">  BLOCKS                                            SUM_BLOCKS,</span><br><span class="line">  USED_SPACE || &apos;M&apos;                                 &quot;USED_SPACE(M)&quot;,</span><br><span class="line">  ROUND(NVL(USED_SPACE, 0) / SPACE * 100, 2) || &apos;%&apos; &quot;USED_RATE(%)&quot;,</span><br><span class="line">  NVL(FREE_SPACE, 0) || &apos;M&apos;                         &quot;FREE_SPACE(M)&quot;</span><br><span class="line">FROM (SELECT</span><br><span class="line">        TABLESPACE_NAME,</span><br><span class="line">        ROUND(SUM(BYTES) / (1024 * 1024), 2) SPACE,</span><br><span class="line">        SUM(BLOCKS)                          BLOCKS</span><br><span class="line">      FROM DBA_TEMP_FILES</span><br><span class="line">      GROUP BY TABLESPACE_NAME) D,</span><br><span class="line">  (SELECT</span><br><span class="line">     TABLESPACE_NAME,</span><br><span class="line">     ROUND(SUM(BYTES_USED) / (1024 * 1024), 2) USED_SPACE,</span><br><span class="line">     ROUND(SUM(BYTES_FREE) / (1024 * 1024), 2) FREE_SPACE</span><br><span class="line">   FROM V$TEMP_SPACE_HEADER</span><br><span class="line">   GROUP BY TABLESPACE_NAME) F</span><br><span class="line">WHERE D.TABLESPACE_NAME = F.TABLESPACE_NAME (+); </span><br><span class="line">ORDER BY 1;</span><br></pre></td></tr></table></figure><h5 id="临时表空间释放"><a href="#临时表空间释放" class="headerlink" title="临时表空间释放"></a>临时表空间释放</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter tablespace temp shrink space;</span><br></pre></td></tr></table></figure><h5 id="临时表空间增加数据文件"><a href="#临时表空间增加数据文件" class="headerlink" title="临时表空间增加数据文件"></a>临时表空间增加数据文件</h5><p>PS:为表空间增加数据块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter tablespace temp add tempfile &apos;D:\app\Administrator\oradata\vlsi\TEMP02.DBF&apos; size 1024 M;</span><br></pre></td></tr></table></figure></p><h5 id="删除临时表空间"><a href="#删除临时表空间" class="headerlink" title="删除临时表空间"></a>删除临时表空间</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- temp02为表空间的名称</span><br><span class="line">DROP TABLESPACE temp02 INCLUDING CONTENTS AND DATAFILES;</span><br></pre></td></tr></table></figure><h5 id="创建临时表空间"><a href="#创建临时表空间" class="headerlink" title="创建临时表空间"></a>创建临时表空间</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TEMPORARY</span><br><span class="line">  TABLESPACE temp03</span><br><span class="line">  TEMPFILE &apos;D:\APP\ADMINISTRATOR\ORADATA\ORCL\TEMP03.DBF&apos;</span><br><span class="line">  SIZE 1024M</span><br><span class="line">  AUTOEXTEND ON</span><br><span class="line">  MAXSIZE 31200M;</span><br></pre></td></tr></table></figure><h5 id="临时表空间相关信息"><a href="#临时表空间相关信息" class="headerlink" title="临时表空间相关信息"></a>临时表空间相关信息</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">  FILE_NAME 临时表文件路径,</span><br><span class="line">  FILE_ID,</span><br><span class="line">  TABLESPACE_NAME 表空间名称,</span><br><span class="line">  bytes 当前所占有的字节长度,</span><br><span class="line">  blocks,</span><br><span class="line">  status,</span><br><span class="line">  autoextensible 是否自动扩展,</span><br><span class="line">  maxbytes 最大空间字节数,</span><br><span class="line">  maxblocks,</span><br><span class="line">  increment_by,</span><br><span class="line">  user_bytes 已使用空间的字节数,</span><br><span class="line">  user_blocks</span><br><span class="line">FROM dba_temp_files;</span><br></pre></td></tr></table></figure><h6 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h6><ul><li><a href="http://blog.itpub.net/29578568/viewspace-2141980/" target="_blank" rel="noopener">1</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h5 id=&quot;查询用户默认临时表空间&quot;&gt;&lt;a href=&quot;#查询用户默认临时表空间&quot; class=&quot;headerlink&quot; title=&quot;查询用户默认临时表空间&quot;&gt;&lt;/a&gt;查询用户默认临时表空间&lt;/h5&gt;&lt;p&gt;&lt;code&gt;select temporary_tablespace 
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Maven POM文件相关配置</title>
+    <link href="https://sunshineuun.github.io/2018/05/11/ven-POM%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE/"/>
+    <id>https://sunshineuun.github.io/2018/05/11/ven-POM文件相关配置/</id>
+    <published>2018-05-11T01:37:00.000Z</published>
+    <updated>2018-05-11T01:42:01.023Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="Dependency"><a href="#Dependency" class="headerlink" title="Dependency"></a>Dependency</h3><h4 id="Scope"><a href="#Scope" class="headerlink" title="Scope"></a>Scope</h4><p><code>&lt;dependency&gt;</code>中还引入了<code>&lt;scope&gt;</code>，它主要管理依赖的部署。目前<code>&lt;scope&gt;</code>可以使用5个值：</p><ul><li>compile，缺省值，适用于所有阶段，会随着项目一起发布。 </li><li>provided，类似compile，期望JDK、容器或使用者会提供这个依赖。如servlet.jar。 * runtime，只在运行时使用，如JDBC驱动，适用运行和测试阶段。 </li><li>test，只在测试时使用，用于编译和运行测试代码。不会随项目发布。 </li><li>system，类似provided，需要显式提供包含依赖的jar，Maven不会在Repository中查找它。</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;Dependency&quot;&gt;&lt;a href=&quot;#Dependency&quot; class=&quot;headerlink&quot; title=&quot;Dependency&quot;&gt;&lt;/a&gt;Dependency&lt;/h3&gt;&lt;h4 id=&quot;Scope&quot;&gt;&lt;a href=&quot;#Scope&quot; class=&quot;he
+      
+    
+    </summary>
+    
+    
+      <category term="Maven" scheme="https://sunshineuun.github.io/tags/Maven/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Intellij IDEA小技巧之快速比较代码版本</title>
+    <link href="https://sunshineuun.github.io/2018/05/10/ntellij-IDEA%E5%B0%8F%E6%8A%80%E5%B7%A7%E4%B9%8B%E4%B8%80/"/>
+    <id>https://sunshineuun.github.io/2018/05/10/ntellij-IDEA小技巧之一/</id>
+    <published>2018-05-10T05:48:00.000Z</published>
+    <updated>2018-05-10T05:54:26.752Z</updated>
+    
+    <content type="html"><![CDATA[<p>当代码加入版本管理的时候，快捷的查看与上个版本的差异。<br><img src="/images/pasted-56.png" alt="upload successful"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;当代码加入版本管理的时候，快捷的查看与上个版本的差异。&lt;br&gt;&lt;img src=&quot;/images/pasted-56.png&quot; alt=&quot;upload successful&quot;&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+    
+      <category term="IDEA" scheme="https://sunshineuun.github.io/tags/IDEA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Jenkins Windows批处理异常</title>
+    <link href="https://sunshineuun.github.io/2018/05/07/nkins/"/>
+    <id>https://sunshineuun.github.io/2018/05/07/nkins/</id>
+    <published>2018-05-07T02:43:00.000Z</published>
+    <updated>2018-05-07T02:46:21.930Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="Build-step-‘Execute-Windows-batch-command’-marked-build-as-failure解决方法"><a href="#Build-step-‘Execute-Windows-batch-command’-marked-build-as-failure解决方法" class="headerlink" title="Build step ‘Execute Windows batch command’ marked build as failure解决方法"></a>Build step ‘Execute Windows batch command’ marked build as failure解决方法</h4><p>jenkins执行命令，会把命令生成一个批处理文件执行，而pybot命令对于批处理来说是外部命令，所以要加call表示调用。而jenkins执行windows命令,若退出代码不为0 ,则jenkins会将构建标记为失败，所以需要加上exit 0表示执行完成退出<br>解决方法：构建命令在pybot前面加上call，最后加上exit 0</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;Build-step-‘Execute-Windows-batch-command’-marked-build-as-failure解决方法&quot;&gt;&lt;a href=&quot;#Build-step-‘Execute-Windows-batch-command’-marked-
+      
+    
+    </summary>
+    
+    
+      <category term="Jenkins" scheme="https://sunshineuun.github.io/tags/Jenkins/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SpringBoot打包异常</title>
+    <link href="https://sunshineuun.github.io/2018/05/04/Spring-Boot-Maven-Plugin%E6%89%93%E5%8C%85%E5%BC%82%E5%B8%B8/"/>
+    <id>https://sunshineuun.github.io/2018/05/04/Spring-Boot-Maven-Plugin打包异常/</id>
+    <published>2018-05-04T07:50:00.000Z</published>
+    <updated>2018-05-10T05:57:35.592Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="Spring-Boot-Maven-Plugin打包异常及三种解决方法：Unable-to-find-main-class"><a href="#Spring-Boot-Maven-Plugin打包异常及三种解决方法：Unable-to-find-main-class" class="headerlink" title="Spring Boot Maven Plugin打包异常及三种解决方法：Unable to find main class"></a>Spring Boot Maven Plugin打包异常及三种解决方法：Unable to find main class</h4><p>【背景】spring-boot项目，打包成可执行jar，项目内有两个带有main方法的类并且都使用了@SpringBootApplication注解（或者另一种情形：你有两个main方法并且所在类都没有使用@SpringBootApplication注解）</p><p>问题】</p><p>执行mvn clean package，报错如下（说点不相关的，使用install同理。因为spring-boot:repackage目标（goal）（下文会说）被绑定在package构建阶段（phases），而package阶段在install阶段之前，指定构建阶段之前的阶段都会执行。详细参见：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Introduction to the Build Lifecycle）</span><br><span class="line">　　[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:1.5.3.RELEASE:repackage (default) on project webapps-api-bid: Execution default of goal org.springframework.boot:spring-boot-maven-plugin:1.5.3.RELEASE:repackage failed: Unable to find a single main class from the following candidates [com.xx.api.main.ApiBidMain, com.xx.webapps.api.main.WebappsApiBidMain]</span><br></pre></td></tr></table></figure></p><p>执行mvn clean package spring-boot:repackage，报错如下，不如上面日志详细<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　　[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:1.5.3.RELEASE:repackage (default) on project webapps-api-bid: Execution default of goal org.springframework.boot:spring-boot-maven-plugin:1.5.3.RELEASE:repackage failed: Unable to find main class</span><br></pre></td></tr></table></figure></p><p>参考文献：<a href="https://www.cnblogs.com/thinking-better/p/7827368.html" target="_blank" rel="noopener">传送门</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;Spring-Boot-Maven-Plugin打包异常及三种解决方法：Unable-to-find-main-class&quot;&gt;&lt;a href=&quot;#Spring-Boot-Maven-Plugin打包异常及三种解决方法：Unable-to-find-main-cla
+      
+    
+    </summary>
+    
+    
+      <category term="Spring Boot" scheme="https://sunshineuun.github.io/tags/Spring-Boot/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Jenkins部署</title>
+    <link href="https://sunshineuun.github.io/2018/05/04/nkines%E9%83%A8%E7%BD%B2/"/>
+    <id>https://sunshineuun.github.io/2018/05/04/nkines部署/</id>
+    <published>2018-05-04T06:23:00.000Z</published>
+    <updated>2018-05-04T07:11:59.105Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>安装过程基本简单，按照提示，下一步下一步就行了。</p><h4 id="配置Maven打包"><a href="#配置Maven打包" class="headerlink" title="配置Maven打包"></a>配置Maven打包</h4><ol><li>确保新建任务中，包含【构建一个Maven项目】的选项<br><img src="/images/pasted-50.png" alt="upload successful"></li><li>Repository URL中填写项目的代码库；Credentials填写用户名密码，可以通过Add按钮进行创建用户的。<br><img src="/images/pasted-51.png" alt="upload successful"></li></ol><p>这样就能简单的打包一个项目。</p><h4 id="全局的Maven配置"><a href="#全局的Maven配置" class="headerlink" title="全局的Maven配置"></a>全局的Maven配置</h4><p>需要配置Jenkins Maven的全局仓库，但是现在不知道Jenkins Maven全局仓库在哪里，只能在打包的时候指定Maven仓库。如图：<br><img src="/images/pasted-52.png" alt="upload successful"></p><h4 id="常见问题总结"><a href="#常见问题总结" class="headerlink" title="常见问题总结"></a>常见问题总结</h4><ol><li>Maven打包的时候可能找不到java的基础包，例如Java.lang这样的，这样可能是JDK没有配置好，去POM文件中制定JDK的位置。</li><li>出现一直在下载包的情况下，可能你所认为的Maven本地仓库，并不是Jenkins所使用的仓库，下载过程中，有些包下载不下来导致错误。</li><li>项目依赖的，都会依赖本地项目，建议打包用<code>install</code>命令，发布到本地仓库。</li></ol><h4 id="部署到Tomcat上"><a href="#部署到Tomcat上" class="headerlink" title="部署到Tomcat上"></a>部署到Tomcat上</h4><p><img src="/images/pasted-53.png" alt="upload successful"></p><ul><li>WAR/EAR files：包的相对路径</li><li><p>Credentials：访问tomcat的用户名密码。<br>在Tomcat/conf/tomcat-users.xml文件中添加以下配置</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;role rolename=&quot;manager-gui&quot; /&gt;  </span><br><span class="line">&lt;role rolename=&quot;manager-script&quot; /&gt;  </span><br><span class="line">&lt;role rolename=&quot;manager-status&quot; /&gt; </span><br><span class="line">&lt;user username=&quot;deploy&quot; password=&quot;deploy&quot; roles=&quot;manager-gui,manager-script,manager-status&quot; /&gt;</span><br></pre></td></tr></table></figure></li><li><p>Tomcat URL：tomcat的地址。</p></li><li>一定要让Tomcat启动着哦。<h4 id="邮箱配置"><a href="#邮箱配置" class="headerlink" title="邮箱配置"></a>邮箱配置</h4></li><li>系统管理 &gt;&gt; 全局工具配置</li><li>具体配置<br><img src="/images/pasted-54.png" alt="upload successful"></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h4&gt;&lt;p&gt;安装过程基本简单，按照提示，下一步下一步就行了。&lt;/p&gt;
+&lt;h4 id=&quot;配置Maven打包&quot;&gt;&lt;a href=&quot;#配置Maven打包&quot; c
+      
+    
+    </summary>
+    
+    
+      <category term="Jenkins" scheme="https://sunshineuun.github.io/tags/Jenkins/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Oracle账户被锁</title>
+    <link href="https://sunshineuun.github.io/2018/05/02/Oracle%E8%B4%A6%E6%88%B7%E8%A2%AB%E9%94%81/"/>
+    <id>https://sunshineuun.github.io/2018/05/02/Oracle账户被锁/</id>
+    <published>2018-05-02T01:32:00.000Z</published>
+    <updated>2018-05-04T06:23:15.614Z</updated>
+    
+    <content type="html"><![CDATA[<h5 id="连接到sysdba"><a href="#连接到sysdba" class="headerlink" title="连接到sysdba"></a>连接到sysdba</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conn sys as sysdba</span><br></pre></td></tr></table></figure><h5 id="解除锁定"><a href="#解除锁定" class="headerlink" title="解除锁定"></a>解除锁定</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter user 用户名 account unlock</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h5 id=&quot;连接到sysdba&quot;&gt;&lt;a href=&quot;#连接到sysdba&quot; class=&quot;headerlink&quot; title=&quot;连接到sysdba&quot;&gt;&lt;/a&gt;连接到sysdba&lt;/h5&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;t
+      
+    
+    </summary>
+    
+    
+      <category term="Oracle" scheme="https://sunshineuun.github.io/tags/Oracle/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MongoDB异常0501</title>
+    <link href="https://sunshineuun.github.io/2018/05/01/ongoDB%E5%BC%82%E5%B8%B8/"/>
+    <id>https://sunshineuun.github.io/2018/05/01/ongoDB异常/</id>
+    <published>2018-05-01T10:19:49.000Z</published>
+    <updated>2018-05-01T10:22:14.295Z</updated>
+    
+    <content type="html"><![CDATA[<p>pymongo.errors.CursorNotFound: Cursor not found, cursor id: 124891571478</p><h5 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h5><p>默认 mongo server维护连接的时间窗口是十分钟<br>默认 单次从 server获取数据是101条或者 大于1M小于16M的数据<br>所以默认情况下，如果10分钟内未能处理完数据，则抛出该异常。</p><h5 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h5><h6 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h6><p>修改每批次获取数据量的条数，即batch size:<br>collection.find(condition).batch_size(5)</p><p>批量数需 估算十分钟内能处理的数据量</p><h6 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h6><p>延长超时时间 需显示的关闭cursor<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cursor=db.images.find(&#123;&#125;&#123;&apos;id&apos;:1,&apos;image_path&apos;:1,&apos;_id&apos;:0&#125;,no_cursor_timeout=True)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i in cursor:</span><br><span class="line">   .....</span><br><span class="line">   .....</span><br><span class="line">cursor.close()</span><br></pre></td></tr></table></figure></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;pymongo.errors.CursorNotFound: Cursor not found, cursor id: 124891571478&lt;/p&gt;
+&lt;h5 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>IDEA踩坑之路</title>
+    <link href="https://sunshineuun.github.io/2018/04/20/EA%E8%B8%A9%E5%9D%91%E4%B9%8B%E8%B7%AF/"/>
+    <id>https://sunshineuun.github.io/2018/04/20/EA踩坑之路/</id>
+    <published>2018-04-20T08:08:00.000Z</published>
+    <updated>2018-04-20T08:16:48.432Z</updated>
+    
+    <content type="html"><![CDATA[<p>问题是这样的，今天重新从服务器上下载项目进行开发。Maven Tomcat什么都部署好了，就是项目启动部署到Tomcat的时候，就是不把依赖的Model打包到Web-INF/lib目录下面，这尼玛找了我整整快一天了，尝试各种方法。</p><ol><li>怀疑Maven依赖有问题</li><li>怀疑项目配置有问题 <br><br>. <br><br>. <br><br>. <br><br>. <br></li><li>最后发现是在Setting &gt; File Type &gt; igonre files and folders中配置 <code>target</code>目录。导致的，不要问我怎么发现的，全靠运气。</li></ol><p>如图<br><img src="/images/pasted-49.png" alt="upload successful"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;问题是这样的，今天重新从服务器上下载项目进行开发。Maven Tomcat什么都部署好了，就是项目启动部署到Tomcat的时候，就是不把依赖的Model打包到Web-INF/lib目录下面，这尼玛找了我整整快一天了，尝试各种方法。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;怀疑Maven依
+      
+    
+    </summary>
+    
+    
+      <category term="IDEA" scheme="https://sunshineuun.github.io/tags/IDEA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Sublime-快捷键</title>
+    <link href="https://sunshineuun.github.io/2018/04/12/blime-%E5%BF%AB%E6%8D%B7%E9%94%AE/"/>
+    <id>https://sunshineuun.github.io/2018/04/12/blime-快捷键/</id>
+    <published>2018-04-12T02:11:00.000Z</published>
+    <updated>2018-04-13T05:10:41.915Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="选择类"><a href="#选择类" class="headerlink" title="选择类"></a>选择类</h4><ul><li><p>Ctrl+D 选中光标所占的文本，继续操作则会选中下一个相同的文本。</p></li><li><p>Alt+F3 选中文本按下快捷键，即可一次性选择全部的相同文本进行同时编辑。举个栗子：快速选中并更改所有相同的变量名、函数名等。</p></li><li><p>Ctrl+L 选中整行，继续操作则继续选择下一行，效果和 Shift+↓ 效果一样。</p></li><li><p>Ctrl+Shift+L 先选中多行，再按下快捷键，会在每行行尾插入光标，即可同时编辑这些行。</p></li><li><p>Ctrl+Shift+M 选择括号内的内容（继续选择父括号）。举个栗子：快速选中删除函数中的代码，重写函数体代码或重写括号内里的内容。</p></li><li><p>Ctrl+M 光标移动至括号内结束或开始的位置。</p></li><li><p>Ctrl+Enter 在下一行插入新行。举个栗子：即使光标不在行尾，也能快速向下插入一行。</p></li><li><p>Ctrl+Shift+Enter 在上一行插入新行。举个栗子：即使光标不在行首，也能快速向上插入一行。</p></li><li><p>Ctrl+Shift+[ 选中代码，按下快捷键，折叠代码。</p></li><li><p>Ctrl+Shift+] 选中代码，按下快捷键，展开代码。</p></li><li><p>Ctrl+K+0 展开所有折叠代码。</p></li><li><p>Ctrl+← 向左单位性地移动光标，快速移动光标。</p></li><li><p>Ctrl+→ 向右单位性地移动光标，快速移动光标。</p></li><li><p>shift+↑ 向上选中多行。</p></li><li><p>shift+↓ 向下选中多行。</p></li><li><p>Shift+← 向左选中文本。</p></li><li><p>Shift+→ 向右选中文本。</p></li><li><p>Ctrl+Shift+← 向左单位性地选中文本。</p></li><li><p>Ctrl+Shift+→ 向右单位性地选中文本。</p></li><li><p>Ctrl+Shift+↑ 将光标所在行和上一行代码互换（将光标所在行插入到上一行之前）。</p></li><li><p>Ctrl+Shift+↓ 将光标所在行和下一行代码互换（将光标所在行插入到下一行之后）。</p></li><li><p>Ctrl+Alt+↑ 向上添加多行光标，可同时编辑多行。</p></li><li><p>Ctrl+Alt+↓ 向下添加多行光标，可同时编辑多行。</p></li></ul><h4 id="编辑类"><a href="#编辑类" class="headerlink" title="编辑类"></a>编辑类</h4><ul><li><p>Ctrl+J 合并选中的多行代码为一行。举个栗子：将多行格式的CSS属性合并为一行。</p></li><li><p>Ctrl+Shift+D 复制光标所在整行，插入到下一行。</p></li><li><p>Tab 向右缩进。</p></li><li><p>Shift+Tab 向左缩进。</p></li><li><p>Ctrl+K+K 从光标处开始删除代码至行尾。</p></li><li><p>Ctrl+Shift+K 删除整行。</p></li><li><p>Ctrl+/ 注释单行。</p></li><li><p>Ctrl+Shift+/ 注释多行。</p></li><li><p>Ctrl+K+U 转换大写。</p></li><li><p>Ctrl+K+L 转换小写。</p></li><li><p>Ctrl+Z 撤销。</p></li><li><p>Ctrl+Y 恢复撤销。</p></li><li><p>Ctrl+U 软撤销，感觉和 Gtrl+Z 一样。</p></li><li><p>Ctrl+F2 设置书签</p></li><li><p>Ctrl+T 左右字母互换。</p></li><li><p>F6 单词检测拼写</p></li><li><p>Ctrl+H 替换</p></li></ul><h4 id="搜索类"><a href="#搜索类" class="headerlink" title="搜索类"></a>搜索类</h4><ul><li><p>Ctrl+F 打开底部搜索框，查找关键字。</p></li><li><p>Ctrl+shift+F 在文件夹内查找，与普通编辑器不同的地方是sublime允许添加多个文件夹进行查找，略高端，未研究。</p></li><li><p>Ctrl+P 打开搜索框。举个栗子：1、输入当前项目中的文件名，快速搜索文件，2、输入@和关键字，查找文件中函数名，3、输入：和数字，跳转到文件中该行代码，4、输入#和关键字，查找变量名。</p></li><li><p>Ctrl+G 打开搜索框，自动带：，输入数字跳转到该行代码。举个栗子：在页面代码比较长的文件中快速定位。</p></li><li><p>Ctrl+R 打开搜索框，自动带@，输入关键字，查找文件中的函数名。举个栗子：在函数较多的页面快速查找某个函数。</p></li><li><p>Ctrl+： 打开搜索框，自动带#，输入关键字，查找文件中的变量名、属性名等。</p></li><li><p>Ctrl+Shift+P 打开命令框。场景栗子：打开命名框，输入关键字，调用sublime text或插件的功能，例如使用package安装插件。</p></li><li><p>Esc 退出光标多行选择，退出搜索框，命令框等。</p></li></ul><h4 id="显示类"><a href="#显示类" class="headerlink" title="显示类"></a>显示类</h4><ul><li><p>Ctrl+Tab 按文件浏览过的顺序，切换当前窗口的标签页。</p></li><li><p>Ctrl+PageDown 向左切换当前窗口的标签页。</p></li><li><p>Ctrl+PageUp 向右切换当前窗口的标签页。</p></li><li><p>Alt+Shift+1 窗口分屏，恢复默认1屏（非小键盘的数字）</p></li><li><p>Alt+Shift+2 左右分屏-2列</p></li><li><p>Alt+Shift+3 左右分屏-3列</p></li><li><p>Alt+Shift+4 左右分屏-4列</p></li><li><p>Alt+Shift+5 等分4屏</p></li><li><p>Alt+Shift+8 垂直分屏-2屏</p></li><li><p>Alt+Shift+9 垂直分屏-3屏</p></li><li><p>Ctrl+K+B 开启/关闭侧边栏。</p></li><li><p>F11 全屏模式</p></li><li><p>Shift+F11 免打扰模式</p></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;选择类&quot;&gt;&lt;a href=&quot;#选择类&quot; class=&quot;headerlink&quot; title=&quot;选择类&quot;&gt;&lt;/a&gt;选择类&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Ctrl+D 选中光标所占的文本，继续操作则会选中下一个相同的文本。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Alt+F
+      
+    
+    </summary>
+    
+    
+      <category term="Sublime" scheme="https://sunshineuun.github.io/tags/Sublime/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Sublime-语言包插件</title>
+    <link href="https://sunshineuun.github.io/2018/04/12/Sublime-%E6%B1%89%E5%8C%96/"/>
+    <id>https://sunshineuun.github.io/2018/04/12/Sublime-汉化/</id>
+    <published>2018-04-12T02:04:00.000Z</published>
+    <updated>2018-04-12T02:11:19.047Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li>启动并进入sublime主界面;</li><li>点击菜单栏中<code>preferences</code>，弹出选项中找到<code>package control</code>;可能<code>preferences</code>下没有<code>package control</code>需要在菜单栏下寻找<code>install control</code>的选项。具体忘记了！</li><li>进入下一步，选择<code>install package</code>，可以键入<code>install package</code>进行查找<br><img src="/images/pasted-48.png" alt="upload successful"></li><li>继续下一步，尝试输入<code>localization</code>，因为小编自己已经安装，所以下拉就不会再显示这个插件名，当然你会发现还有其他的相关插件可以汉化sublime;</li><li>插件以及安装成功，现在我们就可以汉化啦，点击help菜单，找到“language”选择你想要的语言即可~~</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ol&gt;
+&lt;li&gt;启动并进入sublime主界面;&lt;/li&gt;
+&lt;li&gt;点击菜单栏中&lt;code&gt;preferences&lt;/code&gt;，弹出选项中找到&lt;code&gt;package control&lt;/code&gt;;可能&lt;code&gt;preferences&lt;/code&gt;下没有&lt;code&gt;pac
+      
+    
+    </summary>
+    
+    
+      <category term="Sublime" scheme="https://sunshineuun.github.io/tags/Sublime/"/>
+    
+      <category term="IDE" scheme="https://sunshineuun.github.io/tags/IDE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MongoDB CRUD操作</title>
+    <link href="https://sunshineuun.github.io/2018/04/06/ngoDB-CRUD%E6%93%8D%E4%BD%9C/"/>
+    <id>https://sunshineuun.github.io/2018/04/06/ngoDB-CRUD操作/</id>
+    <published>2018-04-06T09:11:22.000Z</published>
+    <updated>2018-04-06T09:15:28.157Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h4><h5 id="插入单个文档"><a href="#插入单个文档" class="headerlink" title="插入单个文档"></a>插入单个文档</h5><p><strong><code>insert_one</code></strong><br><strong><code>insert_many</code></strong></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;插入操作&quot;&gt;&lt;a href=&quot;#插入操作&quot; class=&quot;headerlink&quot; title=&quot;插入操作&quot;&gt;&lt;/a&gt;插入操作&lt;/h4&gt;&lt;h5 id=&quot;插入单个文档&quot;&gt;&lt;a href=&quot;#插入单个文档&quot; class=&quot;headerlink&quot; title=&quot;插入单个文
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>MongoDB3.6系列 - 限制与阈值</title>
+    <link href="https://sunshineuun.github.io/2018/04/06/ongodb%E7%B3%BB%E5%88%97-%E9%99%90%E5%88%B6%E4%B8%8E%E9%98%88%E5%80%BC/"/>
+    <id>https://sunshineuun.github.io/2018/04/06/ongodb系列-限制与阈值/</id>
+    <published>2018-04-06T05:54:00.000Z</published>
+    <updated>2018-04-06T07:02:05.748Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h4><p>本文摘抄官方文档。</p><h4 id="Bson文件"><a href="#Bson文件" class="headerlink" title="Bson文件"></a>Bson文件</h4><ol><li>Bson文档最大为16兆字节；</li><li>支持不超过100层的文档嵌套；</li></ol><h4 id="命名限制"><a href="#命名限制" class="headerlink" title="命名限制"></a>命名限制</h4><h5 id="数据库命名限制"><a href="#数据库命名限制" class="headerlink" title="数据库命名限制"></a>数据库命名限制</h5><ul><li>数据库名称不区分大小写</li><li><p>对于Windows上运行的MongoDB，不能包含以下字符</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/ \。“$ * &lt;&gt;：|？</span><br></pre></td></tr></table></figure></li><li><p>对于Linux和Unix上运行的MongoDB，不能包含以下字符</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/ \。“$</span><br></pre></td></tr></table></figure></li><li><p>数据库名字不能包含空字符</p></li><li>数据库名称不能为空，且必须少于64个字符</li></ul><h5 id="集合命名限制"><a href="#集合命名限制" class="headerlink" title="集合命名限制"></a>集合命名限制</h5><ul><li>应该已下划线或者字母开通，但不能：<ul><li>包含<code>$</code>符号</li><li>是一个空字符</li><li>包含空字符</li><li>以<code>system.</code>为前缀。（保留内部使用）\</li></ul></li><li>数据库名称+点号（.）+集合名称（即是<code>&lt;database&gt;.&lt;collection&gt;</code>）的字符长短不超过120个字节。</li></ul><h5 id="字段命名限制"><a href="#字段命名限制" class="headerlink" title="字段命名限制"></a>字段命名限制</h5><ul><li>同集合命名限制</li></ul><h4 id="索引限制（Index-key-Limit）"><a href="#索引限制（Index-key-Limit）" class="headerlink" title="索引限制（Index key Limit）"></a>索引限制（Index key Limit）</h4><p>索引的条目的总大小，取决于Bson类型的结构开销，必须小于1024个字节。</p><h6 id="超限制的报错"><a href="#超限制的报错" class="headerlink" title="超限制的报错"></a>超限制的报错</h6><ul><li>如果现有文档的索引条目超过<code>index key limit</code>，则MongoDB不会再这上面建立索引。</li><li>如果索引字段的索引条目超过，则重新编索引操作将会出错。 Reindexing操作是<code>compact</code>和<code>repairDatabase</code>命令以及<code>db.collection.reIndex()</code>方法的一部分。</li><li>索引字段对应的索引条目超过该索引集合，那么索引字段中的任何文档，不会插入到集合中，而是返回错误。以前版本会插入，但不索引这个文档。</li><li>更新这个所以字段将会出现的错误，如果这个更新值导致索引条目超过<code>index key limit</code>的限制，将会出错，更新失败。</li><li><code>mongorestore</code>和<code>mongoimport</code>将不在插入包含索引的文档，该索引字段的对应的索引条目将要超过<code>index key limit</code>。</li><li><p>对于现有分片集合，<code>chunk migration</code>将会出现失败的原因，文档包含的索引字段将要超过索引条目的限制<code>index key limit</code></p><p><a href="https://docs.mongodb.com/manual/reference/limits/#Index-Key-Limit" target="_blank" rel="noopener">官网参考</a></p><h6 id="其他限制"><a href="#其他限制" class="headerlink" title="其他限制"></a>其他限制</h6><ul><li>每个索引的集合数：一个集合可以有不超过64个索引</li><li>索引名称长度：及<code>&lt;database name&gt;.&lt;collection name&gt;.$&lt;index name&gt;</code>的组合不能超过128个字符。</li><li>复合索引：不能超过31个字段。</li><li>您不能将$text需要特殊文本索引的查询与需要不同类型的特殊索引的查询运算符结合使用。例如，您不能将$text查询与$near操作员组合在一起。</li><li>多键索引不能涵盖对数组字段的查询。</li><li>地理空间索引不能 覆盖查询。</li></ul></li></ul><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a href="https://docs.mongodb.com/manual/reference/limits/#restrictions-on-db-names" target="_blank" rel="noopener">官方文档</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;简述&quot;&gt;&lt;a href=&quot;#简述&quot; class=&quot;headerlink&quot; title=&quot;简述&quot;&gt;&lt;/a&gt;简述&lt;/h4&gt;&lt;p&gt;本文摘抄官方文档。&lt;/p&gt;
+&lt;h4 id=&quot;Bson文件&quot;&gt;&lt;a href=&quot;#Bson文件&quot; class=&quot;headerlink&quot; tit
+      
+    
+    </summary>
+    
+    
+      <category term="MongoDB" scheme="https://sunshineuun.github.io/tags/MongoDB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Redis-基础</title>
+    <link href="https://sunshineuun.github.io/2018/04/05/dis%E5%9F%BA%E7%A1%80%E4%B9%8B%E4%B8%80/"/>
+    <id>https://sunshineuun.github.io/2018/04/05/dis基础之一/</id>
+    <published>2018-04-05T08:43:09.000Z</published>
+    <updated>2018-04-12T02:03:57.270Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><p>redis拥有五种数据类型：</p><ol><li>字符串（string） </li><li>哈希（hash）</li><li>列表（list）</li><li>集合（set）</li><li>有序集合（zset）</li></ol><h4 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h4><h5 id="内部编码"><a href="#内部编码" class="headerlink" title="内部编码"></a>内部编码</h5><ol><li>raw</li><li>int</li><li>embstr<h4 id="哈希"><a href="#哈希" class="headerlink" title="哈希"></a>哈希</h4><h5 id="内部编码-1"><a href="#内部编码-1" class="headerlink" title="内部编码"></a>内部编码</h5></li><li>hashtable</li><li>ziplist</li></ol><h4 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h4><h5 id="内部编码-2"><a href="#内部编码-2" class="headerlink" title="内部编码"></a>内部编码</h5><ol><li>linkedlist</li><li>ziplist</li></ol><h4 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h4><h5 id="内部编码-3"><a href="#内部编码-3" class="headerlink" title="内部编码"></a>内部编码</h5><ol><li>hashtable</li><li>intset</li></ol><h4 id="有序集合"><a href="#有序集合" class="headerlink" title="有序集合"></a>有序集合</h4><h5 id="内部编码-4"><a href="#内部编码-4" class="headerlink" title="内部编码"></a>内部编码</h5><ol><li>skiplist</li><li>ziplist</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;数据类型&quot;&gt;&lt;a href=&quot;#数据类型&quot; class=&quot;headerlink&quot; title=&quot;数据类型&quot;&gt;&lt;/a&gt;数据类型&lt;/h3&gt;&lt;p&gt;redis拥有五种数据类型：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;字符串（string） &lt;/li&gt;
+&lt;li&gt;哈希（hash）&lt;/li
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>MongoDB运算符</title>
+    <link href="https://sunshineuun.github.io/2018/03/28/ongoDB%E8%BF%90%E7%AE%97%E7%AC%A6/"/>
+    <id>https://sunshineuun.github.io/2018/03/28/ongoDB运算符/</id>
+    <published>2018-03-28T03:30:00.000Z</published>
+    <updated>2018-03-28T03:41:38.898Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li>大于 - $gt</li><li>小于 - $lt</li><li>大于等于 - $gte</li><li>小于等于 - $lte</li><li>$ne - 不等于 </li><li>in - $in </li><li>not in - $nin</li><li>取余运算符 - $mod</li><li>$in - $all</li><li>数据的长度 - $size</li><li>判断键是否存在 - $exists，{$exists : true}</li><li>bson type来匹配一个元素的类型 - $type</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ol&gt;
+&lt;li&gt;大于 - $gt&lt;/li&gt;
+&lt;li&gt;小于 - $lt&lt;/li&gt;
+&lt;li&gt;大于等于 - $gte&lt;/li&gt;
+&lt;li&gt;小于等于 - $lte&lt;/li&gt;
+&lt;li&gt;$ne - 不等于 &lt;/li&gt;
+&lt;li&gt;in - $in &lt;/li&gt;
+&lt;li&gt;not in - $nin&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="MongoDB" scheme="https://sunshineuun.github.io/tags/MongoDB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java多线程自述</title>
+    <link href="https://sunshineuun.github.io/2018/03/25/ava%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%87%AA%E8%BF%B0/"/>
+    <id>https://sunshineuun.github.io/2018/03/25/ava多线程自述/</id>
+    <published>2018-03-25T07:50:17.000Z</published>
+    <updated>2018-03-25T07:57:57.338Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="为什么产生多线程"><a href="#为什么产生多线程" class="headerlink" title="为什么产生多线程"></a>为什么产生多线程</h4><p>当处于IO获取其他状态的时候，CPU会出现一定的空闲时间；此空闲时间的CPU就能利用起来。</p><h4 id="多线程带来的问题"><a href="#多线程带来的问题" class="headerlink" title="多线程带来的问题"></a>多线程带来的问题</h4><h6 id="资源竞争"><a href="#资源竞争" class="headerlink" title="资源竞争"></a>资源竞争</h6><h6 id="同步临界资源"><a href="#同步临界资源" class="headerlink" title="同步临界资源"></a>同步临界资源</h6>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;为什么产生多线程&quot;&gt;&lt;a href=&quot;#为什么产生多线程&quot; class=&quot;headerlink&quot; title=&quot;为什么产生多线程&quot;&gt;&lt;/a&gt;为什么产生多线程&lt;/h4&gt;&lt;p&gt;当处于IO获取其他状态的时候，CPU会出现一定的空闲时间；此空闲时间的CPU就能利用起来。&lt;
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Java多线程-1</title>
+    <link href="https://sunshineuun.github.io/2018/03/25/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B-1/"/>
+    <id>https://sunshineuun.github.io/2018/03/25/Java多线程-1/</id>
+    <published>2018-03-25T05:46:05.000Z</published>
+    <updated>2018-03-25T07:35:50.940Z</updated>
+    
+    <content type="html"><![CDATA[<p>Java 多线程模块巩固</p><h5 id="线程状态转换"><a href="#线程状态转换" class="headerlink" title="线程状态转换"></a>线程状态转换</h5><p><img src="/images/pasted-47.png" alt="upload successful"></p><hr><h5 id="yield方法"><a href="#yield方法" class="headerlink" title="yield方法"></a>yield方法</h5><p>理论上，yield意味着放手，放弃，投降。一个调用yield()方法的线程告诉虚拟机它乐意让其他线程占用自己的位置。这表明该线程没有在做一些紧急的事情。注意，这仅是一个暗示，并不能保证不会产生任何影响。</p><ol><li>Yield是一个静态的原生(native)方法 </li><li>Yield告诉当前正在执行的线程把运行机会交给线程池中拥有相同优先级的线程。</li><li>Yield不能保证使得当前正在运行的线程迅速转换到可运行的状态</li><li>它仅能使一个线程从运行状态转到可运行状态，而不是等待或阻塞状态</li></ol><hr><h5 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h5><h6 id="Java通过Executors提供四种线程池。"><a href="#Java通过Executors提供四种线程池。" class="headerlink" title="Java通过Executors提供四种线程池。"></a>Java通过Executors提供四种线程池。</h6><ol><li>newCachedThreadPool创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。</li><li>newFixedThreadPool创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。</li><li>newScheduledThreadPool 创建一个定长线程池，支持定时及周期性任务执行。</li><li>newSingleThreadExecutor 创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。<br>参考：<a href="">博客</a></li></ol><hr><h6 id="ExecutorService的submit与execute区别"><a href="#ExecutorService的submit与execute区别" class="headerlink" title="ExecutorService的submit与execute区别"></a>ExecutorService的submit与execute区别</h6><ol><li>接收的参数不一样submit可以接受runnable无返回值和callable有返回值；execute接受runnable无返回值</li><li>submit有返回值，而execute没有</li><li>submit方便Exception处理<br>参考：<a href="https://blog.csdn.net/chenaini119/article/details/51849222" target="_blank" rel="noopener">博客</a></li></ol><hr><h6 id="shotdown和showdownNow的区别"><a href="#shotdown和showdownNow的区别" class="headerlink" title="shotdown和showdownNow的区别"></a>shotdown和showdownNow的区别</h6><ol><li>shutdown() 方法在终止前允许执行以前提交的任务， </li><li>shutdownNow() 方法阻止等待任务启动并试图停止当前正在执行的任务。在终止时执行程序没有任务在执行，也没有任务在等待执行，并且无法提交新任务。关闭未使用的 ExecutorService 以允许回收其资源。 </li></ol><hr><h6 id="Runnable与Callable区别"><a href="#Runnable与Callable区别" class="headerlink" title="Runnable与Callable区别"></a>Runnable与Callable区别</h6><ol><li>callable用法和runnable一样，只不过调用的是call方法，该方法有一个泛型返回值类型，你可以任意指定。</li><li>runnable接口实现的没有返回值的并发编程。 </li><li>callable有返回值，runnable没有返回值。</li></ol><h6 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h6><ol><li><p>修饰实例方法，作用于当前实例加锁，进入同步代码前要获得当前实例的锁。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">已当前实例为资源，当线程争夺的时候回去进行通过该实例。</span><br><span class="line">不同实例之间不存在资源争抢。</span><br></pre></td></tr></table></figure></li><li><p>修饰静态方法，作用于当前类对象加锁，进入同步代码前要获得当前类对象的锁。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对象锁</span><br></pre></td></tr></table></figure></li><li><p>修饰代码块，指定加锁对象，对给定对象加锁，进入同步代码库前要获得给定对象的锁。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对象锁</span><br></pre></td></tr></table></figure></li></ol><p>参考：<a href="https://blog.csdn.net/javazejian/article/details/72828483" target="_blank" rel="noopener">synchronized详解</a></p><h5 id="文献参考"><a href="#文献参考" class="headerlink" title="文献参考"></a>文献参考</h5><ol><li><a href="https://www.cnblogs.com/GarfieldEr007/p/5746362.html" target="_blank" rel="noopener">1</a></li><li><a href="https://blog.csdn.net/evankaka/article/details/51489322" target="_blank" rel="noopener">2</a></li><li><a href="http://ifeve.com/java-concurrency-thread-directory/" target="_blank" rel="noopener">Java并发性和多线程介绍目录</a></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Java 多线程模块巩固&lt;/p&gt;
+&lt;h5 id=&quot;线程状态转换&quot;&gt;&lt;a href=&quot;#线程状态转换&quot; class=&quot;headerlink&quot; title=&quot;线程状态转换&quot;&gt;&lt;/a&gt;线程状态转换&lt;/h5&gt;&lt;p&gt;&lt;img src=&quot;/images/pasted-47.png&quot; a
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>中美贸易战</title>
+    <link href="https://sunshineuun.github.io/2018/03/24/%E4%B8%AD%E7%BE%8E%E8%B4%B8%E6%98%93%E6%88%98/"/>
+    <id>https://sunshineuun.github.io/2018/03/24/中美贸易战/</id>
+    <published>2018-03-24T05:03:02.000Z</published>
+    <updated>2018-03-24T05:09:39.987Z</updated>
+    
+    <content type="html"><![CDATA[<p>与哥哥视频的总结记录</p><h5 id="主题：中美贸易战"><a href="#主题：中美贸易战" class="headerlink" title="主题：中美贸易战"></a>主题：中美贸易战</h5><ol><li>预计要打台海战争</li><li>美国实力比中国强，但是因为中国储备了很多外汇。其他国家不容易打金融战争，所以要打贸易战争。</li><li>如何去看新闻报道<br> 3.1 报道的内容不重要，为什么要报道比较重要，或者说报道的目的。<br> 3.2 当报道的文章太过正面，这个时候可能是政府在激励民族情怀，可能是一个战争准备。<br> 3.3 媒体让民众看起来是站在第三方角度去发表客观事实的，然而媒体只不过是政府的传话筒。平时为什么会有嘉宾在，这就是捏造第三方发表客观事实的假象。<br> 3.4 李嘉诚。</li><li>政治家都是带着目的去阐述的。我们要揣摩他的目的！</li><li>需要了解国际形势。</li><li>军备是最能体现国力的一种表现。<h5 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h5></li><li>提问的优雅：让自己了解清楚问题，明确自己的疑惑。</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;与哥哥视频的总结记录&lt;/p&gt;
+&lt;h5 id=&quot;主题：中美贸易战&quot;&gt;&lt;a href=&quot;#主题：中美贸易战&quot; class=&quot;headerlink&quot; title=&quot;主题：中美贸易战&quot;&gt;&lt;/a&gt;主题：中美贸易战&lt;/h5&gt;&lt;ol&gt;
+&lt;li&gt;预计要打台海战争&lt;/li&gt;
+&lt;li&gt;美国实力
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Selenium-Error01</title>
+    <link href="https://sunshineuun.github.io/2018/03/20/elenuim/"/>
+    <id>https://sunshineuun.github.io/2018/03/20/elenuim/</id>
+    <published>2018-03-20T08:31:00.000Z</published>
+    <updated>2018-03-20T08:37:34.967Z</updated>
+    
+    <content type="html"><![CDATA[<p>错误代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">selenium.common.exceptions.WebDriverException: Message: unknown error: call function result missing &apos;value&apos;</span><br><span class="line">  (Session info: chrome=65.0.3325.162)</span><br><span class="line">  (Driver info: chromedriver=2.33.506120 (e3e53437346286c0bc2d2dc9aa4915ba81d9023f),platform=Windows NT 10.0.16299 x86_64)</span><br></pre></td></tr></table></figure></p><p>百度的答案<a href="https://stackoverflow.com/questions/48609069/org-openqa-selenium-webdriverexception-unknown-error-call-function-result-miss" target="_blank" rel="noopener">传送门</a></p><p><img src="/images/pasted-46.png" alt="upload successful"></p><p>笔者的理解：<br>     是因为Chrome升级了，然后Chrom Driver的版本不支持需要下载新版。</p><p><a href="http://chromedriver.storage.googleapis.com/index.html" target="_blank" rel="noopener">下载地址</a><br>里面有说明相互对应的版本说明。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;错误代码：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>MongoDB</title>
@@ -36,442 +484,6 @@
     
     
       <category term="MongoDB" scheme="https://sunshineuun.github.io/tags/MongoDB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>后端开发知识要点</title>
-    <link href="https://sunshineuun.github.io/2018/03/18/%E7%AB%AF%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E8%A6%81%E7%82%B9/"/>
-    <id>https://sunshineuun.github.io/2018/03/18/端开发知识要点/</id>
-    <published>2018-03-18T07:32:00.000Z</published>
-    <updated>2018-03-18T08:21:13.284Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="基础篇"><a href="#基础篇" class="headerlink" title="基础篇"></a>基础篇</h4><h5 id="基本功"><a href="#基本功" class="headerlink" title="基本功"></a>基本功</h5><h6 id="面向对象的特征"><a href="#面向对象的特征" class="headerlink" title="面向对象的特征"></a>面向对象的特征</h6><ol><li>抽象<br> 抽象使我们更接近于事物的本质。<strong>抽象的过程就是一个提炼存在于事物之间共同拥有的元素，而这些事务之间共同拥有的元素往往是这一事物区别于其他事物关键的东西，这些元素就构成了事物的本质.</strong></li><li>继承<br>  既是拓展的过程，也是归类的过程。</li><li>封装<br>  私有化的一个过程。</li><li>多态性<br>  多种表达形式。</li></ol><h6 id="final-finally-finalize-的区别"><a href="#final-finally-finalize-的区别" class="headerlink" title="final, finally, finalize 的区别"></a>final, finally, finalize 的区别</h6><ul><li>final，修饰变量，常量；修饰Class，不运行被继承；修饰方法，拒绝重载；总之就是只能这样了的意思。</li><li>finally，抛出异常继续执行的代码块。</li><li>finalize，是一个清理方法。</li></ul><h6 id="int-和-Integer-有什么区别"><a href="#int-和-Integer-有什么区别" class="headerlink" title="int 和 Integer 有什么区别"></a>int 和 Integer 有什么区别</h6><p>int是基础类型，Integer是int的包装类；Integer是一个对象。</p><h6 id="重载和重写的区别"><a href="#重载和重写的区别" class="headerlink" title="重载和重写的区别"></a>重载和重写的区别</h6><ul><li>重载同一方法名称，但是不同参数，已达到多态的效果。</li><li>重写，也称覆盖，覆盖父类的方法。</li></ul><h6 id="抽象类和接口有什么区别"><a href="#抽象类和接口有什么区别" class="headerlink" title="抽象类和接口有什么区别"></a>抽象类和接口有什么区别</h6><ul><li>个人理解：抽象类有具体方法实现；接口中的方法，都是由继承类实现。</li><li>接口是对动作的抽象，而抽象类是对根源的抽象。</li></ul><hr><ol><li>接口和抽象类都是继承树的上层，他们的共同点如下：<br> 1.1    都是上层的抽象层。<br>1.2 都不能被实例化<br>1.3 都能包含抽象的方法，这些抽象的方法用于描述类具备的功能，但是不比提供具体的实现。</li><li>它们的区别如下：<br> 2.1 在抽象类中可以写非抽象的方法，从而避免在子类中重复书写它们，这样可以提高代码的复用性，这是抽象类的优势；接口中只能有抽象的方法。<br>2.2 一个类只能继承一个直接父类，这个父类可以是具体的类也可是抽象类；但是一个类可以实现多个接口。</li></ol><p>参考：<a href="https://www.zhihu.com/question/20149818" target="_blank" rel="noopener">知乎-接口和抽象类有什么区别？</a></p><h6 id="说说反射的用途及实现"><a href="#说说反射的用途及实现" class="headerlink" title="说说反射的用途及实现"></a>说说反射的用途及实现</h6><p>用途：获取当前对象几乎所有的信息，属性，方法，注解等。<br>参考：<a href="http://www.sczyh30.com/posts/Java/java-reflection-1/" target="_blank" rel="noopener">反射理解基础</a></p><h6 id="说说自定义注解的场景及实现"><a href="#说说自定义注解的场景及实现" class="headerlink" title="说说自定义注解的场景及实现"></a>说说自定义注解的场景及实现</h6><h6 id="HTTP-请求的-GET-与-POST-方式的区别"><a href="#HTTP-请求的-GET-与-POST-方式的区别" class="headerlink" title="HTTP 请求的 GET 与 POST 方式的区别"></a>HTTP 请求的 GET 与 POST 方式的区别</h6><h6 id="session-与-cookie-区别"><a href="#session-与-cookie-区别" class="headerlink" title="session 与 cookie 区别"></a>session 与 cookie 区别</h6><h6 id="session-分布式处理"><a href="#session-分布式处理" class="headerlink" title="session 分布式处理"></a>session 分布式处理</h6><h6 id="JDBC-流程"><a href="#JDBC-流程" class="headerlink" title="JDBC 流程"></a>JDBC 流程</h6><h6 id="MVC-设计思想"><a href="#MVC-设计思想" class="headerlink" title="MVC 设计思想"></a>MVC 设计思想</h6><h6 id="equals-与-的区别"><a href="#equals-与-的区别" class="headerlink" title="equals 与 == 的区别"></a>equals 与 == 的区别</h6>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;基础篇&quot;&gt;&lt;a href=&quot;#基础篇&quot; class=&quot;headerlink&quot; title=&quot;基础篇&quot;&gt;&lt;/a&gt;基础篇&lt;/h4&gt;&lt;h5 id=&quot;基本功&quot;&gt;&lt;a href=&quot;#基本功&quot; class=&quot;headerlink&quot; title=&quot;基本功&quot;&gt;&lt;/a&gt;基本功&lt;/h
-      
-    
-    </summary>
-    
-    
-      <category term="Java" scheme="https://sunshineuun.github.io/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MongoDB</title>
-    <link href="https://sunshineuun.github.io/2018/03/12/goDB/"/>
-    <id>https://sunshineuun.github.io/2018/03/12/goDB/</id>
-    <published>2018-03-12T12:45:01.000Z</published>
-    <updated>2018-03-12T13:03:13.329Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="更新命令"><a href="#更新命令" class="headerlink" title="更新命令"></a>更新命令</h4><h5 id="update"><a href="#update" class="headerlink" title="update"></a>update</h5><p>格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.update(criteria,objNew,upsert,multi)</span><br></pre></td></tr></table></figure></p><p>参数说明如下：<br><strong>criteria</strong>：查询条件<br><strong>objNew</strong>：update对象和一些更新操作符<br><strong>upsert</strong>：如果不存在update的记录，是否插入objNew这个新的文档，true为插入，默认为false，不插入。<br><strong>multi</strong>：默认是false，只更新找到的第一条记录。如果为true，把按条件查询出来的记录全部更新。</p><h5 id="save"><a href="#save" class="headerlink" title="save"></a>save</h5><p>格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.save(obj)</span><br></pre></td></tr></table></figure></p><p>参数说明如下：<br>obj：代表需要更新的对象，如果集合内部已经存在一个和obj相同的<strong>_id</strong>的记录，Mongodb会把obj对象替换集合内已存在的记录，如果不存在，则会插入obj对象。</p><h5 id="更新操作符号"><a href="#更新操作符号" class="headerlink" title="更新操作符号"></a>更新操作符号</h5><h6 id="inc"><a href="#inc" class="headerlink" title="$inc"></a>$inc</h6><p>用法：{$inc:{field:value}}<br>作用：对一个数字字段的某个field增加value<br>说明：只能运用在数值类型上</p><h6 id="set"><a href="#set" class="headerlink" title="$set"></a>$set</h6><p>用法：{$set:{field:value}}<br>作用：把文档中某个字段field的值设为value</p><h6 id="unset"><a href="#unset" class="headerlink" title="$unset"></a>$unset</h6><p>用法：{$unset:{field:1}}<br>作用：删除某个字段field</p><h6 id="push"><a href="#push" class="headerlink" title="$push"></a>$push</h6><p>用法：{$push:{field:value}}<br>作用：把value追加到field里。<br>说明：field只能是数组类型，如果field不存在，会自动插入一个数组类型</p><h6 id="pushAll"><a href="#pushAll" class="headerlink" title="pushAll"></a>pushAll</h6><p>用法：{$pushAll:{field:value_array}}<br>作用：用法同$push一样，只是$pushAll可以一次追加多个值到一个数组字段内。<br>说明：field只能是数组类型。</p><h6 id="addToSet"><a href="#addToSet" class="headerlink" title="$addToSet"></a>$addToSet</h6><p>用法：{$addToSet:{field:value}}<br>作用：加一个值到数组内，而且只有当这个值在数组中不存在时才增加。<br>说明：结果是append，不是add，就算存入的是数组，它也是单个值<br>举例：存入[ “A3”, “A4” ]的效果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ &quot;Michael&quot;, &quot;A1&quot;, &quot;A2&quot;, [ &quot;A3&quot;, &quot;A4&quot; ] ]</span><br></pre></td></tr></table></figure></p><h6 id="pop"><a href="#pop" class="headerlink" title="$pop"></a>$pop</h6><p>用法：删除数组内第一个值：{$pop:{field:-1}}、删除数组内最后一个值：{$pop:{field:1}}<br>作用：用于删除数组内的一个值</p><h6 id="pull"><a href="#pull" class="headerlink" title="$pull"></a>$pull</h6><p>用法：{$pull:{field:_value}}<br>作用：从数组field内删除一个等于_value的值</p><h6 id="pullAll"><a href="#pullAll" class="headerlink" title="$pullAll"></a>$pullAll</h6><p>用法：{$pullAll:value_array}<br>作用：用法同$pull一样，可以一次性删除数组内的多个值。</p><h6 id="rename"><a href="#rename" class="headerlink" title="$rename"></a>$rename</h6><p>用法：{$rename:{old_field_name:new_field_name}}<br>作用：对字段进行重命名</p><h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ul><li><a href="https://www.yiibai.com/mongodb/mongodb_quick_guide.html" target="_blank" rel="noopener">快速入门</a></li><li><a href="https://www.cnblogs.com/yu-zhang/p/5210966.html" target="_blank" rel="noopener">博客-更新命令(save,update)</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;更新命令&quot;&gt;&lt;a href=&quot;#更新命令&quot; class=&quot;headerlink&quot; title=&quot;更新命令&quot;&gt;&lt;/a&gt;更新命令&lt;/h4&gt;&lt;h5 id=&quot;update&quot;&gt;&lt;a href=&quot;#update&quot; class=&quot;headerlink&quot; title=&quot;updat
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Python常用命令</title>
-    <link href="https://sunshineuun.github.io/2018/03/08/ython%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
-    <id>https://sunshineuun.github.io/2018/03/08/ython常用命令/</id>
-    <published>2018-03-08T09:01:41.000Z</published>
-    <updated>2018-03-08T09:03:51.212Z</updated>
-    
-    <content type="html"><![CDATA[<p>python查看所有module api文档<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m pydoc -p 4895</span><br></pre></td></tr></table></figure></p><hr>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;python查看所有module api文档&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;t
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>个人报销</title>
-    <link href="https://sunshineuun.github.io/2018/03/06/%E4%BA%BA%E6%8A%A5%E9%94%80/"/>
-    <id>https://sunshineuun.github.io/2018/03/06/人报销/</id>
-    <published>2018-03-06T05:35:01.000Z</published>
-    <updated>2018-03-06T05:35:36.787Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>交通费<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">23+73+92+15+51+45+50+35+32+18+81+124+38+55+130+40+99=1001</span><br><span class="line">164+87+294+197+18+44+22+40+18+14+14+14+47+27=1000</span><br><span class="line">224+19+35+19+59+69+32+110+24+17+29+43+17+21+27+46+27+39=800多</span><br></pre></td></tr></table></figure></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ul&gt;
-&lt;li&gt;交通费&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>MongoDB注册为windows服务</title>
-    <link href="https://sunshineuun.github.io/2018/03/05/ngoDB%E6%B3%A8%E5%86%8Cwindows%E6%9C%8D%E5%8A%A1/"/>
-    <id>https://sunshineuun.github.io/2018/03/05/ngoDB注册windows服务/</id>
-    <published>2018-03-05T05:44:13.000Z</published>
-    <updated>2018-03-05T05:46:37.531Z</updated>
-    
-    <content type="html"><![CDATA[<ol><li><p>以系统管理员身份打开“运行”窗口，输入cmd 回车，并切换至MongoDB的bin目录运行以下语句。</p></li><li><p>语句为： mongod.exe –dbpath=D:\install\MongoDB\data –logpath=D:\install\MongoDB\log\mongodb.log –install –serviceName “MongoDB”</p></li></ol><p>PS:惊讶–pbpath指的的mongodb安装路径，logpath指的是mongodb日志存放路径，–install –serviceName指的是安装成为系统服务，服务名称为 MongoDB</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;以系统管理员身份打开“运行”窗口，输入cmd 回车，并切换至MongoDB的bin目录运行以下语句。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;语句为： mongod.exe –dbpath=D:\install\MongoDB\data –logpath=D:\
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Selenium浏览器滚动条操作</title>
-    <link href="https://sunshineuun.github.io/2018/03/05/lenium%E6%B5%8F%E8%A7%88%E5%99%A8%E6%BB%9A%E5%8A%A8%E6%9D%A1%E6%93%8D%E4%BD%9C/"/>
-    <id>https://sunshineuun.github.io/2018/03/05/lenium浏览器滚动条操作/</id>
-    <published>2018-03-05T05:35:20.000Z</published>
-    <updated>2018-03-05T05:40:49.153Z</updated>
-    
-    <content type="html"><![CDATA[<p>通过<code>driver.execute_script()</code>执行js代码进行操作。</p><p>滚动到底部<code>window.scrollTo(0, document.body.scrollHeight)</code><br>PS:其实就是通过<code>window.scrollTo()</code>进行处理的，第一个参数是横向向参数，第二个参数是纵向参数。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;通过&lt;code&gt;driver.execute_script()&lt;/code&gt;执行js代码进行操作。&lt;/p&gt;
-&lt;p&gt;滚动到底部&lt;code&gt;window.scrollTo(0, document.body.scrollHeight)&lt;/code&gt;&lt;br&gt;PS:其实就是通过&lt;co
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Winning-Tech-3月</title>
-    <link href="https://sunshineuun.github.io/2018/03/02/nning-Tech/"/>
-    <id>https://sunshineuun.github.io/2018/03/02/nning-Tech/</id>
-    <published>2018-03-02T07:03:00.000Z</published>
-    <updated>2018-03-02T08:46:37.670Z</updated>
-    
-    <content type="html"><![CDATA[<p>2018年3月</p><h6 id="公司计划"><a href="#公司计划" class="headerlink" title="公司计划"></a>公司计划</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root = /Winning/2018/3月份</span><br><span class="line">TASK1 - 部门经理分配的任务，【root/各主体资料库进度总览.xlsx】文档中，待爬取网站爬取可行性分析。</span><br><span class="line">TASK2 - 产品经理分配的任务，中药方剂库数据爬取。【root/中药方剂库-产品.xlsx】</span><br><span class="line">TASK3 - 产品迭代任务，2.8版本需求评估，开发。</span><br><span class="line">TASK4 - 数据挖掘组分配的任务，药品说明书网站数据爬取。目前只提供了一个网站，后续补充。</span><br></pre></td></tr></table></figure><h6 id="个人计划"><a href="#个人计划" class="headerlink" title="个人计划"></a>个人计划</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.react学习</span><br><span class="line">2.springboot学习</span><br><span class="line">3.前后端分离学习</span><br><span class="line">4.python爬虫进阶</span><br><span class="line">5.java、javaweb基础巩固</span><br><span class="line">6.servlet学习</span><br></pre></td></tr></table></figure><p><strong>2018年3月2日</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 中药方剂库数据爬取分析及其计划评估。TASK2</span><br><span class="line">2. KBMS bug修复，【社保药品分类与代码】查询后，树无限展开问题处理。</span><br><span class="line">3. KBMS2.8版本需求分析及其评估。TASK3</span><br><span class="line">4. 分析数据挖掘组需要爬取的网站。TASK1</span><br></pre></td></tr></table></figure></p><p><strong>2018年3月5日</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. 分析爬取网站的可行性。TASK1</span><br></pre></td></tr></table></figure></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;2018年3月&lt;/p&gt;
-&lt;h6 id=&quot;公司计划&quot;&gt;&lt;a href=&quot;#公司计划&quot; class=&quot;headerlink&quot; title=&quot;公司计划&quot;&gt;&lt;/a&gt;公司计划&lt;/h6&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td cla
-      
-    
-    </summary>
-    
-      <category term="Winning" scheme="https://sunshineuun.github.io/categories/Winning/"/>
-    
-    
-      <category term="工作" scheme="https://sunshineuun.github.io/tags/%E5%B7%A5%E4%BD%9C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Oracle日常错误</title>
-    <link href="https://sunshineuun.github.io/2018/03/01/Oracle%E6%97%A5%E5%B8%B8%E9%94%99%E8%AF%AF/"/>
-    <id>https://sunshineuun.github.io/2018/03/01/Oracle日常错误/</id>
-    <published>2018-03-01T06:40:00.000Z</published>
-    <updated>2018-03-01T06:44:53.130Z</updated>
-    
-    <content type="html"><![CDATA[<ol><li><p>在实际的 LONG 或 LOB 列之后提供了扩展的非 LONG 绑定数据</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在INSERT操作的时候，需要将LONG或者LOB类型的列放到其他类型的后面，否则出错</span><br></pre></td></tr></table></figure></li><li><p>ORA-01461: 仅能绑定要插入 LONG 列的 LONG 值</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字段插入类型超过了VARCHAR2(4000),需要调整为CLOB类型。</span><br></pre></td></tr></table></figure></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;在实际的 LONG 或 LOB 列之后提供了扩展的非 LONG 绑定数据&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1
-      
-    
-    </summary>
-    
-    
-      <category term="Oracle" scheme="https://sunshineuun.github.io/tags/Oracle/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java错误日志_01</title>
-    <link href="https://sunshineuun.github.io/2018/02/07/va%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97-01/"/>
-    <id>https://sunshineuun.github.io/2018/02/07/va错误日志-01/</id>
-    <published>2018-02-07T06:55:58.000Z</published>
-    <updated>2018-02-07T07:03:06.284Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="背景描述"><a href="#背景描述" class="headerlink" title="背景描述"></a>背景描述</h5><p>在终端运行<code>java -jar xxx.jar</code>的时候。在终端运行可执行jar，jar包中带main方法。</p><h5 id="错误信息如下"><a href="#错误信息如下" class="headerlink" title="错误信息如下"></a>错误信息如下</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Error: A JNI error has occurred, please check your installation and try again</span><br><span class="line">Exception in thread &quot;main&quot; java.lang.SecurityException: Invalid signature file digest for Manifest main attributes</span><br><span class="line">        at sun.security.util.SignatureFileVerifier.processImpl(SignatureFileVerifier.java:284)</span><br><span class="line">        at sun.security.util.SignatureFileVerifier.process(SignatureFileVerifier.java:238)</span><br><span class="line">        at java.util.jar.JarVerifier.processEntry(JarVerifier.java:316)</span><br><span class="line">        at java.util.jar.JarVerifier.update(JarVerifier.java:228)</span><br><span class="line">        at java.util.jar.JarFile.initializeVerifier(JarFile.java:383)</span><br><span class="line">        at java.util.jar.JarFile.getInputStream(JarFile.java:450)</span><br><span class="line">        at sun.misc.URLClassPath$JarLoader$2.getInputStream(URLClassPath.java:940)</span><br><span class="line">        at sun.misc.Resource.cachedInputStream(Resource.java:77)</span><br><span class="line">        at sun.misc.Resource.getByteBuffer(Resource.java:160)</span><br><span class="line">        at java.net.URLClassLoader.defineClass(URLClassLoader.java:454)</span><br><span class="line">        at java.net.URLClassLoader.access$100(URLClassLoader.java:73)</span><br><span class="line">        at java.net.URLClassLoader$1.run(URLClassLoader.java:368)</span><br><span class="line">        at java.net.URLClassLoader$1.run(URLClassLoader.java:362)</span><br><span class="line">        at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">        at java.net.URLClassLoader.findClass(URLClassLoader.java:361)</span><br><span class="line">        at java.lang.ClassLoader.loadClass(ClassLoader.java:424)</span><br><span class="line">        at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)</span><br><span class="line">        at java.lang.ClassLoader.loadClass(ClassLoader.java:357)</span><br><span class="line">        at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:495)</span><br></pre></td></tr></table></figure><h5 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h5><p>删除对应目录下的三类文件<code>META-INF/*.RSA;META-INF/*.DSA;META-INF/*.SF</code>即可。</p><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ul><li><a href="http://blog.csdn.net/dai451954706/article/details/50086295" target="_blank" rel="noopener">1</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;背景描述&quot;&gt;&lt;a href=&quot;#背景描述&quot; class=&quot;headerlink&quot; title=&quot;背景描述&quot;&gt;&lt;/a&gt;背景描述&lt;/h5&gt;&lt;p&gt;在终端运行&lt;code&gt;java -jar xxx.jar&lt;/code&gt;的时候。在终端运行可执行jar，jar包中带main方
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Jrebel破解大法</title>
-    <link href="https://sunshineuun.github.io/2018/02/07/ebel%E7%A0%B4%E8%A7%A3%E5%A4%A7%E6%B3%95/"/>
-    <id>https://sunshineuun.github.io/2018/02/07/ebel破解大法/</id>
-    <published>2018-02-07T05:42:14.000Z</published>
-    <updated>2018-02-07T05:50:59.788Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="使用License-Server进行破解"><a href="#使用License-Server进行破解" class="headerlink" title="使用License Server进行破解"></a>使用License Server进行破解</h5><h6 id="搭建License-Server服务"><a href="#搭建License-Server服务" class="headerlink" title="搭建License Server服务"></a>搭建License Server服务</h6><ul><li>工具下载，百度网盘<a href="https://pan.baidu.com/s/1ggKESHP" target="_blank" rel="noopener">传送门</a>,密码<strong>zmzk</strong></li><li>将项目导入IDEA中，运行起来，或者打成jar进行运行。提示如下。对于端口冲突的话，修改端口会在后面提到。<br><img src="/images/pasted-43.png" alt="upload successful"></li><li>然后到IDEA中激活Jrebel。<br><img src="/images/pasted-42.png" alt="upload successful"></li><li>至此应该破解成功了。</li></ul><h6 id="端口修改"><a href="#端口修改" class="headerlink" title="端口修改"></a>端口修改</h6><p><img src="/images/pasted-44.png" alt="upload successful"></p><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ul><li><a href="http://blog.csdn.net/weisheixiaoxin/article/details/79200535" target="_blank" rel="noopener">Jrebel 热部署 最新版破解 ！！监听端口实现 免费！转载博客于此</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;使用License-Server进行破解&quot;&gt;&lt;a href=&quot;#使用License-Server进行破解&quot; class=&quot;headerlink&quot; title=&quot;使用License Server进行破解&quot;&gt;&lt;/a&gt;使用License Server进行破解&lt;/h5&gt;&lt;
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>React基础一</title>
-    <link href="https://sunshineuun.github.io/2018/02/02/React%E5%9F%BA%E7%A1%80%E4%B8%80/"/>
-    <id>https://sunshineuun.github.io/2018/02/02/React基础一/</id>
-    <published>2018-02-02T02:44:00.000Z</published>
-    <updated>2018-02-02T06:40:52.575Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="项目创建"><a href="#项目创建" class="headerlink" title="项目创建"></a>项目创建</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install -g create-react-app       /* 安装create-react-app，建议使用cnpm */</span><br><span class="line">create-react-app myapp                 /* 使用命令创建应用，myapp为项目名称 */</span><br><span class="line">cd myapp                                        /* 进入目录，然后启动 */</span><br><span class="line">npm start</span><br></pre></td></tr></table></figure><h5 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h5><p>生成项目后，脚手架为了“优雅”… …隐藏了所有的webpack相关的配置文件，此时查看myapp文件夹目录，会发现找不到任何webpack配置文件。执行以下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run eject</span><br></pre></td></tr></table></figure></p><h5 id="webpack3构建react工程"><a href="#webpack3构建react工程" class="headerlink" title="webpack3构建react工程"></a>webpack3构建react工程</h5><h6 id="安装webpack"><a href="#安装webpack" class="headerlink" title="安装webpack"></a>安装webpack</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev webpack</span><br></pre></td></tr></table></figure><h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ul><li><a href="https://www.jianshu.com/p/5e6c620ff4d6" target="_blank" rel="noopener">Create-React-App创建antd-mobile开发环境</a></li><li><a href="https://www.cnblogs.com/yswz/p/7165031.html" target="_blank" rel="noopener">使用babel-plugin-import实现antd组件库中的组件按需加载</a></li><li><a href="https://github.com/ant-design/babel-plugin-import" target="_blank" rel="noopener">babel-plugin-import github</a></li><li><a href="https://www.jianshu.com/p/b9e04d3c8650" target="_blank" rel="noopener">webpack3构建react工程</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;项目创建&quot;&gt;&lt;a href=&quot;#项目创建&quot; class=&quot;headerlink&quot; title=&quot;项目创建&quot;&gt;&lt;/a&gt;项目创建&lt;/h5&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pr
-      
-    
-    </summary>
-    
-    
-      <category term="React" scheme="https://sunshineuun.github.io/tags/React/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>开发戒律</title>
-    <link href="https://sunshineuun.github.io/2018/02/01/%E5%BC%80%E5%8F%91%E6%88%92%E5%BE%8B/"/>
-    <id>https://sunshineuun.github.io/2018/02/01/开发戒律/</id>
-    <published>2018-02-01T08:04:00.000Z</published>
-    <updated>2018-02-01T08:06:14.668Z</updated>
-    
-    <content type="html"><![CDATA[<p>2018年2月1日16:04:51</p><ol><li>sql执行一定要使用绑定参数，不然出现以下特殊字符就出错。【’ ,】，英文的引号，逗号的。</li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;2018年2月1日16:04:51&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;sql执行一定要使用绑定参数，不然出现以下特殊字符就出错。【’ ,】，英文的引号，逗号的。&lt;/li&gt;
-&lt;/ol&gt;
-
-      
-    
-    </summary>
-    
-    
-      <category term="告诫" scheme="https://sunshineuun.github.io/tags/%E5%91%8A%E8%AF%AB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring Security日常问题</title>
-    <link href="https://sunshineuun.github.io/2018/02/01/Spring-Security%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/"/>
-    <id>https://sunshineuun.github.io/2018/02/01/Spring-Security日常问题/</id>
-    <published>2018-02-01T07:40:00.000Z</published>
-    <updated>2018-02-01T07:46:39.463Z</updated>
-    
-    <content type="html"><![CDATA[<h6 id="页面获取Spring-Security登录用户"><a href="#页面获取Spring-Security登录用户" class="headerlink" title="页面获取Spring Security登录用户"></a>页面获取Spring Security登录用户</h6><p>简介：  spring security 把SPRING_SECURITY_CONTEXT 放入了session 没有直接把username 放进去。</p><ul><li><p>前台取值方式一:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;session.SPRING_SECURITY_CONTEXT.authentication.principal.username&#125;</span><br></pre></td></tr></table></figure></li><li><p>前台取值方式二: 在页面端用tag获取</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ taglib prefix=&apos;security&apos; uri=&apos;http://www.springframework.org/security/tags&apos;%&gt;</span><br><span class="line">    &lt;security:authentication property=&quot;principal.username&quot;&gt;&lt;/security:authentication&gt;</span><br></pre></td></tr></table></figure></li></ul><p>或者<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;security:authorize ifAllGranted=&quot;ROLE_ADMIN&quot;&gt;  </span><br><span class="line">      &lt;security:authentication property=&quot;principal.username&quot;&gt;&lt;/security:authentication&gt;   </span><br><span class="line">&lt;/security:authorize&gt;</span><br></pre></td></tr></table></figure></p><ul><li>后台取值:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()  </span><br><span class="line">    .getAuthentication()  </span><br><span class="line">    .getPrincipal();  </span><br><span class="line">      </span><br><span class="line">userDetails.getUsername()</span><br></pre></td></tr></table></figure></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h6 id=&quot;页面获取Spring-Security登录用户&quot;&gt;&lt;a href=&quot;#页面获取Spring-Security登录用户&quot; class=&quot;headerlink&quot; title=&quot;页面获取Spring Security登录用户&quot;&gt;&lt;/a&gt;页面获取Spring Securi
-      
-    
-    </summary>
-    
-    
-      <category term="Spring Security" scheme="https://sunshineuun.github.io/tags/Spring-Security/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>TDC书单</title>
-    <link href="https://sunshineuun.github.io/2018/02/01/TDC%E4%B9%A6%E5%8D%95/"/>
-    <id>https://sunshineuun.github.io/2018/02/01/TDC书单/</id>
-    <published>2018-02-01T02:45:45.000Z</published>
-    <updated>2018-02-01T05:22:46.549Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>公告</strong><br>《分布式Java应用：基础与实践》书本找回，谁借用这本书，未告知管理员的，请及时告知。<br>感谢。</p><hr><p><strong>为了保证资源能够充分利用，在书闲置之时，请各位及时还书。</strong><br><strong>可以在下方留言，邮箱，扣扣等方式告知，到我这里拿钥匙，或者我可以给你送过去。</strong><br><strong>感谢合作！</strong></p><ul><li>联系人：邱胜明</li><li>手机号码：15958624595</li><li>QQ：583853240</li><li>邮箱：qiushengming@tech-winning.com</li></ul><hr><table><thead><tr><th style="text-align:left">书名</th><th style="text-align:center">作者</th><th style="text-align:right">借书日期</th><th style="text-align:right">还书日期</th><th style="text-align:right">借书人</th></tr></thead><tbody><tr><td style="text-align:left">京东系统质量保障技术实战</td><td style="text-align:center">商城研发POP平台 著</td><td style="text-align:right"></td><td style="text-align:right"></td><td style="text-align:right"></td></tr><tr><td style="text-align:left">MongoDB实战（第二版）</td><td style="text-align:center">华中科技大学出版社</td><td style="text-align:right"></td><td style="text-align:right"></td><td style="text-align:right"></td></tr><tr><td style="text-align:left">Java多线程编程核心技术</td><td style="text-align:center">高洪岩</td><td style="text-align:right"></td><td style="text-align:right"></td><td style="text-align:right"></td></tr><tr><td style="text-align:left">精通自动化测试框架设计</td><td style="text-align:center">陈冬严</td><td style="text-align:right">2018/1/31</td><td style="text-align:right">2018/2/22</td><td style="text-align:right">陈进美</td></tr><tr><td style="text-align:left">Web接口开发与自动化测试――基于Python语言</td><td style="text-align:center">虫师</td><td style="text-align:right">2018/2/1</td><td style="text-align:right">-</td><td style="text-align:right">陈俊杰</td></tr><tr><td style="text-align:left">Selenium2自动化测试实战基于Python语言</td><td style="text-align:center">虫师</td><td style="text-align:right"></td><td style="text-align:right"></td><td style="text-align:right"></td></tr><tr><td style="text-align:left">Python核心编程（第3版）</td><td style="text-align:center">[美]WesleyChun著；孙波翔，李斌，李晗译</td><td style="text-align:right">2018/1/31</td><td style="text-align:right">2018/2/28</td><td style="text-align:right">吴维维</td></tr><tr><td style="text-align:left">Docker经典实例</td><td style="text-align:center">[美]戈阿冈（SébastienGoasguen）著；刘斌译</td><td style="text-align:right">2018/1/31</td><td style="text-align:right">2018/2/28</td><td style="text-align:right">吴维维</td></tr><tr><td style="text-align:left">深入浅出Node.js</td><td style="text-align:center">朴灵</td><td style="text-align:right">2018/2/1</td><td style="text-align:right"></td><td style="text-align:right">范健伟</td></tr><tr><td style="text-align:left">Spring源码深度解析</td><td style="text-align:center">郝佳</td><td style="text-align:right">2018/2/1</td><td style="text-align:right">-</td><td style="text-align:right">杨浩</td></tr><tr><td style="text-align:left">大型网站系统与Java中间件实践</td><td style="text-align:center">曾宪杰</td><td style="text-align:right"></td><td style="text-align:right"></td><td style="text-align:right"></td></tr><tr><td style="text-align:left">分布式Java应用：基础与实践</td><td style="text-align:center">林昊</td><td style="text-align:right"></td><td style="text-align:right"></td><td style="text-align:right"></td></tr><tr><td style="text-align:left">深度学习入门之PyTorch</td><td style="text-align:center">廖星宇</td><td style="text-align:right"></td><td style="text-align:right"></td><td style="text-align:right"></td></tr><tr><td style="text-align:left">TensorFlow：实战Google深度学习框架</td><td style="text-align:center">才云科技Caicloud，郑泽宇，顾思宇著</td><td style="text-align:right"></td><td style="text-align:right"></td><td style="text-align:right"></td></tr><tr><td style="text-align:left">TensorFlow技术解析与实战</td><td style="text-align:center">李嘉璇</td><td style="text-align:right"></td><td style="text-align:right"></td><td style="text-align:right"></td></tr><tr><td style="text-align:left">Redis开发与运维</td><td style="text-align:center">付磊</td><td style="text-align:right">2018/2/1</td><td style="text-align:right">2018/4/20</td><td style="text-align:right">于祥通</td></tr><tr><td style="text-align:left">分布式服务框架原理与实践</td><td style="text-align:center">李林锋</td><td style="text-align:right">2018/2/1</td><td style="text-align:right">2018/4/20</td><td style="text-align:right">于祥通</td></tr><tr><td style="text-align:left">Java性能权威指南</td><td style="text-align:center">奥克斯</td><td style="text-align:right">2018/2/1</td><td style="text-align:right">2018/4/20</td><td style="text-align:right">于祥通</td></tr><tr><td style="text-align:left">Redis开发与运维</td><td style="text-align:center">付磊，张益军著</td><td style="text-align:right"></td><td style="text-align:right"></td><td style="text-align:right"></td></tr><tr><td style="text-align:left">分布式服务架构：原理、设计与实战</td><td style="text-align:center">李艳鹏，杨彪著</td><td style="text-align:right">2018/2/1</td><td style="text-align:right">2018/4/28</td><td style="text-align:right">田升</td></tr><tr><td style="text-align:left">WebAPI的设计与开发</td><td style="text-align:center">水野贵明著；盛荣译</td><td style="text-align:right">2018/2/1</td><td style="text-align:right">2018/3/15</td><td style="text-align:right">万玉</td></tr><tr><td style="text-align:left">看透SpringMVC:源代码分析与实践</td><td style="text-align:center">韩路彪著</td><td style="text-align:right">2018/2/1</td><td style="text-align:right">2018/3/1</td><td style="text-align:right">尚梦思</td></tr><tr><td style="text-align:left">HTML5+CSS3+JavaScript从入门到精通（标准版</td><td style="text-align:center">未来科技著</td><td style="text-align:right"></td><td style="text-align:right"></td><td style="text-align:right"></td></tr><tr><td style="text-align:left">程序员的修炼——从优秀到卓越</td><td style="text-align:center">[美]Jeff,Atwood著</td><td style="text-align:right"></td><td style="text-align:right"></td><td style="text-align:right"></td></tr><tr><td style="text-align:left">Oracle性能诊断艺术（第2版）</td><td style="text-align:center">[瑞士]ChristianAntognini著；王作佳，刘迪译</td><td style="text-align:right">2018/2/1</td><td style="text-align:right">-</td><td style="text-align:right">许林峰</td></tr><tr><td style="text-align:left">高性能MySQL（第3版）</td><td style="text-align:center">BaronSchwartz<br>PeterZaitsev<br>VadimTkachenko著；<br>宁海元，周振兴，彭立勋等译</td><td style="text-align:right"></td><td style="text-align:right"></td><td style="text-align:right"></td></tr><tr><td style="text-align:left">疯狂SpringCloud微服务架构实战</td><td style="text-align:center">作者：杨恩雄</td><td style="text-align:right">2018/2/1</td><td style="text-align:right">2018/2/25</td><td style="text-align:right">李赏</td></tr><tr><td style="text-align:left">Node.js微服务</td><td style="text-align:center">DavidGonzalez著赵震一郑伟杰译</td><td style="text-align:right">2018/2/1</td><td style="text-align:right">-</td><td style="text-align:right">范建伟</td></tr></tbody></table>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;strong&gt;公告&lt;/strong&gt;&lt;br&gt;《分布式Java应用：基础与实践》书本找回，谁借用这本书，未告知管理员的，请及时告知。&lt;br&gt;感谢。&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;strong&gt;为了保证资源能够充分利用，在书闲置之时，请各位及时还书。&lt;/strong&gt;&lt;br&gt;&lt;s
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Mybatis Generator配置详解</title>
-    <link href="https://sunshineuun.github.io/2018/01/31/Mybatis-Generator%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3/"/>
-    <id>https://sunshineuun.github.io/2018/01/31/Mybatis-Generator配置详解/</id>
-    <published>2018-01-31T04:26:00.000Z</published>
-    <updated>2018-01-31T04:39:29.774Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="Mybatis-Generator配置详解"><a href="#Mybatis-Generator配置详解" class="headerlink" title="Mybatis Generator配置详解"></a>Mybatis Generator配置详解</h5><h6 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h6><p>使用这个插件可以快速生成一些代码,包含<code>实体类/Mapper接口/*Mapper.xml文件</code>。笔者用IDEA开发环境，利用MAVEN进行构建。<br>参考官方文档点击<a href="http://www.mybatis.org/generator/running/runningWithMaven.html" target="_blank" rel="noopener">传送门</a>前往。</p><h6 id="POM文件配置如下"><a href="#POM文件配置如下" class="headerlink" title="POM文件配置如下"></a>POM文件配置如下</h6><p>注意,<code>plugins</code>标签是<code>build</code>标签的子标签<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugins&gt;</span><br><span class="line">      &lt;plugin&gt;</span><br><span class="line">        &lt;!--Mybatis-generator插件,用于自动生成Mapper和POJO--&gt;</span><br><span class="line">        &lt;groupId&gt;org.mybatis.generator&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;mybatis-generator-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;1.3.2&lt;/version&gt;</span><br><span class="line">        &lt;configuration&gt;</span><br><span class="line">          &lt;!--配置文件的位置--&gt;</span><br><span class="line">          &lt;configurationFile&gt;yourLocation/mybatis-generator-config.xml&lt;/configurationFile&gt;</span><br><span class="line">          &lt;verbose&gt;true&lt;/verbose&gt;</span><br><span class="line">          &lt;overwrite&gt;true&lt;/overwrite&gt;</span><br><span class="line">        &lt;/configuration&gt;</span><br><span class="line">        &lt;executions&gt;</span><br><span class="line">          &lt;execution&gt;</span><br><span class="line">            &lt;id&gt;Generate MyBatis Artifacts&lt;/id&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">              &lt;goal&gt;generate&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">          &lt;/execution&gt;</span><br><span class="line">        &lt;/executions&gt;</span><br><span class="line">        &lt;dependencies&gt;</span><br><span class="line">          &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.mybatis.generator&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;mybatis-generator-core&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.3.2&lt;/version&gt;</span><br><span class="line">          &lt;/dependency&gt;</span><br><span class="line">        &lt;/dependencies&gt;</span><br><span class="line">      &lt;/plugin&gt;</span><br><span class="line">    &lt;/plugins&gt;</span><br></pre></td></tr></table></figure></p><h6 id="Mybatis-Generator配置如下"><a href="#Mybatis-Generator配置如下" class="headerlink" title="Mybatis Generator配置如下"></a>Mybatis Generator配置如下</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE generatorConfiguration</span><br><span class="line">  PUBLIC &quot;-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN&quot;</span><br><span class="line">&quot;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&quot;&gt;</span><br><span class="line">&lt;!-- 配置生成器 --&gt;</span><br><span class="line">&lt;generatorConfiguration&gt;</span><br><span class="line">&lt;!-- 可以用于加载配置项或者配置文件，在整个配置文件中就可以使用$&#123;propertyKey&#125;的方式来引用配置项</span><br><span class="line">    resource：配置资源加载地址，使用resource，MBG从classpath开始找，比如com/myproject/generatorConfig.properties        </span><br><span class="line">    url：配置资源加载地质，使用URL的方式，比如file:///C:/myfolder/generatorConfig.properties.</span><br><span class="line">    注意，两个属性只能选址一个;</span><br><span class="line"></span><br><span class="line">    另外，如果使用了mybatis-generator-maven-plugin，那么在pom.xml中定义的properties都可以直接在generatorConfig.xml中使用</span><br><span class="line">&lt;properties resource=&quot;&quot; url=&quot;&quot; /&gt;</span><br><span class="line"> --&gt;</span><br><span class="line"></span><br><span class="line"> &lt;!-- 在MBG工作的时候，需要额外加载的依赖包</span><br><span class="line">     location属性指明加载jar/zip包的全路径</span><br><span class="line">&lt;classPathEntry location=&quot;/Program Files/IBM/SQLLIB/java/db2java.zip&quot; /&gt;</span><br><span class="line">  --&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- </span><br><span class="line">    context:生成一组对象的环境 </span><br><span class="line">    id:必选，上下文id，用于在生成错误时提示</span><br><span class="line">    defaultModelType:指定生成对象的样式</span><br><span class="line">        1，conditional：类似hierarchical；</span><br><span class="line">        2，flat：所有内容（主键，blob）等全部生成在一个对象中；</span><br><span class="line">        3，hierarchical：主键生成一个XXKey对象(key class)，Blob等单独生成一个对象，其他简单属性在一个对象中(record class)</span><br><span class="line">    targetRuntime:</span><br><span class="line">        1，MyBatis3：默认的值，生成基于MyBatis3.x以上版本的内容，包括XXXBySample；</span><br><span class="line">        2，MyBatis3Simple：类似MyBatis3，只是不生成XXXBySample；</span><br><span class="line">    introspectedColumnImpl：类全限定名，用于扩展MBG</span><br><span class="line">--&gt;</span><br><span class="line">&lt;context id=&quot;mysql&quot; defaultModelType=&quot;hierarchical&quot; targetRuntime=&quot;MyBatis3Simple&quot; &gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表；</span><br><span class="line">        一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖</span><br><span class="line">     --&gt;</span><br><span class="line">    &lt;property name=&quot;autoDelimitKeywords&quot; value=&quot;false&quot;/&gt;</span><br><span class="line">    &lt;!-- 生成的Java文件的编码 --&gt;</span><br><span class="line">    &lt;property name=&quot;javaFileEncoding&quot; value=&quot;UTF-8&quot;/&gt;</span><br><span class="line">    &lt;!-- 格式化java代码 --&gt;</span><br><span class="line">    &lt;property name=&quot;javaFormatter&quot; value=&quot;org.mybatis.generator.api.dom.DefaultJavaFormatter&quot;/&gt;</span><br><span class="line">    &lt;!-- 格式化XML代码 --&gt;</span><br><span class="line">    &lt;property name=&quot;xmlFormatter&quot; value=&quot;org.mybatis.generator.api.dom.DefaultXmlFormatter&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； --&gt;</span><br><span class="line">    &lt;property name=&quot;beginningDelimiter&quot; value=&quot;`&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;endingDelimiter&quot; value=&quot;`&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 必须要有的，使用这个配置链接数据库</span><br><span class="line">        @TODO:是否可以扩展</span><br><span class="line">     --&gt;</span><br><span class="line">    &lt;jdbcConnection driverClass=&quot;com.mysql.jdbc.Driver&quot; connectionURL=&quot;jdbc:mysql:///pss&quot; userId=&quot;root&quot; password=&quot;admin&quot;&gt;</span><br><span class="line">        &lt;!-- 这里面可以设置property属性，每一个property属性都设置到配置的Driver上 --&gt;</span><br><span class="line">    &lt;/jdbcConnection&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- java类型处理器 </span><br><span class="line">        用于处理DB中的类型到Java中的类型，默认使用JavaTypeResolverDefaultImpl；</span><br><span class="line">        注意一点，默认会先尝试使用Integer，Long，Short等来对应DECIMAL和 NUMERIC数据类型； </span><br><span class="line">    --&gt;</span><br><span class="line">    &lt;javaTypeResolver type=&quot;org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl&quot;&gt;</span><br><span class="line">        &lt;!-- </span><br><span class="line">            true：使用BigDecimal对应DECIMAL和 NUMERIC数据类型</span><br><span class="line">            false：默认,</span><br><span class="line">                scale&gt;0;length&gt;18：使用BigDecimal;</span><br><span class="line">                scale=0;length[10,18]：使用Long；</span><br><span class="line">                scale=0;length[5,9]：使用Integer；</span><br><span class="line">                scale=0;length&lt;5：使用Short；</span><br><span class="line">         --&gt;</span><br><span class="line">        &lt;property name=&quot;forceBigDecimals&quot; value=&quot;false&quot;/&gt;</span><br><span class="line">    &lt;/javaTypeResolver&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;!-- java模型创建器，是必须要的元素</span><br><span class="line">        负责：1，key类（见context的defaultModelType）；2，java类；3，查询类</span><br><span class="line">        targetPackage：生成的类要放的包，真实的包受enableSubPackages属性控制；</span><br><span class="line">        targetProject：目标项目，指定一个存在的目录下，生成的内容会放到指定目录中，如果目录不存在，MBG不会自动建目录</span><br><span class="line">     --&gt;</span><br><span class="line">    &lt;javaModelGenerator targetPackage=&quot;com._520it.mybatis.domain&quot; targetProject=&quot;src/main/java&quot;&gt;</span><br><span class="line">        &lt;!--  for MyBatis3/MyBatis3Simple</span><br><span class="line">            自动为每一个生成的类创建一个构造方法，构造方法包含了所有的field；而不是使用setter；</span><br><span class="line">         --&gt;</span><br><span class="line">        &lt;property name=&quot;constructorBased&quot; value=&quot;false&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false --&gt;</span><br><span class="line">        &lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- for MyBatis3 / MyBatis3Simple</span><br><span class="line">            是否创建一个不可变的类，如果为true，</span><br><span class="line">            那么MBG会创建一个没有setter方法的类，取而代之的是类似constructorBased的类</span><br><span class="line">         --&gt;</span><br><span class="line">        &lt;property name=&quot;immutable&quot; value=&quot;false&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 设置一个根对象，</span><br><span class="line">            如果设置了这个根对象，那么生成的keyClass或者recordClass会继承这个类；在Table的rootClass属性中可以覆盖该选项</span><br><span class="line">            注意：如果在key class或者record class中有root class相同的属性，MBG就不会重新生成这些属性了，包括：</span><br><span class="line">                1，属性名相同，类型相同，有相同的getter/setter方法；</span><br><span class="line">         --&gt;</span><br><span class="line">        &lt;property name=&quot;rootClass&quot; value=&quot;com._520it.mybatis.domain.BaseDomain&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 设置是否在getter方法中，对String类型字段调用trim()方法 --&gt;</span><br><span class="line">        &lt;property name=&quot;trimStrings&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">    &lt;/javaModelGenerator&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;!-- 生成SQL map的XML文件生成器，</span><br><span class="line">        注意，在Mybatis3之后，我们可以使用mapper.xml文件+Mapper接口（或者不用mapper接口），</span><br><span class="line">            或者只使用Mapper接口+Annotation，所以，如果 javaClientGenerator配置中配置了需要生成XML的话，这个元素就必须配置</span><br><span class="line">        targetPackage/targetProject:同javaModelGenerator</span><br><span class="line">     --&gt;</span><br><span class="line">    &lt;sqlMapGenerator targetPackage=&quot;com._520it.mybatis.mapper&quot; targetProject=&quot;src/main/resources&quot;&gt;</span><br><span class="line">        &lt;!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false --&gt;</span><br><span class="line">        &lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">    &lt;/sqlMapGenerator&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;!-- 对于mybatis来说，即生成Mapper接口，注意，如果没有配置该元素，那么默认不会生成Mapper接口 </span><br><span class="line">        targetPackage/targetProject:同javaModelGenerator</span><br><span class="line">        type：选择怎么生成mapper接口（在MyBatis3/MyBatis3Simple下）：</span><br><span class="line">            1，ANNOTATEDMAPPER：会生成使用Mapper接口+Annotation的方式创建（SQL生成在annotation中），不会生成对应的XML；</span><br><span class="line">            2，MIXEDMAPPER：使用混合配置，会生成Mapper接口，并适当添加合适的Annotation，但是XML会生成在XML中；</span><br><span class="line">            3，XMLMAPPER：会生成Mapper接口，接口完全依赖XML；</span><br><span class="line">        注意，如果context是MyBatis3Simple：只支持ANNOTATEDMAPPER和XMLMAPPER</span><br><span class="line">    --&gt;</span><br><span class="line">    &lt;javaClientGenerator targetPackage=&quot;com._520it.mybatis.mapper&quot; type=&quot;ANNOTATEDMAPPER&quot; targetProject=&quot;src/main/java&quot;&gt;</span><br><span class="line">        &lt;!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false --&gt;</span><br><span class="line">        &lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 可以为所有生成的接口添加一个父接口，但是MBG只负责生成，不负责检查</span><br><span class="line">        &lt;property name=&quot;rootInterface&quot; value=&quot;&quot;/&gt;</span><br><span class="line">         --&gt;</span><br><span class="line">    &lt;/javaClientGenerator&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 选择一个table来生成相关文件，可以有一个或多个table，必须要有table元素</span><br><span class="line">        选择的table会生成一下文件：</span><br><span class="line">        1，SQL map文件</span><br><span class="line">        2，生成一个主键类；</span><br><span class="line">        3，除了BLOB和主键的其他字段的类；</span><br><span class="line">        4，包含BLOB的类；</span><br><span class="line">        5，一个用户生成动态查询的条件类（selectByExample, deleteByExample），可选；</span><br><span class="line">        6，Mapper接口（可选）</span><br><span class="line"></span><br><span class="line">        tableName（必要）：要生成对象的表名；</span><br><span class="line">        注意：大小写敏感问题。正常情况下，MBG会自动的去识别数据库标识符的大小写敏感度，在一般情况下，MBG会</span><br><span class="line">            根据设置的schema，catalog或tablename去查询数据表，按照下面的流程：</span><br><span class="line">            1，如果schema，catalog或tablename中有空格，那么设置的是什么格式，就精确的使用指定的大小写格式去查询；</span><br><span class="line">            2，否则，如果数据库的标识符使用大写的，那么MBG自动把表名变成大写再查找；</span><br><span class="line">            3，否则，如果数据库的标识符使用小写的，那么MBG自动把表名变成小写再查找；</span><br><span class="line">            4，否则，使用指定的大小写格式查询；</span><br><span class="line">        另外的，如果在创建表的时候，使用的&quot;&quot;把数据库对象规定大小写，就算数据库标识符是使用的大写，在这种情况下也会使用给定的大小写来创建表名；</span><br><span class="line">        这个时候，请设置delimitIdentifiers=&quot;true&quot;即可保留大小写格式；</span><br><span class="line"></span><br><span class="line">        可选：</span><br><span class="line">        1，schema：数据库的schema；</span><br><span class="line">        2，catalog：数据库的catalog；</span><br><span class="line">        3，alias：为数据表设置的别名，如果设置了alias，那么生成的所有的SELECT SQL语句中，列名会变成：alias_actualColumnName</span><br><span class="line">        4，domainObjectName：生成的domain类的名字，如果不设置，直接使用表名作为domain类的名字；可以设置为somepck.domainName，那么会自动把domainName类再放到somepck包里面；</span><br><span class="line">        5，enableInsert（默认true）：指定是否生成insert语句；</span><br><span class="line">        6，enableSelectByPrimaryKey（默认true）：指定是否生成按照主键查询对象的语句（就是getById或get）；</span><br><span class="line">        7，enableSelectByExample（默认true）：MyBatis3Simple为false，指定是否生成动态查询语句；</span><br><span class="line">        8，enableUpdateByPrimaryKey（默认true）：指定是否生成按照主键修改对象的语句（即update)；</span><br><span class="line">        9，enableDeleteByPrimaryKey（默认true）：指定是否生成按照主键删除对象的语句（即delete）；</span><br><span class="line">        10，enableDeleteByExample（默认true）：MyBatis3Simple为false，指定是否生成动态删除语句；</span><br><span class="line">        11，enableCountByExample（默认true）：MyBatis3Simple为false，指定是否生成动态查询总条数语句（用于分页的总条数查询）；</span><br><span class="line">        12，enableUpdateByExample（默认true）：MyBatis3Simple为false，指定是否生成动态修改语句（只修改对象中不为空的属性）；</span><br><span class="line">        13，modelType：参考context元素的defaultModelType，相当于覆盖；</span><br><span class="line">        14，delimitIdentifiers：参考tableName的解释，注意，默认的delimitIdentifiers是双引号，如果类似MYSQL这样的数据库，使用的是`（反引号，那么还需要设置context的beginningDelimiter和endingDelimiter属性）</span><br><span class="line">        15，delimitAllColumns：设置是否所有生成的SQL中的列名都使用标识符引起来。默认为false，delimitIdentifiers参考context的属性</span><br><span class="line"></span><br><span class="line">        注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；</span><br><span class="line">     --&gt;</span><br><span class="line">    &lt;table tableName=&quot;userinfo&quot; &gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 参考 javaModelGenerator 的 constructorBased属性--&gt;</span><br><span class="line">        &lt;property name=&quot;constructorBased&quot; value=&quot;false&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 默认为false，如果设置为true，在生成的SQL中，table名字不会加上catalog或schema； --&gt;</span><br><span class="line">        &lt;property name=&quot;ignoreQualifiersAtRuntime&quot; value=&quot;false&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 参考 javaModelGenerator 的 immutable 属性 --&gt;</span><br><span class="line">        &lt;property name=&quot;immutable&quot; value=&quot;false&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 指定是否只生成domain类，如果设置为true，只生成domain类，如果还配置了sqlMapGenerator，那么在mapper XML文件中，只生成resultMap元素 --&gt;</span><br><span class="line">        &lt;property name=&quot;modelOnly&quot; value=&quot;false&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 参考 javaModelGenerator 的 rootClass 属性 </span><br><span class="line">        &lt;property name=&quot;rootClass&quot; value=&quot;&quot;/&gt;</span><br><span class="line">         --&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 参考javaClientGenerator 的  rootInterface 属性</span><br><span class="line">        &lt;property name=&quot;rootInterface&quot; value=&quot;&quot;/&gt;</span><br><span class="line">        --&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 如果设置了runtimeCatalog，那么在生成的SQL中，使用该指定的catalog，而不是table元素上的catalog </span><br><span class="line">        &lt;property name=&quot;runtimeCatalog&quot; value=&quot;&quot;/&gt;</span><br><span class="line">        --&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 如果设置了runtimeSchema，那么在生成的SQL中，使用该指定的schema，而不是table元素上的schema </span><br><span class="line">        &lt;property name=&quot;runtimeSchema&quot; value=&quot;&quot;/&gt;</span><br><span class="line">        --&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 如果设置了runtimeTableName，那么在生成的SQL中，使用该指定的tablename，而不是table元素上的tablename </span><br><span class="line">        &lt;property name=&quot;runtimeTableName&quot; value=&quot;&quot;/&gt;</span><br><span class="line">        --&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 注意，该属性只针对MyBatis3Simple有用；</span><br><span class="line">            如果选择的runtime是MyBatis3Simple，那么会生成一个SelectAll方法，如果指定了selectAllOrderByClause，那么会在该SQL中添加指定的这个order条件；</span><br><span class="line">         --&gt;</span><br><span class="line">        &lt;property name=&quot;selectAllOrderByClause&quot; value=&quot;age desc,username asc&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate --&gt;</span><br><span class="line">        &lt;property name=&quot;useActualColumnNames&quot; value=&quot;false&quot;/&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &lt;!-- generatedKey用于生成生成主键的方法，</span><br><span class="line">            如果设置了该元素，MBG会在生成的&lt;insert&gt;元素中生成一条正确的&lt;selectKey&gt;元素，该元素可选</span><br><span class="line">            column:主键的列名；</span><br><span class="line">            sqlStatement：要生成的selectKey语句，有以下可选项：</span><br><span class="line">                Cloudscape:相当于selectKey的SQL为： VALUES IDENTITY_VAL_LOCAL()</span><br><span class="line">                DB2       :相当于selectKey的SQL为： VALUES IDENTITY_VAL_LOCAL()</span><br><span class="line">                DB2_MF    :相当于selectKey的SQL为：SELECT IDENTITY_VAL_LOCAL() FROM SYSIBM.SYSDUMMY1</span><br><span class="line">                Derby      :相当于selectKey的SQL为：VALUES IDENTITY_VAL_LOCAL()</span><br><span class="line">                HSQLDB      :相当于selectKey的SQL为：CALL IDENTITY()</span><br><span class="line">                Informix  :相当于selectKey的SQL为：select dbinfo(&apos;sqlca.sqlerrd1&apos;) from systables where tabid=1</span><br><span class="line">                MySql      :相当于selectKey的SQL为：SELECT LAST_INSERT_ID()</span><br><span class="line">                SqlServer :相当于selectKey的SQL为：SELECT SCOPE_IDENTITY()</span><br><span class="line">                SYBASE      :相当于selectKey的SQL为：SELECT @@IDENTITY</span><br><span class="line">                JDBC      :相当于在生成的insert元素上添加useGeneratedKeys=&quot;true&quot;和keyProperty属性</span><br><span class="line">        &lt;generatedKey column=&quot;&quot; sqlStatement=&quot;&quot;/&gt;</span><br><span class="line">         --&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- </span><br><span class="line">            该元素会在根据表中列名计算对象属性名之前先重命名列名，非常适合用于表中的列都有公用的前缀字符串的时候，</span><br><span class="line">            比如列名为：CUST_ID,CUST_NAME,CUST_EMAIL,CUST_ADDRESS等；</span><br><span class="line">            那么就可以设置searchString为&quot;^CUST_&quot;，并使用空白替换，那么生成的Customer对象中的属性名称就不是</span><br><span class="line">            custId,custName等，而是先被替换为ID,NAME,EMAIL,然后变成属性：id，name，email；</span><br><span class="line"></span><br><span class="line">            注意，MBG是使用java.util.regex.Matcher.replaceAll来替换searchString和replaceString的，</span><br><span class="line">            如果使用了columnOverride元素，该属性无效；</span><br><span class="line"></span><br><span class="line">        &lt;columnRenamingRule searchString=&quot;&quot; replaceString=&quot;&quot;/&gt;</span><br><span class="line">         --&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">         &lt;!-- 用来修改表中某个列的属性，MBG会使用修改后的列来生成domain的属性；</span><br><span class="line">             column:要重新设置的列名；</span><br><span class="line">             注意，一个table元素中可以有多个columnOverride元素哈~</span><br><span class="line">          --&gt;</span><br><span class="line">         &lt;columnOverride column=&quot;username&quot;&gt;</span><br><span class="line">             &lt;!-- 使用property属性来指定列要生成的属性名称 --&gt;</span><br><span class="line">             &lt;property name=&quot;property&quot; value=&quot;userName&quot;/&gt;</span><br><span class="line"></span><br><span class="line">             &lt;!-- javaType用于指定生成的domain的属性类型，使用类型的全限定名</span><br><span class="line">             &lt;property name=&quot;javaType&quot; value=&quot;&quot;/&gt;</span><br><span class="line">              --&gt;</span><br><span class="line"></span><br><span class="line">             &lt;!-- jdbcType用于指定该列的JDBC类型 </span><br><span class="line">             &lt;property name=&quot;jdbcType&quot; value=&quot;&quot;/&gt;</span><br><span class="line">              --&gt;</span><br><span class="line"></span><br><span class="line">             &lt;!-- typeHandler 用于指定该列使用到的TypeHandler，如果要指定，配置类型处理器的全限定名</span><br><span class="line">                 注意，mybatis中，不会生成到mybatis-config.xml中的typeHandler</span><br><span class="line">                 只会生成类似：where id = #&#123;id,jdbcType=BIGINT,typeHandler=com._520it.mybatis.MyTypeHandler&#125;的参数描述</span><br><span class="line">             &lt;property name=&quot;jdbcType&quot; value=&quot;&quot;/&gt;</span><br><span class="line">             --&gt;</span><br><span class="line"></span><br><span class="line">             &lt;!-- 参考table元素的delimitAllColumns配置，默认为false</span><br><span class="line">             &lt;property name=&quot;delimitedColumnName&quot; value=&quot;&quot;/&gt;</span><br><span class="line">              --&gt;</span><br><span class="line">         &lt;/columnOverride&gt;</span><br><span class="line"></span><br><span class="line">         &lt;!-- ignoreColumn设置一个MGB忽略的列，如果设置了改列，那么在生成的domain中，生成的SQL中，都不会有该列出现 </span><br><span class="line">             column:指定要忽略的列的名字；</span><br><span class="line">             delimitedColumnName：参考table元素的delimitAllColumns配置，默认为false</span><br><span class="line"></span><br><span class="line">             注意，一个table元素中可以有多个ignoreColumn元素</span><br><span class="line">         &lt;ignoreColumn column=&quot;deptId&quot; delimitedColumnName=&quot;&quot;/&gt;</span><br><span class="line">         --&gt;</span><br><span class="line">    &lt;/table&gt;</span><br><span class="line"></span><br><span class="line">&lt;/context&gt;</span><br><span class="line"></span><br><span class="line">&lt;/generatorConfiguration&gt;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;Mybatis-Generator配置详解&quot;&gt;&lt;a href=&quot;#Mybatis-Generator配置详解&quot; class=&quot;headerlink&quot; title=&quot;Mybatis Generator配置详解&quot;&gt;&lt;/a&gt;Mybatis Generator配置详解&lt;/
-      
-    
-    </summary>
-    
-    
-      <category term="Mybatis" scheme="https://sunshineuun.github.io/tags/Mybatis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>火狐浏览器打开新页签不断刷新</title>
-    <link href="https://sunshineuun.github.io/2018/01/30/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%89%93%E5%BC%80%E6%96%B0%E9%A1%B5%E7%AD%BE%E4%B8%8D%E6%96%AD%E5%88%B7%E6%96%B0/"/>
-    <id>https://sunshineuun.github.io/2018/01/30/浏览器打开新页签不断刷新/</id>
-    <published>2018-01-30T02:09:07.000Z</published>
-    <updated>2018-01-30T02:15:10.808Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h5><p>用旧版本覆盖了新版本的火狐，导致新标签页数据损坏。</p><h5 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h5><p>地址栏输入<code>about:support</code>根据提示打开<strong>配置文件夹</strong>，删除<strong>storage文件夹、及其已storage为名的文件</strong>并且重启火狐。笔者亲测有效。</p><p><img src="/images/pasted-41.png" alt="upload successful"></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h5&gt;&lt;p&gt;用旧版本覆盖了新版本的火狐，导致新标签页数据损坏。&lt;/p&gt;
-&lt;h5 id=&quot;解决方案&quot;&gt;&lt;a href=&quot;#解决方案&quot; class=&quot;hea
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Oracle数值类型主键自增长</title>
-    <link href="https://sunshineuun.github.io/2018/01/29/Oracle%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B%E4%B8%BB%E9%94%AE%E8%87%AA%E5%A2%9E%E9%95%BF/"/>
-    <id>https://sunshineuun.github.io/2018/01/29/Oracle数值类型主键自增长/</id>
-    <published>2018-01-29T05:47:00.000Z</published>
-    <updated>2018-01-29T05:54:00.971Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h5> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> CREATE TABLE K_USER (</span><br><span class="line">  ID       NUMBER PRIMARY KEY,</span><br><span class="line">  USER_NAME VARCHAR(45) NOT NULL,</span><br><span class="line">  pd VARCHAR(45) NOT NULL,</span><br><span class="line">  ENABLED  NUMBER DEFAULT 1 NOT NULL</span><br><span class="line">);</span><br></pre></td></tr></table></figure><h5 id="创建自增序列"><a href="#创建自增序列" class="headerlink" title="创建自增序列"></a>创建自增序列</h5> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE SEQUENCE K_USER_ID_AUTOINC -- 序列的名称</span><br><span class="line"> MINVALUE 1 -- 最小值</span><br><span class="line"> MAXVALUE 99999999 -- 最大值</span><br><span class="line"> START WITH 1 -- 从多少开始</span><br><span class="line"> INCREMENT BY 1 -- 每次序列加多少</span><br><span class="line"> NOCACHE;</span><br></pre></td></tr></table></figure><h5 id="创建序列"><a href="#创建序列" class="headerlink" title="创建序列"></a>创建序列</h5> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE OR REPLACE TRIGGER K_USER_ID_TRIGGER -- 监听的名称</span><br><span class="line"> BEFORE INSERT ON K_USER FOR EACH ROW WHEN (new.ID IS NULL)</span><br><span class="line"> -- 在插入循环ID为空的列</span><br><span class="line">   BEGIN</span><br><span class="line">     SELECT K_USER_ID_AUTOINC.nextval INTO :new.id FROM dual;</span><br><span class="line">   END;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;创建表&quot;&gt;&lt;a href=&quot;#创建表&quot; class=&quot;headerlink&quot; title=&quot;创建表&quot;&gt;&lt;/a&gt;创建表&lt;/h5&gt; &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;
-      
-    
-    </summary>
-    
-    
-      <category term="Oracle" scheme="https://sunshineuun.github.io/tags/Oracle/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Ubuntu常用操作命令</title>
-    <link href="https://sunshineuun.github.io/2018/01/26/untu%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4/"/>
-    <id>https://sunshineuun.github.io/2018/01/26/untu常用操作命令/</id>
-    <published>2018-01-26T05:09:17.000Z</published>
-    <updated>2018-01-26T06:08:29.594Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h5><h6 id="文件进入"><a href="#文件进入" class="headerlink" title="文件进入"></a>文件进入</h6><ol><li><code>cd 路径</code>;</li><li><code>cd ..</code>; 返回上一个文件夹</li><li><code>sudo</code>; 获取root权限，需要输入root权限的密码。</li></ol><h6 id="文件创建"><a href="#文件创建" class="headerlink" title="文件创建"></a>文件创建</h6><ol><li><code>mkdir 名称</code>; 新建一个文件夹</li><li><code>touch 名称</code>; 新建一个空文件。</li></ol><h6 id="文件删除"><a href="#文件删除" class="headerlink" title="文件删除"></a>文件删除</h6><ol><li><code>rmdir 目录名</code>; 删除一个空的文件夹(目录)</li><li><code>rm -rf 目录名</code>; 删除一个非空的文件夹(目录)</li><li><code>rm 文件名,文件名</code>; 删除多个文件</li></ol><h6 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h6><ol><li><code>cp 文件名 目标路径</code>; 拷贝文件到目标路径下</li><li><code>cp -i</code>; 拷贝，同名文件存在时，输出[yes/no]的询问</li><li><code>cp -f</code>; 强制复制文件,如果同名不询问</li></ol><h6 id="文件剪切"><a href="#文件剪切" class="headerlink" title="文件剪切"></a>文件剪切</h6><ol><li><code>mv jdk1.8.0_20/ /usr/lib/jvm///</code>；可剪切文件目录</li></ol><h6 id="常用解压，安装，文件更新"><a href="#常用解压，安装，文件更新" class="headerlink" title="常用解压，安装，文件更新"></a>常用解压，安装，文件更新</h6><ol><li><code>tar -zxvf  *.tar.gz</code> 解压tar.gz格式的文件</li><li><code>source *.install</code> 安装install格式的安装包</li><li><code>sh 路径/x.sh</code> 安装sh格式的文件</li><li><code>apt-get upgrade</code> 更新已安装的包</li><li><code>apt-get update</code> 更新源</li></ol><h5 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h5><ol><li><code>netstat -nltp</code> 查看启动的进程</li><li><code>kill -9 pid</code>，参数-9强制杀进程，参数pid对应的进程pid。</li><li>内存查询命令<code>free</code>命令<ul><li>功能说明: 显示内存状态。</li><li>语法: <code>free [-bkmotV][-s ]</code>。</li><li>补充说明: free指令会显示内存的使用情况，包括实体内存，虚拟的交换文档内存，共享内存区段，连同系统核心使用的缓冲区等。</li><li>参数：<br>　　        1. -b 　   以Byte为单位显示内存使用情况。<br>　　        2. -k 　  以KB为单位显示内存使用情况。<br>　　        3. -m 　 以MB为单位显示内存使用情况。<br>　　        4. -o 　  不显示缓冲区调节列。<br>　　        5. -s 　  持续观察内存使用状况。<br>　　        6. -t 　   显示内存总和列。<br>　　        7. -V 　 显示版本信息。</li></ul></li></ol><h5 id="开关机操作"><a href="#开关机操作" class="headerlink" title="开关机操作"></a>开关机操作</h5><ol><li><code>reboot</code> 重启</li><li><code>shutdown -r now</code>; 立即重启，需root权限</li><li><code>shutdown -r 10</code>,;10分钟后自动重启，时间自由调整，单位分，需root权限</li><li><code>halt</code>立即关机</li><li><code>poweroff</code>立刻关机</li><li><code>shutdown -h now</code>立刻关机</li><li><code>shutdown -h 10</code>;10分钟后自动关机，时间自由调整，单位分，需root权限</li><li><p><code>shutdown -c</code>;取消关机重启</p><h5 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h5><h6 id="Ubuntu实时查看tomcat运行log"><a href="#Ubuntu实时查看tomcat运行log" class="headerlink" title="Ubuntu实时查看tomcat运行log"></a>Ubuntu实时查看tomcat运行log</h6><ul><li>找到tomcat安装目录：cd tomcat/logs</li><li>tail -f catalina.out</li><li>ctrl+c 退出</li></ul></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;文件操作&quot;&gt;&lt;a href=&quot;#文件操作&quot; class=&quot;headerlink&quot; title=&quot;文件操作&quot;&gt;&lt;/a&gt;文件操作&lt;/h5&gt;&lt;h6 id=&quot;文件进入&quot;&gt;&lt;a href=&quot;#文件进入&quot; class=&quot;headerlink&quot; title=&quot;文件进入&quot;&gt;&lt;/a
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Jenkins Install</title>
-    <link href="https://sunshineuun.github.io/2018/01/26/Jenkins-Install/"/>
-    <id>https://sunshineuun.github.io/2018/01/26/Jenkins-Install/</id>
-    <published>2018-01-26T04:51:00.000Z</published>
-    <updated>2018-01-26T05:02:43.868Z</updated>
-    
-    <content type="html"><![CDATA[<h5 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h5><p>Jenkins自动化部署打包系统，百度百科<a href="https://baike.baidu.com/item/Jenkins/10917210?fr=aladdin" target="_blank" rel="noopener">传送门</a><br>笔者安装在Ubuntu环境上。</p><h5 id="Jenkins-Install"><a href="#Jenkins-Install" class="headerlink" title="Jenkins Install"></a>Jenkins Install</h5><p><a href="http://www.linuxidc.com/Linux/2016-12/138290.htm" target="_blank" rel="noopener">传送门</a></p><h5 id="Jenkins-UnInstall"><a href="#Jenkins-UnInstall" class="headerlink" title="Jenkins UnInstall"></a>Jenkins UnInstall</h5><p><a href="https://www.cnblogs.com/wangcp-2014/p/6978245.html" target="_blank" rel="noopener">传送门</a></p><h5 id="Git-Install"><a href="#Git-Install" class="headerlink" title="Git Install"></a>Git Install</h5><p>执行以下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install git</span><br></pre></td></tr></table></figure></p><h5 id="Maven-Install"><a href="#Maven-Install" class="headerlink" title="Maven Install"></a>Maven Install</h5><ul><li>下载Maven的安装包</li><li>安装命令如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 解压</span><br><span class="line">tar zxvf apache-maven-3.3.9.bin.tar.gz</span><br><span class="line"></span><br><span class="line"># 增加环境变量</span><br><span class="line">vi /etc/profile</span><br><span class="line"># 在打开文件尾部增加以下内容</span><br><span class="line">M2_HOME=/usr/local/apache-maven-3.3.9 # 此路径是你maven解压缩文件的路径。</span><br><span class="line">PATH=$M2_HOME/bin:$PATH</span><br></pre></td></tr></table></figure></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h5 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h5&gt;&lt;p&gt;Jenkins自动化部署打包系统，百度百科&lt;a href=&quot;https://baike.baidu.com/item/Jenkins/109
-      
-    
-    </summary>
-    
-    
-      <category term="JenKins" scheme="https://sunshineuun.github.io/tags/JenKins/"/>
-    
-      <category term="自动化构建" scheme="https://sunshineuun.github.io/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/"/>
     
   </entry>
   

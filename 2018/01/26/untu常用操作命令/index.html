@@ -1,4 +1,968 @@
-<!DOCTYPE html><html class="theme-next mist use-motion" lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><script></script><meta name="theme-color" content="#222"><script>!function(e,t,o,c,i,a,n){e.DaoVoiceObject=i,e[i]=e[i]||function(){(e[i].q=e[i].q||[]).push(arguments)},e[i].l=1*new Date,a=t.createElement(o),n=t.getElementsByTagName(o)[0],a.async=1,a.src=c,a.charset="utf-8",n.parentNode.insertBefore(a,n)}(window,document,"script",("https:"==document.location.protocol?"https:":"http:")+"//widget.daovoice.io/widget/0f81ff2f.js","daovoice"),daovoice("init",{app_id:"fa82698b"}),daovoice("update")</script><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css"><link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4"><link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222"><meta name="keywords" content="Hexo, NexT"><link rel="alternate" href="/atom.xml" title="Minnie技术博客" type="application/atom+xml"><meta name="description" content="文件操作文件进入 cd 路径; cd ..; 返回上一个文件夹 sudo; 获取root权限，需要输入root权限的密码。  文件创建 mkdir 名称; 新建一个文件夹 touch 名称; 新建一个空文件。  文件删除 rmdir 目录名; 删除一个空的文件夹(目录) rm -rf 目录名; 删除一个非空的文件夹(目录) rm 文件名,文件名; 删除多个文件  文件复制 cp 文件名 目标路径;"><meta property="og:type" content="article"><meta property="og:title" content="Ubuntu常用操作命令"><meta property="og:url" content="https://sunshineuun.github.io/2018/01/26/untu常用操作命令/index.html"><meta property="og:site_name" content="Minnie技术博客"><meta property="og:description" content="文件操作文件进入 cd 路径; cd ..; 返回上一个文件夹 sudo; 获取root权限，需要输入root权限的密码。  文件创建 mkdir 名称; 新建一个文件夹 touch 名称; 新建一个空文件。  文件删除 rmdir 目录名; 删除一个空的文件夹(目录) rm -rf 目录名; 删除一个非空的文件夹(目录) rm 文件名,文件名; 删除多个文件  文件复制 cp 文件名 目标路径;"><meta property="og:locale" content="zh-Hans"><meta property="og:updated_time" content="2018-01-26T06:08:29.594Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Ubuntu常用操作命令"><meta name="twitter:description" content="文件操作文件进入 cd 路径; cd ..; 返回上一个文件夹 sudo; 获取root权限，需要输入root权限的密码。  文件创建 mkdir 名称; 新建一个文件夹 touch 名称; 新建一个空文件。  文件删除 rmdir 目录名; 删除一个空的文件夹(目录) rm -rf 目录名; 删除一个非空的文件夹(目录) rm 文件名,文件名; 删除多个文件  文件复制 cp 文件名 目标路径;"><script type="text/javascript" id="hexo.configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Mist",version:"5.1.4",sidebar:{position:"left",display:"post",offset:12,b2t:!1,scrollpercent:!1,onmobile:!1},fancybox:!0,tabs:!0,motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},duoshuo:{userId:"0",author:"博主"},algolia:{applicationID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}}}</script><link rel="canonical" href="https://sunshineuun.github.io/2018/01/26/untu常用操作命令/"><title>Ubuntu常用操作命令 | Minnie技术博客</title><script type="text/javascript">var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?bab34b1c657424a87265d4c7684020f0";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"><div class="container sidebar-position-left page-post-detail"><div class="headband"></div> <a href="https://github.com/Sunshineuun"><img style="position:absolute;top:0;right:0;border:0" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Minnie技术博客</span><span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle"></p></div><div class="site-nav-toggle"> <button><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-question-circle"></i><br> 首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-question-circle"></i><br> 关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-question-circle"></i><br> 标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-question-circle"></i><br> 归档</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br> 搜索</a></li></ul><div class="site-search"><div class="popup search-popup local-search-popup"><div class="local-search-header clearfix"><span class="search-icon"><i class="fa fa-search"></i></span><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span><div class="local-search-input-wrapper"> <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input"></div></div><div id="local-search-result"></div></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><div class="post-block"><link itemprop="mainEntityOfPage" href="https://sunshineuun.github.io/2018/01/26/untu常用操作命令/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="邱胜明"><meta itemprop="description" content=""><meta itemprop="image" content="/images/avatar.png"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Minnie技术博客"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Ubuntu常用操作命令</h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-26T13:09:17+08:00">2018-01-26</time></span> <span class="post-comments-count"><span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-comment-o"></i></span><a href="/2018/01/26/untu常用操作命令/#comments" itemprop="discussionUrl"><span class="post-comments-count gitment-comments-count" data-xid="/2018/01/26/untu常用操作命令/" itemprop="commentsCount"></span></a></span> <span id="/2018/01/26/untu常用操作命令/" class="leancloud_visitors" data-flag-title="Ubuntu常用操作命令"><span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-eye"></i></span> <span class="post-meta-item-text">阅读次数&#58;</span><span class="leancloud-visitors-count"></span></span><div class="post-wordcount"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span> <span class="post-meta-item-text">字数统计&#58;</span> <span title="字数统计">584</span> <span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-clock-o"></i></span> <span class="post-meta-item-text">阅读时长 &asymp;</span> <span title="阅读时长">2</span></div></div></header><div class="post-body" itemprop="articleBody"><h5 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h5><h6 id="文件进入"><a href="#文件进入" class="headerlink" title="文件进入"></a>文件进入</h6><ol><li><code>cd 路径</code>;</li><li><code>cd ..</code>; 返回上一个文件夹</li><li><code>sudo</code>; 获取root权限，需要输入root权限的密码。</li></ol><h6 id="文件创建"><a href="#文件创建" class="headerlink" title="文件创建"></a>文件创建</h6><ol><li><code>mkdir 名称</code>; 新建一个文件夹</li><li><code>touch 名称</code>; 新建一个空文件。</li></ol><h6 id="文件删除"><a href="#文件删除" class="headerlink" title="文件删除"></a>文件删除</h6><ol><li><code>rmdir 目录名</code>; 删除一个空的文件夹(目录)</li><li><code>rm -rf 目录名</code>; 删除一个非空的文件夹(目录)</li><li><code>rm 文件名,文件名</code>; 删除多个文件</li></ol><h6 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h6><ol><li><code>cp 文件名 目标路径</code>; 拷贝文件到目标路径下</li><li><code>cp -i</code>; 拷贝，同名文件存在时，输出[yes/no]的询问</li><li><code>cp -f</code>; 强制复制文件,如果同名不询问</li></ol><h6 id="文件剪切"><a href="#文件剪切" class="headerlink" title="文件剪切"></a>文件剪切</h6><ol><li><code>mv jdk1.8.0_20/ /usr/lib/jvm///</code>；可剪切文件目录</li></ol><h6 id="常用解压，安装，文件更新"><a href="#常用解压，安装，文件更新" class="headerlink" title="常用解压，安装，文件更新"></a>常用解压，安装，文件更新</h6><ol><li><code>tar -zxvf *.tar.gz</code> 解压tar.gz格式的文件</li><li><code>source *.install</code> 安装install格式的安装包</li><li><code>sh 路径/x.sh</code> 安装sh格式的文件</li><li><code>apt-get upgrade</code> 更新已安装的包</li><li><code>apt-get update</code> 更新源</li></ol><h5 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h5><ol><li><code>netstat -nltp</code> 查看启动的进程</li><li><code>kill -9 pid</code>，参数-9强制杀进程，参数pid对应的进程pid。</li><li>内存查询命令<code>free</code>命令<ul><li>功能说明: 显示内存状态。</li><li>语法: <code>free [-bkmotV][-s ]</code>。</li><li>补充说明: free指令会显示内存的使用情况，包括实体内存，虚拟的交换文档内存，共享内存区段，连同系统核心使用的缓冲区等。</li><li>参数：<br>　　 1. -b 　 以Byte为单位显示内存使用情况。<br>　　 2. -k 　 以KB为单位显示内存使用情况。<br>　　 3. -m 　 以MB为单位显示内存使用情况。<br>　　 4. -o 　 不显示缓冲区调节列。<br>　　 5. -s 　 持续观察内存使用状况。<br>　　 6. -t 　 显示内存总和列。<br>　　 7. -V 　 显示版本信息。</li></ul></li></ol><h5 id="开关机操作"><a href="#开关机操作" class="headerlink" title="开关机操作"></a>开关机操作</h5><ol><li><code>reboot</code> 重启</li><li><code>shutdown -r now</code>; 立即重启，需root权限</li><li><code>shutdown -r 10</code>,;10分钟后自动重启，时间自由调整，单位分，需root权限</li><li><code>halt</code>立即关机</li><li><code>poweroff</code>立刻关机</li><li><code>shutdown -h now</code>立刻关机</li><li><code>shutdown -h 10</code>;10分钟后自动关机，时间自由调整，单位分，需root权限</li><li><p><code>shutdown -c</code>;取消关机重启</p><h5 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h5><h6 id="Ubuntu实时查看tomcat运行log"><a href="#Ubuntu实时查看tomcat运行log" class="headerlink" title="Ubuntu实时查看tomcat运行log"></a>Ubuntu实时查看tomcat运行log</h6><ul><li>找到tomcat安装目录：cd tomcat/logs</li><li>tail -f catalina.out</li><li>ctrl+c 退出</li></ul></li></ol></div><div><div style="padding:10px 0;margin:20px auto;width:90%;text-align:center"><div>I'm not rich, but still hold the dream.</div> <button id="rewardButton" disable="enable" onclick='var qr=document.getElementById("QR");"none"===qr.style.display?qr.style.display="block":qr.style.display="none"'> <span>打赏</span></button><div id="QR" style="display:none"><div id="wechat" style="display:inline-block"> <img id="wechat_qr" src="/images/wechatpay.jpg" alt="邱胜明 微信支付"><p>微信支付</p></div><div id="alipay" style="display:inline-block"> <img id="alipay_qr" src="/images/alipay.jpg" alt="邱胜明 支付宝"><p>支付宝</p></div></div></div></div><footer class="post-footer"><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/2018/01/26/Jenkins-Install/" rel="next" title="Jenkins Install"><i class="fa fa-chevron-left"></i> Jenkins Install</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"> <a href="/2018/01/29/Oracle数值类型主键自增长/" rel="prev" title="Oracle数值类型主键自增长">Oracle数值类型主键自增长<i class="fa fa-chevron-right"></i></a></div></div></footer></div></article><div class="post-spread"></div></div></div><div class="comments" id="comments"><div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div><div id="gitment-container" style="display:none"></div></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span><span class="sidebar-toggle-line sidebar-toggle-line-middle"></span><span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap"> 文章目录</li><li class="sidebar-nav-overview" data-target="site-overview-wrap"> 站点概览</li></ul><section class="site-overview-wrap sidebar-panel"><div class="site-overview"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"> <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="邱胜明"><p class="site-author-name" itemprop="name">邱胜明</p><p class="site-description motion-element" itemprop="description">Minnie技术博客 Java Python</p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"> <a href="/archives/"><span class="site-state-item-count">36</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"> <a href="/categories/index.html"><span class="site-state-item-count">9</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"> <a href="/tags/index.html"><span class="site-state-item-count">26</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="feed-link motion-element"><a href="/atom.xml" rel="alternate"><i class="fa fa-rss"></i> RSS</a></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/Sunshineuun" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i> GitHub</a></span><span class="links-of-author-item"><a href="https://www.facebook.com/qiushengming" target="_blank" title="FB Page"><i class="fa fa-fw fa-facebook"></i> FB Page</a></span></div></div></section><section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#文件操作"><span class="nav-number">1.</span> <span class="nav-text">文件操作</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#文件进入"><span class="nav-number">1.1.</span> <span class="nav-text">文件进入</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#文件创建"><span class="nav-number">1.2.</span> <span class="nav-text">文件创建</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#文件删除"><span class="nav-number">1.3.</span> <span class="nav-text">文件删除</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#文件复制"><span class="nav-number">1.4.</span> <span class="nav-text">文件复制</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#文件剪切"><span class="nav-number">1.5.</span> <span class="nav-text">文件剪切</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#常用解压，安装，文件更新"><span class="nav-number">1.6.</span> <span class="nav-text">常用解压，安装，文件更新</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务"><span class="nav-number">2.</span> <span class="nav-text">服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#开关机操作"><span class="nav-number">3.</span> <span class="nav-text">开关机操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Ubuntu实时查看tomcat运行log"><span class="nav-number">4.1.</span> <span class="nav-text">Ubuntu实时查看tomcat运行log</span></a></li></ol></li></ol></div></div></section></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span><span class="with-love"><i class="fa fa-user"></i></span> <span class="author" itemprop="copyrightHolder">Minnie</span></div><div class="theme-info"><div class="powered-by"></div> <span class="post-count">全站共13.6k字</span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script><script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css"><script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script><script type="text/javascript">function renderGitment(){new Gitmint({id:window.location.pathname,owner:"Sunshineuun",repo:"Gitment-comments",lang:"zh-Hans",oauth:{client_secret:"f39d9e051a804d92f55825a2e38cc4898d5e9c1a",client_id:"643c9ef17bd6dd00708f"}}).render("gitment-container")}function showGitment(){document.getElementById("gitment-display-button").style.display="none",document.getElementById("gitment-container").style.display="block",renderGitment()}</script><script type="text/javascript">
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+<meta name="theme-color" content="#222">
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "fa82698b"
+    });
+  daovoice('update');
+  </script>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Minnie技术博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="文件操作文件进入 cd 路径; cd ..; 返回上一个文件夹 sudo; 获取root权限，需要输入root权限的密码。  文件创建 mkdir 名称; 新建一个文件夹 touch 名称; 新建一个空文件。  文件删除 rmdir 目录名; 删除一个空的文件夹(目录) rm -rf 目录名; 删除一个非空的文件夹(目录) rm 文件名,文件名; 删除多个文件  文件复制 cp 文件名 目标路径;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu常用操作命令">
+<meta property="og:url" content="https://sunshineuun.github.io/2018/01/26/untu常用操作命令/index.html">
+<meta property="og:site_name" content="Minnie技术博客">
+<meta property="og:description" content="文件操作文件进入 cd 路径; cd ..; 返回上一个文件夹 sudo; 获取root权限，需要输入root权限的密码。  文件创建 mkdir 名称; 新建一个文件夹 touch 名称; 新建一个空文件。  文件删除 rmdir 目录名; 删除一个空的文件夹(目录) rm -rf 目录名; 删除一个非空的文件夹(目录) rm 文件名,文件名; 删除多个文件  文件复制 cp 文件名 目标路径;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-26T06:08:29.594Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu常用操作命令">
+<meta name="twitter:description" content="文件操作文件进入 cd 路径; cd ..; 返回上一个文件夹 sudo; 获取root权限，需要输入root权限的密码。  文件创建 mkdir 名称; 新建一个文件夹 touch 名称; 新建一个空文件。  文件删除 rmdir 目录名; 删除一个空的文件夹(目录) rm -rf 目录名; 删除一个非空的文件夹(目录) rm 文件名,文件名; 删除多个文件  文件复制 cp 文件名 目标路径;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sunshineuun.github.io/2018/01/26/untu常用操作命令/"/>
+
+
+
+
+
+  <title>Ubuntu常用操作命令 | Minnie技术博客</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?bab34b1c657424a87265d4c7684020f0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/Sunshineuun"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Minnie技术博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sunshineuun.github.io/2018/01/26/untu常用操作命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="邱胜明">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Minnie技术博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Ubuntu常用操作命令</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-26T13:09:17+08:00">
+                2018-01-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/26/untu常用操作命令/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/01/26/untu常用操作命令/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/26/untu常用操作命令/" class="leancloud_visitors" data-flag-title="Ubuntu常用操作命令">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  584
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h5 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h5><h6 id="文件进入"><a href="#文件进入" class="headerlink" title="文件进入"></a>文件进入</h6><ol>
+<li><code>cd 路径</code>;</li>
+<li><code>cd ..</code>; 返回上一个文件夹</li>
+<li><code>sudo</code>; 获取root权限，需要输入root权限的密码。</li>
+</ol>
+<h6 id="文件创建"><a href="#文件创建" class="headerlink" title="文件创建"></a>文件创建</h6><ol>
+<li><code>mkdir 名称</code>; 新建一个文件夹</li>
+<li><code>touch 名称</code>; 新建一个空文件。</li>
+</ol>
+<h6 id="文件删除"><a href="#文件删除" class="headerlink" title="文件删除"></a>文件删除</h6><ol>
+<li><code>rmdir 目录名</code>; 删除一个空的文件夹(目录)</li>
+<li><code>rm -rf 目录名</code>; 删除一个非空的文件夹(目录)</li>
+<li><code>rm 文件名,文件名</code>; 删除多个文件</li>
+</ol>
+<h6 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h6><ol>
+<li><code>cp 文件名 目标路径</code>; 拷贝文件到目标路径下</li>
+<li><code>cp -i</code>; 拷贝，同名文件存在时，输出[yes/no]的询问</li>
+<li><code>cp -f</code>; 强制复制文件,如果同名不询问</li>
+</ol>
+<h6 id="文件剪切"><a href="#文件剪切" class="headerlink" title="文件剪切"></a>文件剪切</h6><ol>
+<li><code>mv jdk1.8.0_20/ /usr/lib/jvm///</code>；可剪切文件目录</li>
+</ol>
+<h6 id="常用解压，安装，文件更新"><a href="#常用解压，安装，文件更新" class="headerlink" title="常用解压，安装，文件更新"></a>常用解压，安装，文件更新</h6><ol>
+<li><code>tar -zxvf  *.tar.gz</code> 解压tar.gz格式的文件</li>
+<li><code>source *.install</code> 安装install格式的安装包</li>
+<li><code>sh 路径/x.sh</code> 安装sh格式的文件</li>
+<li><code>apt-get upgrade</code> 更新已安装的包</li>
+<li><code>apt-get update</code> 更新源</li>
+</ol>
+<h5 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h5><ol>
+<li><code>netstat -nltp</code> 查看启动的进程</li>
+<li><code>kill -9 pid</code>，参数-9强制杀进程，参数pid对应的进程pid。</li>
+<li>内存查询命令<code>free</code>命令<ul>
+<li>功能说明: 显示内存状态。</li>
+<li>语法: <code>free [-bkmotV][-s ]</code>。</li>
+<li>补充说明: free指令会显示内存的使用情况，包括实体内存，虚拟的交换文档内存，共享内存区段，连同系统核心使用的缓冲区等。</li>
+<li>参数：<br>　　        1. -b 　   以Byte为单位显示内存使用情况。<br>　　        2. -k 　  以KB为单位显示内存使用情况。<br>　　        3. -m 　 以MB为单位显示内存使用情况。<br>　　        4. -o 　  不显示缓冲区调节列。<br>　　        5. -s 　  持续观察内存使用状况。<br>　　        6. -t 　   显示内存总和列。<br>　　        7. -V 　 显示版本信息。</li>
+</ul>
+</li>
+</ol>
+<h5 id="开关机操作"><a href="#开关机操作" class="headerlink" title="开关机操作"></a>开关机操作</h5><ol>
+<li><code>reboot</code> 重启</li>
+<li><code>shutdown -r now</code>; 立即重启，需root权限</li>
+<li><code>shutdown -r 10</code>,;10分钟后自动重启，时间自由调整，单位分，需root权限</li>
+<li><code>halt</code>立即关机</li>
+<li><code>poweroff</code>立刻关机</li>
+<li><code>shutdown -h now</code>立刻关机</li>
+<li><code>shutdown -h 10</code>;10分钟后自动关机，时间自由调整，单位分，需root权限</li>
+<li><p><code>shutdown -c</code>;取消关机重启</p>
+<h5 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h5><h6 id="Ubuntu实时查看tomcat运行log"><a href="#Ubuntu实时查看tomcat运行log" class="headerlink" title="Ubuntu实时查看tomcat运行log"></a>Ubuntu实时查看tomcat运行log</h6><ul>
+<li>找到tomcat安装目录：cd tomcat/logs</li>
+<li>tail -f catalina.out</li>
+<li>ctrl+c 退出</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>I'm not rich, but still hold the dream.</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="邱胜明 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="邱胜明 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/26/Jenkins-Install/" rel="next" title="Jenkins Install">
+                <i class="fa fa-chevron-left"></i> Jenkins Install
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/29/Oracle数值类型主键自增长/" rel="prev" title="Oracle数值类型主键自增长">
+                Oracle数值类型主键自增长 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="邱胜明" />
+            
+              <p class="site-author-name" itemprop="name">邱胜明</p>
+              <p class="site-description motion-element" itemprop="description">Minnie技术博客 Java Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Sunshineuun" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/qiushengming" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#文件操作"><span class="nav-number">1.</span> <span class="nav-text">文件操作</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#文件进入"><span class="nav-number">1.1.</span> <span class="nav-text">文件进入</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#文件创建"><span class="nav-number">1.2.</span> <span class="nav-text">文件创建</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#文件删除"><span class="nav-number">1.3.</span> <span class="nav-text">文件删除</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#文件复制"><span class="nav-number">1.4.</span> <span class="nav-text">文件复制</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#文件剪切"><span class="nav-number">1.5.</span> <span class="nav-text">文件剪切</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#常用解压，安装，文件更新"><span class="nav-number">1.6.</span> <span class="nav-text">常用解压，安装，文件更新</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务"><span class="nav-number">2.</span> <span class="nav-text">服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#开关机操作"><span class="nav-number">3.</span> <span class="nav-text">开关机操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Ubuntu实时查看tomcat运行log"><span class="nav-number">4.1.</span> <span class="nav-text">Ubuntu实时查看tomcat运行log</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Minnie</span>
+
+  
+</div>
+
+<!-- 
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+-->
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">全站共19.1k字</span>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'Sunshineuun',
+            repo: 'Gitment-comments',
+            
+            lang: "zh-Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'f39d9e051a804d92f55825a2e38cc4898d5e9c1a',
+            
+                client_id: '643c9ef17bd6dd00708f'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      function showGitment(){
+        document.getElementById("gitment-display-button").style.display = "none";
+        document.getElementById("gitment-container").style.display = "block";
+        renderGitment();
+      }
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
     // Popup Window;
     var isfetched = false;
     var isXml = true;
@@ -313,7 +1277,152 @@
         onPopupClose();
       }
     });
-  </script><script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script><script>AV.initialize("jwguegn6QyAkutrMmIc7kAIp-gzGzoHsz","cIvW456ltzyblhL42Yovg0js")</script><script>function showTime(e){var t=new AV.Query(e),n=[],o=$(".leancloud_visitors");o.each(function(){n.push($(this).attr("id").trim())}),t.containedIn("url",n),t.find().done(function(e){var t=".leancloud-visitors-count";if(0!==e.length){for(var i=0;i<e.length;i++){var s=e[i],r=s.get("url"),l=s.get("time"),c=document.getElementById(r);$(c).find(t).text(l)}for(i=0;i<n.length;i++){r=n[i],c=document.getElementById(r);var u=$(c).find(t);""==u.text()&&u.text(0)}}else o.find(t).text(0)}).fail(function(e,t){console.log("Error: "+t.code+" "+t.message)})}function addCount(e){var t=$(".leancloud_visitors"),n=t.attr("id").trim(),o=t.attr("data-flag-title").trim(),i=new AV.Query(e);i.equalTo("url",n),i.find({success:function(t){if(t.length>0){var i=t[0];i.fetchWhenSave(!0),i.increment("time"),i.save(null,{success:function(e){$(document.getElementById(n)).find(".leancloud-visitors-count").text(e.get("time"))},error:function(e,t){console.log("Failed to save Visitor num, with error message: "+t.message)}})}else{var s=new e,r=new AV.ACL;r.setPublicReadAccess(!0),r.setPublicWriteAccess(!0),s.setACL(r),s.set("title",o),s.set("url",n),s.set("time",1),s.save(null,{success:function(e){$(document.getElementById(n)).find(".leancloud-visitors-count").text(e.get("time"))},error:function(e,t){console.log("Failed to create")}})}},error:function(e){console.log("Error:"+e.code+" "+e.message)}})}$(function(){var e=AV.Object.extend("Counter");1==$(".leancloud_visitors").length?addCount(e):$(".post-title-link").length>1&&showTime(e)})</script><div id="hexo-helper-live2d"><canvas id="live2dcanvas" width="150" height="300"></canvas></div><style>#live2dcanvas{position:fixed;width:150px;height:300px;opacity:.7;left:0;z-index:999;pointer-events:none;bottom:-20px}</style><script type="text/javascript" src="/live2d/device.min.js"></script><script type="text/javascript">
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("jwguegn6QyAkutrMmIc7kAIp-gzGzoHsz", "cIvW456ltzyblhL42Yovg0js");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    left: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
 const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
 (function(){
   if((typeof(device) != 'undefined') && (device.mobile())){
@@ -323,4 +1432,9 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
     if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
   loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/koharu.model.json", 0.5);});
 })();
-</script></body></html><script type="text/javascript" src="/js/src/love.js"></script>
+</script>
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>

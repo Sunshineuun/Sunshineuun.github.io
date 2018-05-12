@@ -1,6 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Oracle 临时表空间相关操作]]></title>
+    <url>%2F2018%2F05%2F11%2Fracle-%E4%B8%B4%E6%97%B6%E8%A1%A8%E7%A9%BA%E9%97%B4%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C%2F</url>
+    <content type="text"><![CDATA[查询用户默认临时表空间select temporary_tablespace from dba_users where username=&#39;用户名&#39;; 补充知识不要创建单个文件超过32GB的表空间如果你创建的表空间超过32GB，请把这个表空间存储为多个数据文件，每个文件不大于32GB。这样，就可以成功的创建表空间。 查看表空间利用率12345678910111213141516171819202122232425262728293031323334353637383940414243SELECT D.TABLESPACE_NAME, SPACE || &apos;M&apos; &quot;SUM_SPACE(M)&quot;, BLOCKS &quot;SUM_BLOCKS&quot;, SPACE - NVL(FREE_SPACE, 0) || &apos;M&apos; &quot;USED_SPACE(M)&quot;, ROUND((1 - NVL(FREE_SPACE, 0) / SPACE) * 100, 2) || &apos;%&apos; &quot;USED_RATE(%)&quot;, FREE_SPACE || &apos;M&apos; &quot;FREE_SPACE(M)&quot;FROM (SELECT TABLESPACE_NAME, ROUND(SUM(BYTES) / (1024 * 1024), 2) SPACE, SUM(BLOCKS) BLOCKS FROM DBA_DATA_FILES GROUP BY TABLESPACE_NAME) D, (SELECT TABLESPACE_NAME, ROUND(SUM(BYTES) / (1024 * 1024), 2) FREE_SPACE FROM DBA_FREE_SPACE GROUP BY TABLESPACE_NAME) FWHERE D.TABLESPACE_NAME = F.TABLESPACE_NAME (+)UNION ALL --如果有临时表空间 SELECT D.TABLESPACE_NAME, SPACE || &apos;M&apos; &quot;SUM_SPACE(M)&quot;, BLOCKS SUM_BLOCKS, USED_SPACE || &apos;M&apos; &quot;USED_SPACE(M)&quot;, ROUND(NVL(USED_SPACE, 0) / SPACE * 100, 2) || &apos;%&apos; &quot;USED_RATE(%)&quot;, NVL(FREE_SPACE, 0) || &apos;M&apos; &quot;FREE_SPACE(M)&quot;FROM (SELECT TABLESPACE_NAME, ROUND(SUM(BYTES) / (1024 * 1024), 2) SPACE, SUM(BLOCKS) BLOCKS FROM DBA_TEMP_FILES GROUP BY TABLESPACE_NAME) D, (SELECT TABLESPACE_NAME, ROUND(SUM(BYTES_USED) / (1024 * 1024), 2) USED_SPACE, ROUND(SUM(BYTES_FREE) / (1024 * 1024), 2) FREE_SPACE FROM V$TEMP_SPACE_HEADER GROUP BY TABLESPACE_NAME) FWHERE D.TABLESPACE_NAME = F.TABLESPACE_NAME (+); ORDER BY 1; 临时表空间释放1alter tablespace temp shrink space; 临时表空间增加数据文件PS:为表空间增加数据块1alter tablespace temp add tempfile &apos;D:\app\Administrator\oradata\vlsi\TEMP02.DBF&apos; size 1024 M; 删除临时表空间12-- temp02为表空间的名称DROP TABLESPACE temp02 INCLUDING CONTENTS AND DATAFILES; 创建临时表空间123456CREATE TEMPORARY TABLESPACE temp03 TEMPFILE &apos;D:\APP\ADMINISTRATOR\ORADATA\ORCL\TEMP03.DBF&apos; SIZE 1024M AUTOEXTEND ON MAXSIZE 31200M; 临时表空间相关信息1234567891011121314SELECT FILE_NAME 临时表文件路径, FILE_ID, TABLESPACE_NAME 表空间名称, bytes 当前所占有的字节长度, blocks, status, autoextensible 是否自动扩展, maxbytes 最大空间字节数, maxblocks, increment_by, user_bytes 已使用空间的字节数, user_blocksFROM dba_temp_files; 参考文献 1]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Maven POM文件相关配置]]></title>
+    <url>%2F2018%2F05%2F11%2Fven-POM%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE%2F</url>
+    <content type="text"><![CDATA[DependencyScope&lt;dependency&gt;中还引入了&lt;scope&gt;，它主要管理依赖的部署。目前&lt;scope&gt;可以使用5个值： compile，缺省值，适用于所有阶段，会随着项目一起发布。 provided，类似compile，期望JDK、容器或使用者会提供这个依赖。如servlet.jar。 * runtime，只在运行时使用，如JDBC驱动，适用运行和测试阶段。 test，只在测试时使用，用于编译和运行测试代码。不会随项目发布。 system，类似provided，需要显式提供包含依赖的jar，Maven不会在Repository中查找它。]]></content>
+      <tags>
+        <tag>Maven</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Intellij IDEA小技巧之快速比较代码版本]]></title>
+    <url>%2F2018%2F05%2F10%2Fntellij-IDEA%E5%B0%8F%E6%8A%80%E5%B7%A7%E4%B9%8B%E4%B8%80%2F</url>
+    <content type="text"><![CDATA[当代码加入版本管理的时候，快捷的查看与上个版本的差异。]]></content>
+      <tags>
+        <tag>IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Jenkins Windows批处理异常]]></title>
+    <url>%2F2018%2F05%2F07%2Fnkins%2F</url>
+    <content type="text"><![CDATA[Build step ‘Execute Windows batch command’ marked build as failure解决方法jenkins执行命令，会把命令生成一个批处理文件执行，而pybot命令对于批处理来说是外部命令，所以要加call表示调用。而jenkins执行windows命令,若退出代码不为0 ,则jenkins会将构建标记为失败，所以需要加上exit 0表示执行完成退出解决方法：构建命令在pybot前面加上call，最后加上exit 0]]></content>
+      <tags>
+        <tag>Jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[SpringBoot打包异常]]></title>
+    <url>%2F2018%2F05%2F04%2FSpring-Boot-Maven-Plugin%E6%89%93%E5%8C%85%E5%BC%82%E5%B8%B8%2F</url>
+    <content type="text"><![CDATA[Spring Boot Maven Plugin打包异常及三种解决方法：Unable to find main class【背景】spring-boot项目，打包成可执行jar，项目内有两个带有main方法的类并且都使用了@SpringBootApplication注解（或者另一种情形：你有两个main方法并且所在类都没有使用@SpringBootApplication注解） 问题】 执行mvn clean package，报错如下（说点不相关的，使用install同理。因为spring-boot:repackage目标（goal）（下文会说）被绑定在package构建阶段（phases），而package阶段在install阶段之前，指定构建阶段之前的阶段都会执行。详细参见：12Introduction to the Build Lifecycle） [ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:1.5.3.RELEASE:repackage (default) on project webapps-api-bid: Execution default of goal org.springframework.boot:spring-boot-maven-plugin:1.5.3.RELEASE:repackage failed: Unable to find a single main class from the following candidates [com.xx.api.main.ApiBidMain, com.xx.webapps.api.main.WebappsApiBidMain] 执行mvn clean package spring-boot:repackage，报错如下，不如上面日志详细1 [ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:1.5.3.RELEASE:repackage (default) on project webapps-api-bid: Execution default of goal org.springframework.boot:spring-boot-maven-plugin:1.5.3.RELEASE:repackage failed: Unable to find main class 参考文献：传送门]]></content>
+      <tags>
+        <tag>Spring Boot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Jenkins部署]]></title>
+    <url>%2F2018%2F05%2F04%2Fnkines%E9%83%A8%E7%BD%B2%2F</url>
+    <content type="text"><![CDATA[安装安装过程基本简单，按照提示，下一步下一步就行了。 配置Maven打包 确保新建任务中，包含【构建一个Maven项目】的选项 Repository URL中填写项目的代码库；Credentials填写用户名密码，可以通过Add按钮进行创建用户的。 这样就能简单的打包一个项目。 全局的Maven配置需要配置Jenkins Maven的全局仓库，但是现在不知道Jenkins Maven全局仓库在哪里，只能在打包的时候指定Maven仓库。如图： 常见问题总结 Maven打包的时候可能找不到java的基础包，例如Java.lang这样的，这样可能是JDK没有配置好，去POM文件中制定JDK的位置。 出现一直在下载包的情况下，可能你所认为的Maven本地仓库，并不是Jenkins所使用的仓库，下载过程中，有些包下载不下来导致错误。 项目依赖的，都会依赖本地项目，建议打包用install命令，发布到本地仓库。 部署到Tomcat上 WAR/EAR files：包的相对路径 Credentials：访问tomcat的用户名密码。在Tomcat/conf/tomcat-users.xml文件中添加以下配置 1234&lt;role rolename=&quot;manager-gui&quot; /&gt; &lt;role rolename=&quot;manager-script&quot; /&gt; &lt;role rolename=&quot;manager-status&quot; /&gt; &lt;user username=&quot;deploy&quot; password=&quot;deploy&quot; roles=&quot;manager-gui,manager-script,manager-status&quot; /&gt; Tomcat URL：tomcat的地址。 一定要让Tomcat启动着哦。邮箱配置 系统管理 &gt;&gt; 全局工具配置 具体配置]]></content>
+      <tags>
+        <tag>Jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Oracle账户被锁]]></title>
+    <url>%2F2018%2F05%2F02%2FOracle%E8%B4%A6%E6%88%B7%E8%A2%AB%E9%94%81%2F</url>
+    <content type="text"><![CDATA[连接到sysdba1conn sys as sysdba 解除锁定1alter user 用户名 account unlock]]></content>
+      <tags>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[MongoDB异常0501]]></title>
+    <url>%2F2018%2F05%2F01%2FongoDB%E5%BC%82%E5%B8%B8%2F</url>
+    <content type="text"><![CDATA[pymongo.errors.CursorNotFound: Cursor not found, cursor id: 124891571478 原因默认 mongo server维护连接的时间窗口是十分钟默认 单次从 server获取数据是101条或者 大于1M小于16M的数据所以默认情况下，如果10分钟内未能处理完数据，则抛出该异常。 解决办法方法一修改每批次获取数据量的条数，即batch size:collection.find(condition).batch_size(5) 批量数需 估算十分钟内能处理的数据量 方法二延长超时时间 需显示的关闭cursor1234567cursor=db.images.find(&#123;&#125;&#123;&apos;id&apos;:1,&apos;image_path&apos;:1,&apos;_id&apos;:0&#125;,no_cursor_timeout=True)for i in cursor: ..... .....cursor.close()]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[IDEA踩坑之路]]></title>
+    <url>%2F2018%2F04%2F20%2FEA%E8%B8%A9%E5%9D%91%E4%B9%8B%E8%B7%AF%2F</url>
+    <content type="text"><![CDATA[问题是这样的，今天重新从服务器上下载项目进行开发。Maven Tomcat什么都部署好了，就是项目启动部署到Tomcat的时候，就是不把依赖的Model打包到Web-INF/lib目录下面，这尼玛找了我整整快一天了，尝试各种方法。 怀疑Maven依赖有问题 怀疑项目配置有问题 . . . . 最后发现是在Setting &gt; File Type &gt; igonre files and folders中配置 target目录。导致的，不要问我怎么发现的，全靠运气。 如图]]></content>
+      <tags>
+        <tag>IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Sublime-快捷键]]></title>
+    <url>%2F2018%2F04%2F12%2Fblime-%E5%BF%AB%E6%8D%B7%E9%94%AE%2F</url>
+    <content type="text"><![CDATA[选择类 Ctrl+D 选中光标所占的文本，继续操作则会选中下一个相同的文本。 Alt+F3 选中文本按下快捷键，即可一次性选择全部的相同文本进行同时编辑。举个栗子：快速选中并更改所有相同的变量名、函数名等。 Ctrl+L 选中整行，继续操作则继续选择下一行，效果和 Shift+↓ 效果一样。 Ctrl+Shift+L 先选中多行，再按下快捷键，会在每行行尾插入光标，即可同时编辑这些行。 Ctrl+Shift+M 选择括号内的内容（继续选择父括号）。举个栗子：快速选中删除函数中的代码，重写函数体代码或重写括号内里的内容。 Ctrl+M 光标移动至括号内结束或开始的位置。 Ctrl+Enter 在下一行插入新行。举个栗子：即使光标不在行尾，也能快速向下插入一行。 Ctrl+Shift+Enter 在上一行插入新行。举个栗子：即使光标不在行首，也能快速向上插入一行。 Ctrl+Shift+[ 选中代码，按下快捷键，折叠代码。 Ctrl+Shift+] 选中代码，按下快捷键，展开代码。 Ctrl+K+0 展开所有折叠代码。 Ctrl+← 向左单位性地移动光标，快速移动光标。 Ctrl+→ 向右单位性地移动光标，快速移动光标。 shift+↑ 向上选中多行。 shift+↓ 向下选中多行。 Shift+← 向左选中文本。 Shift+→ 向右选中文本。 Ctrl+Shift+← 向左单位性地选中文本。 Ctrl+Shift+→ 向右单位性地选中文本。 Ctrl+Shift+↑ 将光标所在行和上一行代码互换（将光标所在行插入到上一行之前）。 Ctrl+Shift+↓ 将光标所在行和下一行代码互换（将光标所在行插入到下一行之后）。 Ctrl+Alt+↑ 向上添加多行光标，可同时编辑多行。 Ctrl+Alt+↓ 向下添加多行光标，可同时编辑多行。 编辑类 Ctrl+J 合并选中的多行代码为一行。举个栗子：将多行格式的CSS属性合并为一行。 Ctrl+Shift+D 复制光标所在整行，插入到下一行。 Tab 向右缩进。 Shift+Tab 向左缩进。 Ctrl+K+K 从光标处开始删除代码至行尾。 Ctrl+Shift+K 删除整行。 Ctrl+/ 注释单行。 Ctrl+Shift+/ 注释多行。 Ctrl+K+U 转换大写。 Ctrl+K+L 转换小写。 Ctrl+Z 撤销。 Ctrl+Y 恢复撤销。 Ctrl+U 软撤销，感觉和 Gtrl+Z 一样。 Ctrl+F2 设置书签 Ctrl+T 左右字母互换。 F6 单词检测拼写 Ctrl+H 替换 搜索类 Ctrl+F 打开底部搜索框，查找关键字。 Ctrl+shift+F 在文件夹内查找，与普通编辑器不同的地方是sublime允许添加多个文件夹进行查找，略高端，未研究。 Ctrl+P 打开搜索框。举个栗子：1、输入当前项目中的文件名，快速搜索文件，2、输入@和关键字，查找文件中函数名，3、输入：和数字，跳转到文件中该行代码，4、输入#和关键字，查找变量名。 Ctrl+G 打开搜索框，自动带：，输入数字跳转到该行代码。举个栗子：在页面代码比较长的文件中快速定位。 Ctrl+R 打开搜索框，自动带@，输入关键字，查找文件中的函数名。举个栗子：在函数较多的页面快速查找某个函数。 Ctrl+： 打开搜索框，自动带#，输入关键字，查找文件中的变量名、属性名等。 Ctrl+Shift+P 打开命令框。场景栗子：打开命名框，输入关键字，调用sublime text或插件的功能，例如使用package安装插件。 Esc 退出光标多行选择，退出搜索框，命令框等。 显示类 Ctrl+Tab 按文件浏览过的顺序，切换当前窗口的标签页。 Ctrl+PageDown 向左切换当前窗口的标签页。 Ctrl+PageUp 向右切换当前窗口的标签页。 Alt+Shift+1 窗口分屏，恢复默认1屏（非小键盘的数字） Alt+Shift+2 左右分屏-2列 Alt+Shift+3 左右分屏-3列 Alt+Shift+4 左右分屏-4列 Alt+Shift+5 等分4屏 Alt+Shift+8 垂直分屏-2屏 Alt+Shift+9 垂直分屏-3屏 Ctrl+K+B 开启/关闭侧边栏。 F11 全屏模式 Shift+F11 免打扰模式]]></content>
+      <tags>
+        <tag>Sublime</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Sublime-语言包插件]]></title>
+    <url>%2F2018%2F04%2F12%2FSublime-%E6%B1%89%E5%8C%96%2F</url>
+    <content type="text"><![CDATA[启动并进入sublime主界面; 点击菜单栏中preferences，弹出选项中找到package control;可能preferences下没有package control需要在菜单栏下寻找install control的选项。具体忘记了！ 进入下一步，选择install package，可以键入install package进行查找 继续下一步，尝试输入localization，因为小编自己已经安装，所以下拉就不会再显示这个插件名，当然你会发现还有其他的相关插件可以汉化sublime; 插件以及安装成功，现在我们就可以汉化啦，点击help菜单，找到“language”选择你想要的语言即可~~]]></content>
+      <tags>
+        <tag>Sublime</tag>
+        <tag>IDE</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[MongoDB CRUD操作]]></title>
+    <url>%2F2018%2F04%2F06%2FngoDB-CRUD%E6%93%8D%E4%BD%9C%2F</url>
+    <content type="text"><![CDATA[插入操作插入单个文档insert_oneinsert_many]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[MongoDB3.6系列 - 限制与阈值]]></title>
+    <url>%2F2018%2F04%2F06%2Fongodb%E7%B3%BB%E5%88%97-%E9%99%90%E5%88%B6%E4%B8%8E%E9%98%88%E5%80%BC%2F</url>
+    <content type="text"><![CDATA[简述本文摘抄官方文档。 Bson文件 Bson文档最大为16兆字节； 支持不超过100层的文档嵌套； 命名限制数据库命名限制 数据库名称不区分大小写 对于Windows上运行的MongoDB，不能包含以下字符 1/ \。“$ * &lt;&gt;：|？ 对于Linux和Unix上运行的MongoDB，不能包含以下字符 1/ \。“$ 数据库名字不能包含空字符 数据库名称不能为空，且必须少于64个字符 集合命名限制 应该已下划线或者字母开通，但不能： 包含$符号 是一个空字符 包含空字符 以system.为前缀。（保留内部使用）\ 数据库名称+点号（.）+集合名称（即是&lt;database&gt;.&lt;collection&gt;）的字符长短不超过120个字节。 字段命名限制 同集合命名限制 索引限制（Index key Limit）索引的条目的总大小，取决于Bson类型的结构开销，必须小于1024个字节。 超限制的报错 如果现有文档的索引条目超过index key limit，则MongoDB不会再这上面建立索引。 如果索引字段的索引条目超过，则重新编索引操作将会出错。 Reindexing操作是compact和repairDatabase命令以及db.collection.reIndex()方法的一部分。 索引字段对应的索引条目超过该索引集合，那么索引字段中的任何文档，不会插入到集合中，而是返回错误。以前版本会插入，但不索引这个文档。 更新这个所以字段将会出现的错误，如果这个更新值导致索引条目超过index key limit的限制，将会出错，更新失败。 mongorestore和mongoimport将不在插入包含索引的文档，该索引字段的对应的索引条目将要超过index key limit。 对于现有分片集合，chunk migration将会出现失败的原因，文档包含的索引字段将要超过索引条目的限制index key limit 官网参考 其他限制 每个索引的集合数：一个集合可以有不超过64个索引 索引名称长度：及&lt;database name&gt;.&lt;collection name&gt;.$&lt;index name&gt;的组合不能超过128个字符。 复合索引：不能超过31个字段。 您不能将$text需要特殊文本索引的查询与需要不同类型的特殊索引的查询运算符结合使用。例如，您不能将$text查询与$near操作员组合在一起。 多键索引不能涵盖对数组字段的查询。 地理空间索引不能 覆盖查询。 参考官方文档]]></content>
+      <tags>
+        <tag>MongoDB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Redis-基础]]></title>
+    <url>%2F2018%2F04%2F05%2Fdis%E5%9F%BA%E7%A1%80%E4%B9%8B%E4%B8%80%2F</url>
+    <content type="text"><![CDATA[数据类型redis拥有五种数据类型： 字符串（string） 哈希（hash） 列表（list） 集合（set） 有序集合（zset） 字符串内部编码 raw int embstr哈希内部编码 hashtable ziplist 列表内部编码 linkedlist ziplist 集合内部编码 hashtable intset 有序集合内部编码 skiplist ziplist]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[MongoDB运算符]]></title>
+    <url>%2F2018%2F03%2F28%2FongoDB%E8%BF%90%E7%AE%97%E7%AC%A6%2F</url>
+    <content type="text"><![CDATA[大于 - $gt 小于 - $lt 大于等于 - $gte 小于等于 - $lte $ne - 不等于 in - $in not in - $nin 取余运算符 - $mod $in - $all 数据的长度 - $size 判断键是否存在 - $exists，{$exists : true} bson type来匹配一个元素的类型 - $type]]></content>
+      <tags>
+        <tag>MongoDB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Java多线程自述]]></title>
+    <url>%2F2018%2F03%2F25%2Fava%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%87%AA%E8%BF%B0%2F</url>
+    <content type="text"><![CDATA[为什么产生多线程当处于IO获取其他状态的时候，CPU会出现一定的空闲时间；此空闲时间的CPU就能利用起来。 多线程带来的问题资源竞争同步临界资源]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Java多线程-1]]></title>
+    <url>%2F2018%2F03%2F25%2FJava%E5%A4%9A%E7%BA%BF%E7%A8%8B-1%2F</url>
+    <content type="text"><![CDATA[Java 多线程模块巩固 线程状态转换 yield方法理论上，yield意味着放手，放弃，投降。一个调用yield()方法的线程告诉虚拟机它乐意让其他线程占用自己的位置。这表明该线程没有在做一些紧急的事情。注意，这仅是一个暗示，并不能保证不会产生任何影响。 Yield是一个静态的原生(native)方法 Yield告诉当前正在执行的线程把运行机会交给线程池中拥有相同优先级的线程。 Yield不能保证使得当前正在运行的线程迅速转换到可运行的状态 它仅能使一个线程从运行状态转到可运行状态，而不是等待或阻塞状态 线程池Java通过Executors提供四种线程池。 newCachedThreadPool创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。 newFixedThreadPool创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。 newScheduledThreadPool 创建一个定长线程池，支持定时及周期性任务执行。 newSingleThreadExecutor 创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。参考：博客 ExecutorService的submit与execute区别 接收的参数不一样submit可以接受runnable无返回值和callable有返回值；execute接受runnable无返回值 submit有返回值，而execute没有 submit方便Exception处理参考：博客 shotdown和showdownNow的区别 shutdown() 方法在终止前允许执行以前提交的任务， shutdownNow() 方法阻止等待任务启动并试图停止当前正在执行的任务。在终止时执行程序没有任务在执行，也没有任务在等待执行，并且无法提交新任务。关闭未使用的 ExecutorService 以允许回收其资源。 Runnable与Callable区别 callable用法和runnable一样，只不过调用的是call方法，该方法有一个泛型返回值类型，你可以任意指定。 runnable接口实现的没有返回值的并发编程。 callable有返回值，runnable没有返回值。 synchronized 修饰实例方法，作用于当前实例加锁，进入同步代码前要获得当前实例的锁。 12已当前实例为资源，当线程争夺的时候回去进行通过该实例。不同实例之间不存在资源争抢。 修饰静态方法，作用于当前类对象加锁，进入同步代码前要获得当前类对象的锁。 1对象锁 修饰代码块，指定加锁对象，对给定对象加锁，进入同步代码库前要获得给定对象的锁。 1对象锁 参考：synchronized详解 文献参考 1 2 Java并发性和多线程介绍目录]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[中美贸易战]]></title>
+    <url>%2F2018%2F03%2F24%2F%E4%B8%AD%E7%BE%8E%E8%B4%B8%E6%98%93%E6%88%98%2F</url>
+    <content type="text"><![CDATA[与哥哥视频的总结记录 主题：中美贸易战 预计要打台海战争 美国实力比中国强，但是因为中国储备了很多外汇。其他国家不容易打金融战争，所以要打贸易战争。 如何去看新闻报道 3.1 报道的内容不重要，为什么要报道比较重要，或者说报道的目的。 3.2 当报道的文章太过正面，这个时候可能是政府在激励民族情怀，可能是一个战争准备。 3.3 媒体让民众看起来是站在第三方角度去发表客观事实的，然而媒体只不过是政府的传话筒。平时为什么会有嘉宾在，这就是捏造第三方发表客观事实的假象。 3.4 李嘉诚。 政治家都是带着目的去阐述的。我们要揣摩他的目的！ 需要了解国际形势。 军备是最能体现国力的一种表现。总结： 提问的优雅：让自己了解清楚问题，明确自己的疑惑。]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Selenium-Error01]]></title>
+    <url>%2F2018%2F03%2F20%2Felenuim%2F</url>
+    <content type="text"><![CDATA[错误代码：123selenium.common.exceptions.WebDriverException: Message: unknown error: call function result missing &apos;value&apos; (Session info: chrome=65.0.3325.162) (Driver info: chromedriver=2.33.506120 (e3e53437346286c0bc2d2dc9aa4915ba81d9023f),platform=Windows NT 10.0.16299 x86_64) 百度的答案传送门 笔者的理解： 是因为Chrome升级了，然后Chrom Driver的版本不支持需要下载新版。 下载地址里面有说明相互对应的版本说明。]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[MongoDB]]></title>
     <url>%2F2018%2F03%2F18%2FongoDB%2F</url>
     <content type="text"><![CDATA[更新命令update格式如下：1db.collection.update(criteria,objNew,upsert,multi) 参数说明如下：criteria：查询条件objNew：update对象和一些更新操作符upsert：如果不存在update的记录，是否插入objNew这个新的文档，true为插入，默认为false，不插入。multi：默认是false，只更新找到的第一条记录。如果为true，把按条件查询出来的记录全部更新。 save格式如下：1db.collection.save(obj) 参数说明如下：obj：代表需要更新的对象，如果集合内部已经存在一个和obj相同的_id的记录，Mongodb会把obj对象替换集合内已存在的记录，如果不存在，则会插入obj对象。 更新操作符号$inc用法：{$inc:{field:value}}作用：对一个数字字段的某个field增加value说明：只能运用在数值类型上 $set用法：{$set:{field:value}}作用：把文档中某个字段field的值设为value $unset用法：{$unset:{field:1}}作用：删除某个字段field $push用法：{$push:{field:value}}作用：把value追加到field里。说明：field只能是数组类型，如果field不存在，会自动插入一个数组类型 pushAll用法：{$pushAll:{field:value_array}}作用：用法同$push一样，只是$pushAll可以一次追加多个值到一个数组字段内。说明：field只能是数组类型。 $addToSet用法：{$addToSet:{field:value}}作用：加一个值到数组内，而且只有当这个值在数组中不存在时才增加。说明：结果是append，不是add，就算存入的是数组，它也是单个值举例：存入[ “A3”, “A4” ]的效果1[ &quot;Michael&quot;, &quot;A1&quot;, &quot;A2&quot;, [ &quot;A3&quot;, &quot;A4&quot; ] ] $pop用法：删除数组内第一个值：{$pop:{field:-1}}、删除数组内最后一个值：{$pop:{field:1}}作用：用于删除数组内的一个值 $pull用法：{$pull:{field:_value}}作用：从数组field内删除一个等于_value的值 $pullAll用法：{$pullAll:value_array}作用：用法同$pull一样，可以一次性删除数组内的多个值。 $rename用法：{$rename:{old_field_name:new_field_name}}作用：对字段进行重命名 参考资料 快速入门 博客-更新命令(save,update)]]></content>
@@ -11,7 +140,7 @@
   <entry>
     <title><![CDATA[后端开发知识要点]]></title>
     <url>%2F2018%2F03%2F18%2F%E7%AB%AF%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E8%A6%81%E7%82%B9%2F</url>
-    <content type="text"><![CDATA[基础篇基本功面向对象的特征 抽象 抽象使我们更接近于事物的本质。抽象的过程就是一个提炼存在于事物之间共同拥有的元素，而这些事务之间共同拥有的元素往往是这一事物区别于其他事物关键的东西，这些元素就构成了事物的本质. 继承 既是拓展的过程，也是归类的过程。 封装 私有化的一个过程。 多态性 多种表达形式。 final, finally, finalize 的区别 final，修饰变量，常量；修饰Class，不运行被继承；修饰方法，拒绝重载；总之就是只能这样了的意思。 finally，抛出异常继续执行的代码块。 finalize，是一个清理方法。 int 和 Integer 有什么区别int是基础类型，Integer是int的包装类；Integer是一个对象。 重载和重写的区别 重载同一方法名称，但是不同参数，已达到多态的效果。 重写，也称覆盖，覆盖父类的方法。 抽象类和接口有什么区别 个人理解：抽象类有具体方法实现；接口中的方法，都是由继承类实现。 接口是对动作的抽象，而抽象类是对根源的抽象。 接口和抽象类都是继承树的上层，他们的共同点如下： 1.1 都是上层的抽象层。1.2 都不能被实例化1.3 都能包含抽象的方法，这些抽象的方法用于描述类具备的功能，但是不比提供具体的实现。 它们的区别如下： 2.1 在抽象类中可以写非抽象的方法，从而避免在子类中重复书写它们，这样可以提高代码的复用性，这是抽象类的优势；接口中只能有抽象的方法。2.2 一个类只能继承一个直接父类，这个父类可以是具体的类也可是抽象类；但是一个类可以实现多个接口。 参考：知乎-接口和抽象类有什么区别？ 说说反射的用途及实现用途：获取当前对象几乎所有的信息，属性，方法，注解等。参考：反射理解基础 说说自定义注解的场景及实现HTTP 请求的 GET 与 POST 方式的区别session 与 cookie 区别session 分布式处理JDBC 流程MVC 设计思想equals 与 == 的区别]]></content>
+    <content type="text"><![CDATA[基础篇基本功面向对象的特征 抽象 抽象使我们更接近于事物的本质。抽象的过程就是一个提炼存在于事物之间共同拥有的元素，而这些事务之间共同拥有的元素往往是这一事物区别于其他事物关键的东西，这些元素就构成了事物的本质. 继承 既是拓展的过程，也是归类的过程。 封装 私有化的一个过程。 多态性 多种表达形式。 final, finally, finalize 的区别 final，修饰变量，常量；修饰Class，不运行被继承；修饰方法，拒绝重载；总之就是只能这样了的意思。 finally，抛出异常继续执行的代码块。 finalize，是一个清理方法。 int 和 Integer 有什么区别int是基础类型，Integer是int的包装类；Integer是一个对象。 重载和重写的区别 重载同一方法名称，但是不同参数，已达到多态的效果。 重写，也称覆盖，覆盖父类的方法。 抽象类和接口有什么区别 个人理解：抽象类有具体方法实现；接口中的方法，都是由继承类实现。 接口是对动作的抽象，而抽象类是对根源的抽象。 接口和抽象类都是继承树的上层，他们的共同点如下： 1.1 都是上层的抽象层。1.2 都不能被实例化1.3 都能包含抽象的方法，这些抽象的方法用于描述类具备的功能，但是不比提供具体的实现。 它们的区别如下： 2.1 在抽象类中可以写非抽象的方法，从而避免在子类中重复书写它们，这样可以提高代码的复用性，这是抽象类的优势；接口中只能有抽象的方法。2.2 一个类只能继承一个直接父类，这个父类可以是具体的类也可是抽象类；但是一个类可以实现多个接口。 参考：知乎-接口和抽象类有什么区别？ 说说反射的用途及实现用途：获取当前对象几乎所有的信息，属性，方法，注解等。参考：反射理解基础 说说自定义注解的场景及实现HTTP 请求的 GET 与 POST 方式的区别 GET的语义是请求获取指定的资源。GET方法是安全、幂等、可缓存的（除非有 Cache-ControlHeader的约束）,GET方法的报文主体没有任何语义。 POST的语义是根据请求负荷（报文主体）对指定的资源做出处理，具体的处理方式视资源类型而不同。POST不安全，不幂等，（大部分实现）不可缓存。为了针对其不可缓存性，有一系列的方法来进行优化，以后有机会再研究（FLAG已经立起）。 参考：get和post区别 session 与 cookie 区别session保存在服务器端的值；cookie是保存在客户端的值。参考：COOKIE和SESSION有什么区别 session 分布式处理JDBC 流程MVC 设计思想equals 与 == 的区别集合List 和 Set 区别 List特点：元素有放入顺序，元素可重复。 实现类：ArrayList、LinkedList、Vector Set特点：元素无放入顺序，元素不可重复 实现类：HashSet、LinkedHashSet、TreeSet List 和 Map 区别 Map不是collection的子接口或者实现类。Map是一个接口。 Map 的 每个 Entry 都持有两个对象，也就是一个键一个值，Map 可能会持有相同的值对象但键对象必须是唯一的。 TreeMap 也通过 Comparator 或者 Comparable 维护了一个排序顺序。 Map 里你可以拥有随意个 null 值但最多只能有一个 null 键。 Map 接口最流行的几个实现类是 HashMap、LinkedHashMap、Hashtable 和 TreeMap。（HashMap、TreeMap最常用）参考：List、Set、Map的区别 Arraylist 与 LinkedList 区别 ArrayList 与 Vector 区别HashMap 和 Hashtable 的区别HashSet 和 HashMap 区别HashMap 和 ConcurrentHashMap 的区别HashMap 的工作原理及代码实现ConcurrentHashMap 的工作原理及代码实现]]></content>
       <tags>
         <tag>Java</tag>
       </tags>
@@ -131,7 +260,6 @@
     <content type="text"><![CDATA[简介Jenkins自动化部署打包系统，百度百科传送门笔者安装在Ubuntu环境上。 Jenkins Install传送门 Jenkins UnInstall传送门 Git Install执行以下命令1apt-get install git Maven Install 下载Maven的安装包 安装命令如下12345678# 解压tar zxvf apache-maven-3.3.9.bin.tar.gz# 增加环境变量vi /etc/profile# 在打开文件尾部增加以下内容M2_HOME=/usr/local/apache-maven-3.3.9 # 此路径是你maven解压缩文件的路径。PATH=$M2_HOME/bin:$PATH]]></content>
       <tags>
         <tag>JenKins</tag>
-        <tag>自动化构建</tag>
       </tags>
   </entry>
   <entry>
@@ -169,7 +297,7 @@
         <category>Spring 框架</category>
       </categories>
       <tags>
-        <tag>Spring boot</tag>
+        <tag>Spring Boot</tag>
       </tags>
   </entry>
   <entry>
@@ -262,7 +390,6 @@
       <tags>
         <tag>Hexo</tag>
         <tag>NexT</tag>
-        <tag>NexT优化</tag>
       </tags>
   </entry>
   <entry>
